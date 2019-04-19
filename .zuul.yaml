@@ -26,8 +26,8 @@
     vars:
       tox_envlist: pylint
     required-projects:
-      - openstack/stx-config
-      - openstack/stx-fault
-      - openstack/stx-update
-      - openstack/stx-nfv
-      - openstack/stx-ha
+      - starlingx/config
+      - starlingx/fault
+      - starlingx/update
+      - starlingx/nfv
+      - starlingx/ha
