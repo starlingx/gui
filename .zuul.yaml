@@ -27,6 +27,7 @@
       tox_envlist: pylint
     required-projects:
       - starlingx/config
+      - starlingx/distcloud-client
       - starlingx/fault
       - starlingx/update
       - starlingx/nfv
