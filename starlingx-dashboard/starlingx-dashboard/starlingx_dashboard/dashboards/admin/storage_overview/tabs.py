@@ -13,7 +13,6 @@ from horizon import tabs
 
 from starlingx_dashboard.api import base as stx_base
 from starlingx_dashboard.api import ceph
-from starlingx_dashboard.api import sysinv
 from starlingx_dashboard.dashboards.admin.storage_overview import constants
 from starlingx_dashboard.dashboards.admin.storage_overview import tables
 
@@ -72,22 +71,7 @@ class StorageServicesTab(tabs.TableTab):
         return stx_base.is_stx_region(request)
 
 
-class StorageUsageTab(tabs.TableTab):
-    table_classes = (tables.UsageTable,)
-    name = _("Usage")
-    slug = "usage"
-    template_name = constants.STORAGE_USAGE_TEMPLATE_NAME
-
-    def get_usage_data(self):
-        try:
-            return sysinv.storage_usage_list(self.request)
-        except Exception:
-            LOG.error("Exception requesting storage usage information")
-
-        return []
-
-
 class StorageOverviewTabs(tabs.TabGroup):
     slug = "storage_overview"
-    tabs = (StorageServicesTab, StorageUsageTab)
+    tabs = (StorageServicesTab, )
     sticky = True
