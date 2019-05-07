@@ -2607,6 +2607,19 @@ def get_sdn_enabled(request):
         return False
 
 
+def get_vswitch_type(request):
+    try:
+        systems = system_list(request)
+        system_capabilities = systems[0].to_dict().get('capabilities')
+        vswitch_type = system_capabilities.get('vswitch_type', 'none')
+        if vswitch_type != 'none':
+            return vswitch_type
+        else:
+            return None
+    except Exception:
+        return None
+
+
 def get_sdn_l3_mode_enabled(request):
     # Get the Service Parameter list on this host
     # and ensure that the L3 Enabled service parameter
