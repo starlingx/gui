@@ -689,12 +689,6 @@ class UpdateiStorage(forms.SelfHandlingForm):
         help_text=_("Glance image storage space in gibibytes."),
         min_value=0)
 
-    gnocchi = forms.IntegerField(
-        label=_("Gnocchi Storage (GiB)"),
-        required=True,
-        help_text=_("Gnocchi storage space in gibibytes."),
-        min_value=0)
-
     backup = forms.IntegerField(
         label=_("Backup Storage (GiB)"),
         required=True,
@@ -713,10 +707,22 @@ class UpdateiStorage(forms.SelfHandlingForm):
         help_text=_("Platform Extension storage space in gibibytes."),
         min_value=0)
 
-    img_conversions = forms.IntegerField(
-        label=_("Image Conversion Space (GiB)"),
-        required=False,
-        help_text=_("Disk space for image conversion in gibibytes."),
+    docker = forms.IntegerField(
+        label=_("Docker Storage (GiB)"),
+        required=True,
+        help_text=_("Docker storage space in gibibytes."),
+        min_value=0)
+
+    etcd = forms.IntegerField(
+        label=_("Etcd Storage (GiB)"),
+        required=True,
+        help_text=_("Etcd storage space in gibibytes."),
+        min_value=0)
+
+    docker_distribution = forms.IntegerField(
+        label=_("Docker Distribution Storage (GiB)"),
+        required=True,
+        help_text=_("Docker Distribution storage space in gibibytes."),
         min_value=0)
 
     patch_vault = forms.IntegerField(
