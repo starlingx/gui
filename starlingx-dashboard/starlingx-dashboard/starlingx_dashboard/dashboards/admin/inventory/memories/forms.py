@@ -142,6 +142,8 @@ class UpdateMemory(forms.SelfHandlingForm):
         super(UpdateMemory, self).__init__(request, *args, **kwargs)
 
         self.host = kwargs['initial']['host']
+        self.vswitch_type = stx_api.sysinv.get_vswitch_type(request)
+        LOG.debug("vswitch_type is %s", self.vswitch_type)
 
         memory_fieldsets = [
             {
@@ -247,7 +249,12 @@ class UpdateMemory(forms.SelfHandlingForm):
                     if m.vswitch_hugepages_size_mib:
                         vswitch_hp_size_mib_field.initial = \
                             str(m.vswitch_hugepages_size_mib)
-
+                    if self.vswitch_type is None:
+                        LOG.debug("vswitch_hp field is hidden")
+                        vswitch_hp_size_mib_field.widget = \
+                            forms.widgets.HiddenInput()
+                        vswitch_hp_reqd_field.widget = \
+                            forms.widgets.HiddenInput()
                     break
 
         while count < 4:
@@ -322,15 +329,16 @@ class UpdateMemory(forms.SelfHandlingForm):
         else:
             pages_1G['node0'] = data['vm_hugepages_nr_1G']
 
-        if not data['vswitch_hugepages_size_mib']:
-            del data['vswitch_hugepages_size_mib']
-        else:
-            pages_vs_size['node0'] = data['vswitch_hugepages_size_mib']
+        if self.vswitch_type:
+            if not data['vswitch_hugepages_size_mib']:
+                del data['vswitch_hugepages_size_mib']
+            else:
+                pages_vs_size['node0'] = data['vswitch_hugepages_size_mib']
 
-        if not data['vswitch_hugepages_reqd']:
-            del data['vswitch_hugepages_reqd']
-        else:
-            pages_vs_reqd['node0'] = data['vswitch_hugepages_reqd']
+            if not data['vswitch_hugepages_reqd']:
+                del data['vswitch_hugepages_reqd']
+            else:
+                pages_vs_reqd['node0'] = data['vswitch_hugepages_reqd']
 
         # Node 1 arguments
         if not data['platform_memory_two']:
@@ -348,15 +356,16 @@ class UpdateMemory(forms.SelfHandlingForm):
         else:
             pages_1G['node1'] = data['vm_hugepages_nr_1G_two']
 
-        if not data['vswitch_hugepages_size_mib_two']:
-            del data['vswitch_hugepages_size_mib_two']
-        else:
-            pages_vs_size['node1'] = data['vswitch_hugepages_size_mib_two']
+        if self.vswitch_type:
+            if not data['vswitch_hugepages_size_mib_two']:
+                del data['vswitch_hugepages_size_mib_two']
+            else:
+                pages_vs_size['node1'] = data['vswitch_hugepages_size_mib_two']
 
-        if not data['vswitch_hugepages_reqd_two']:
-            del data['vswitch_hugepages_reqd_two']
-        else:
-            pages_vs_reqd['node1'] = data['vswitch_hugepages_reqd_two']
+            if not data['vswitch_hugepages_reqd_two']:
+                del data['vswitch_hugepages_reqd_two']
+            else:
+                pages_vs_reqd['node1'] = data['vswitch_hugepages_reqd_two']
 
         # Node 2 arguments
         if not data['platform_memory_three']:
@@ -374,15 +383,18 @@ class UpdateMemory(forms.SelfHandlingForm):
         else:
             pages_1G['node2'] = data['vm_hugepages_nr_1G_three']
 
-        if not data['vswitch_hugepages_size_mib_three']:
-            del data['vswitch_hugepages_size_mib_three']
-        else:
-            pages_vs_size['node2'] = data['vswitch_hugepages_size_mib_three']
+        if self.vswitch_type:
+            if not data['vswitch_hugepages_size_mib_three']:
+                del data['vswitch_hugepages_size_mib_three']
+            else:
+                pages_vs_size['node2'] = \
+                    data['vswitch_hugepages_size_mib_three']
 
-        if not data['vswitch_hugepages_reqd']:
-            del data['vswitch_hugepages_reqd']
-        else:
-            pages_vs_reqd['node2'] = data['vswitch_hugepages_reqd_three']
+            if not data['vswitch_hugepages_reqd']:
+                del data['vswitch_hugepages_reqd']
+            else:
+                pages_vs_reqd['node2'] = \
+                    data['vswitch_hugepages_reqd_three']
 
         # Node 3 arguments
         if not data['platform_memory_four']:
@@ -400,15 +412,17 @@ class UpdateMemory(forms.SelfHandlingForm):
         else:
             pages_1G['node3'] = data['vm_hugepages_nr_1G_four']
 
-        if not data['vswitch_hugepages_size_mib_four']:
-            del data['vswitch_hugepages_size_mib_four']
-        else:
-            pages_vs_size['node3'] = data['vswitch_hugepages_size_mib_four']
+        if self.vswitch_type:
+            if not data['vswitch_hugepages_size_mib_four']:
+                del data['vswitch_hugepages_size_mib_four']
+            else:
+                pages_vs_size['node3'] = \
+                    data['vswitch_hugepages_size_mib_four']
 
-        if not data['vswitch_hugepages_reqd_four']:
-            del data['vswitch_hugepages_reqd_four']
-        else:
-            pages_vs_reqd['node3'] = data['vswitch_hugepages_reqd_four']
+            if not data['vswitch_hugepages_reqd_four']:
+                del data['vswitch_hugepages_reqd_four']
+            else:
+                pages_vs_reqd['node3'] = data['vswitch_hugepages_reqd_four']
 
         try:
             for nd in node:
@@ -432,11 +446,13 @@ class UpdateMemory(forms.SelfHandlingForm):
                         new_data['vm_hugepages_nr_2M_pending'] = pages_2M[nd]
                     if nd in pages_1G:
                         new_data['vm_hugepages_nr_1G_pending'] = pages_1G[nd]
-                    if nd in pages_vs_size:
-                        new_data['vswitch_hugepages_size_mib'] = \
-                            pages_vs_size[nd]
-                    if nd in pages_vs_reqd:
-                        new_data['vswitch_hugepages_reqd'] = pages_vs_reqd[nd]
+                    if self.vswitch_type:
+                        if nd in pages_vs_size:
+                            new_data['vswitch_hugepages_size_mib'] = \
+                                pages_vs_size[nd]
+                        if nd in pages_vs_reqd:
+                            new_data['vswitch_hugepages_reqd'] = \
+                                pages_vs_reqd[nd]
 
                     if new_data:
                         stx_api.sysinv.host_memory_update(request, memory.uuid,
