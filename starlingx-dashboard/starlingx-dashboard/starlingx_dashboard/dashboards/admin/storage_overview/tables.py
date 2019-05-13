@@ -1,30 +1,11 @@
 #
-# Copyright (c) 2016-2018 Wind River Systems, Inc.
+# Copyright (c) 2016-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 from django.utils.translation import ugettext_lazy as _
 from horizon import tables
-
-
-class UsageTable(tables.DataTable):
-    be_type = tables.Column('backend', verbose_name=_('Backend type'))
-    be_name = tables.Column('name', verbose_name=_('Backend name'))
-    be_service = tables.Column('service_name', verbose_name=_('Service name'))
-    capacity = tables.Column('total_capacity',
-                             verbose_name=_('Total Capacity (GiB)'))
-    free = tables.Column('free_capacity',
-                         verbose_name=_('Free Capacity (GiB)'))
-
-    class Meta(object):
-        name = "usage"
-        hidden_title = False
-        verbose_name = _("Storage Services and Backends Usage")
-        multi_select = False
-
-    def get_object_id(self, datum):
-        return datum
 
 
 class MonitorsTable(tables.DataTable):
