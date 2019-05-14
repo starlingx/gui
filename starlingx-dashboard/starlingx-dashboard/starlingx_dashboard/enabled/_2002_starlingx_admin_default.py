@@ -1,0 +1,2 @@
+DASHBOARD = 'admin'
+DEFAULT = True
