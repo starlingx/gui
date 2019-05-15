@@ -32,3 +32,4 @@
       - starlingx/update
       - starlingx/nfv
       - starlingx/ha
+      - starlingx/integ
