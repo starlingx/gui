@@ -109,7 +109,7 @@ def storage_get():
 
     # # I/O info
     response, body = cephwrapper().osd_pool_stats(body='json',
-                                                  name='cinder-volumes')
+                                                  pool_name='cinder-volumes')
     if not response.ok:
         response.raise_for_status()
     stats = body['output'][0]['client_io_rate']
@@ -171,7 +171,7 @@ def osd_list():
             osd['status'] = node['status']
 
             # check if osd belongs to host
-            response, body = cephwrapper().osd_find(body='json', id=osd['id'])
+            response, body = cephwrapper().osd_find(body='json', _id=osd['id'])
             if response.ok and 'host' in body['output']['crush_location']:
                 osd['host'] = body['output']['crush_location']['host']
             # else dont set hostname
