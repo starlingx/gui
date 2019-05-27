@@ -2012,7 +2012,7 @@ class Interface(base.APIResourceWrapper):
     """Wrapper for Inventory Interfaces"""
 
     _attrs = ['id', 'uuid', 'ifname', 'ifclass', 'iftype', 'imtu', 'imac',
-              'networktype', 'networks', 'aemode', 'txhashpolicy', 'vlan_id',
+              'networks', 'aemode', 'txhashpolicy', 'vlan_id',
               'uses', 'used_by', 'ihost_uuid', 'datanetworks',
               'ipv4_mode', 'ipv6_mode', 'ipv4_pool', 'ipv6_pool',
               'sriov_numvfs', 'sriov_vf_driver']

@@ -552,9 +552,8 @@ class InterfacesTab(tabs.TableTab):
                     for interface_network in stx_api.sysinv.\
                             interface_network_list_by_interface(
                             self.request, i.uuid):
-                        if str(interface_network.network_id) in i.networks:
-                            platform_network_names.append(
-                                interface_network.network_name)
+                        platform_network_names.append(
+                            interface_network.network_name)
                 i.platform_network_names = platform_network_names
 
                 if i.iftype == 'ethernet':

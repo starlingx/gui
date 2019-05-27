@@ -289,7 +289,6 @@ class UpdateView(forms.ModalFormView):
                 # 'ports': interface.ports,
                 # 'uses': interface.uses,
                 'ifclass': interface.ifclass,
-                'networktype': interface.networktype,
                 'datanetworks_csv_data': datanetworks_csv,
                 'datanetworks_csv_data-external': datanetworks_csv,
                 'datanetworks_csv_pci': datanetworks_csv,

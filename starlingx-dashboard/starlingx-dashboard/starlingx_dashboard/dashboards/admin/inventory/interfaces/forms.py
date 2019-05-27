@@ -552,13 +552,15 @@ class AddInterface(forms.SelfHandlingForm):
                 data['vlan_id'] = str(data['vlan_id'])
 
             network_ids = []
+            network_uuids = []
             network_types = []
             if data['networks']:
                 for n in data['networks']:
                     network = sysinv.network_get(request, n)
                     network_ids.append(str(network.id))
+                    network_uuids.append(network.uuid)
                     network_types.append(network.type)
-                data['networks'] = network_ids
+                del data['networks']
 
             if any(network_type in ['mgmt', 'cluster-host', 'oam']
                    for network_type in network_types):
@@ -573,6 +575,13 @@ class AddInterface(forms.SelfHandlingForm):
                 del data['txhashpolicy']
 
             interface = sysinv.host_interface_create(request, **data)
+
+            ifnet_data = {}
+            for n in network_uuids:
+                ifnet_data['interface_uuid'] = interface.uuid
+                ifnet_data['network_uuid'] = n
+                sysinv.interface_network_assign(request, **ifnet_data)
+
             msg = _('Interface "%s" was successfully'
                     ' created.') % data['ifname']
             LOG.debug(msg)
@@ -776,11 +785,11 @@ class UpdateInterface(AddInterface):
                 networks_to_remove.append(i.network_id)
             for n in networks:
                 network = sysinv.network_get(self.request, n)
-                network_ids.append(str(network.id))
+                network_ids.append(network.uuid)
                 if network.id in networks_to_remove:
                     networks_to_remove.remove(network.id)
                 else:
-                    networks_to_add.append(str(network.id))
+                    networks_to_add.append(network.uuid)
             for i in interface_networks:
                 if i.network_id in networks_to_remove:
                     interface_networks_to_remove.append(i.uuid)
@@ -871,21 +880,23 @@ class UpdateInterface(AddInterface):
                 del data['sriov_numvfs']
                 del data['sriov_vf_driver']
 
-            if data['networks']:
-                data['networks'] = str(",".join(data['networks']))
-            else:
-                del data['networks']
-            if data['networks_to_add']:
-                data['networks_to_add'] = \
-                    str(",".join(data['networks_to_add']))
-            else:
-                del data['networks_to_add']
             if data['interface_networks_to_remove']:
-                data['interface_networks_to_remove'] = str(
-                    ",".join(data['interface_networks_to_remove']))
-            else:
-                del data['interface_networks_to_remove']
+                for n in data['interface_networks_to_remove']:
+                    sysinv.interface_network_remove(request, n)
 
+            # Assign networks to the interface
+            ifnet_data = {}
+            current_interface = sysinv.host_interface_get(
+                self.request, interface_id)
+            ifnet_data['interface_uuid'] = current_interface.uuid
+            if data['networks_to_add']:
+                for n in data['networks_to_add']:
+                    ifnet_data['network_uuid'] = n
+                    sysinv.interface_network_assign(request, **ifnet_data)
+
+            del data['networks']
+            del data['networks_to_add']
+            del data['interface_networks_to_remove']
             interface = sysinv.host_interface_update(request,
                                                      interface_id,
                                                      **data)
