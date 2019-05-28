@@ -18,6 +18,8 @@
     <dd>{{ port.autoneg|default:_("None") }}</dd>
     <dt>{% trans "Number of Virtual Functions:" %}</dt>
     <dd>{{ port.sriov_numvfs|default:_("None") }}</dd>
+    <dt>{% trans "Virtual Function Driver:" %}</dt>
+    <dd>{{ port.sriov_vf_driver|default:_("None") }}</dd>
     <dt>{% trans "Max Virtual Functions:" %}</dt>
     <dd>{{ port.sriov_totalvfs|default:_("None") }}</dd>
     <dt>{% trans "Virtual Functions PCI Address:" %}</dt>

@@ -249,7 +249,8 @@ class Port(base.APIResourceWrapper):
               'psvendor', 'psdevice', 'numa_node', 'mac', 'mtu', 'speed',
               'link_mode', 'capabilities', 'host_uuid', 'interface_uuid',
               'bootp', 'autoneg', 'type', 'sriov_numvfs', 'sriov_totalvfs',
-              'sriov_vfs_pci_address', 'driver', 'dpdksupport', 'neighbours']
+              'sriov_vfs_pci_address', 'sriov_vf_driver',
+              'driver', 'dpdksupport', 'neighbours']
 
     def __init__(self, apiresource):
         super(Port, self).__init__(apiresource)
@@ -2014,7 +2015,7 @@ class Interface(base.APIResourceWrapper):
               'networktype', 'networks', 'aemode', 'txhashpolicy', 'vlan_id',
               'uses', 'used_by', 'ihost_uuid', 'datanetworks',
               'ipv4_mode', 'ipv6_mode', 'ipv4_pool', 'ipv6_pool',
-              'sriov_numvfs']
+              'sriov_numvfs', 'sriov_vf_driver']
 
     def __init__(self, apiresource):
         super(Interface, self).__init__(apiresource)

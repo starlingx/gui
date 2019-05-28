@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -601,6 +601,12 @@ class UpdateInterface(AddInterface):
         ('vlan', _("vlan")),
     )
 
+    SRIOV_VF_DRIVER_CHOICES = (
+        (None, _("<Select driver type>")),
+        ('netdevice', _("netdevice")),
+        ('vfio', _("vfio")),
+    )
+
     id = forms.CharField(widget=forms.widgets.HiddenInput)
 
     sriov_numvfs = forms.IntegerField(
@@ -629,6 +635,18 @@ class UpdateInterface(AddInterface):
         label=_("Interface Type"),
         choices=INTERFACE_TYPE_CHOICES,
         widget=forms.HiddenInput)
+
+    sriov_vf_driver = forms.ChoiceField(
+        label=_("Virtual Function Driver"),
+        choices=SRIOV_VF_DRIVER_CHOICES,
+        required=False,
+        help_text=_("Virtual function driver to explicitly bind to."),
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'ifclass',
+                'data-slug': 'sriov_vf_driver',
+                'data-ifclass-pci-sriov': 'VF Driver'}))
 
     def __init__(self, *args, **kwargs):
         super(UpdateInterface, self).__init__(*args, **kwargs)
@@ -820,6 +838,9 @@ class UpdateInterface(AddInterface):
             if 'sriov_numvfs' in data:
                 data['sriov_numvfs'] = str(data['sriov_numvfs'])
 
+            if 'sriov_vf_driver' in data:
+                data['sriov_vf_driver'] = str(data['sriov_vf_driver'])
+
             # Explicitly set iftype when user selects pci-pt or pci-sriov
             ifclass = \
                 flatten(list(nt) for nt in self.fields['ifclass'].choices)
@@ -842,6 +863,7 @@ class UpdateInterface(AddInterface):
             del data['sriov_totalvfs']
             if data['ifclass'] != 'pci-sriov':
                 del data['sriov_numvfs']
+                del data['sriov_vf_driver']
 
             if data['networks']:
                 data['networks'] = str(",".join(data['networks']))
