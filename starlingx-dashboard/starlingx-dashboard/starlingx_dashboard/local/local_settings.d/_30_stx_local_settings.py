@@ -54,18 +54,6 @@ try:
 except Exception:
     SS_ENABLED = "Exception"
 
-# Load Horizon region exclusion list
-REGION_EXCLUSIONS = []
-try:
-    if os.path.exists('/opt/branding/horizon-region-exclusions.csv'):
-        with open('/opt/branding/horizon-region-exclusions.csv') as f:
-            for line in f:
-                if line.startswith('#') or line.startswith(' '):
-                    continue
-                REGION_EXCLUSIONS = line.rstrip('\n').rstrip('\r').split(',')
-except Exception:
-    pass
-
 # Change session and CSRF cookie names to prevent login conflict with
 # containerized horizon.
 # NOTE: These settings break upstream angularJS forms such as the launch
@@ -147,30 +135,6 @@ try:
         if configss.CONFSS['horizon_params']['https_enabled'] == 'true':
             CSRF_COOKIE_SECURE = True
             SESSION_COOKIE_SECURE = True
-
-        if configss.CONFSS['auth']['lockout_period']:
-            LOCKOUT_PERIOD_SEC = float(
-                configss.CONFSS['auth']['lockout_period'])
-        if configss.CONFSS['auth']['lockout_retries']:
-            LOCKOUT_RETRIES_NUM = int(
-                configss.CONFSS['auth']['lockout_retries'])
-
-        ENABLE_MURANO_TAB = False
-        try:
-            if configss.CONFSS['optional_tabs']['murano_enabled'] == 'True':
-                ENABLE_MURANO_TAB = True
-        except Exception:
-            # disable murano tab if we cannot find the murano_enabled param
-            pass
-
-        ENABLE_MAGNUM_TAB = False
-        try:
-            if configss.CONFSS['optional_tabs']['magnum_enabled'] == 'True':
-                ENABLE_MAGNUM_TAB = True
-        except Exception:
-            # disable magnum tab if we cannot find the magnum_enabled param
-            pass
-
 except Exception:
     pass
 
