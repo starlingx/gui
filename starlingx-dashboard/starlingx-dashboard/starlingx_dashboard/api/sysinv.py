@@ -2653,14 +2653,6 @@ def get_system_type(request):
     return system_type
 
 
-def is_kubernetes_config(request):
-    systems = system_list(request)
-    system_capabilities = systems[0].to_dict().get('capabilities')
-    if system_capabilities.get('kubernetes_enabled', False):
-        return True
-    return False
-
-
 def get_ceph_storage_model(request):
     cluster = cluster_get(request, constants.CLUSTER_CEPH_DEFAULT_NAME)
     return cluster.deployment_model
