@@ -69,10 +69,10 @@ class CheckboxSelectMultiple(forms.widgets.CheckboxSelectMultiple):
         super(CheckboxSelectMultiple, self).__init__(attrs, choices)
         self.empty_value = empty_value
 
-    def render(self, name, value, attrs=None, choices=()):
+    def render(self, name, value, attrs=None, renderer=None):
         if self.choices:
             return super(CheckboxSelectMultiple, self).render(name, value,
-                                                              attrs, choices)
+                                                              attrs, renderer)
         else:
             hi = forms.HiddenInput(self.attrs)
             hi.is_hidden = False  # ensure text is rendered
@@ -413,6 +413,7 @@ class AddInterface(forms.SelfHandlingForm):
 
         datanet_choices = []
         datanet_filtered = []
+        initial_datanet_name = []
         if getattr(self.request.user, 'services_region', None) == 'RegionOne' \
                 and getattr(settings, 'DC_MODE', False):
             nt_choices = self.fields['ifclass'].choices
@@ -426,11 +427,16 @@ class AddInterface(forms.SelfHandlingForm):
                 datanet_choices.append(datanet)
                 if dn.name not in used_datanets:
                     datanet_filtered.append(datanet)
+                    initial_datanet_name.append(str(dn.name))
 
         self.fields['datanetworks_data'].choices = datanet_filtered
         if (type(self) is UpdateInterface):
             self.fields['datanetworks_pci'].choices = datanet_choices
             self.fields['datanetworks_sriov'].choices = datanet_choices
+            # set initial selection for UpdateInterface
+            self.fields['datanetworks_data'].initial = initial_datanet_name
+            self.fields['datanetworks_pci'].initial = initial_datanet_name
+            self.fields['datanetworks_sriov'].initial = initial_datanet_name
 
         if current_interface:
             # update operation
