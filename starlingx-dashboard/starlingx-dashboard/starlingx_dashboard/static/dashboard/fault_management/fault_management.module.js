@@ -36,6 +36,7 @@
       'horizon.dashboard.fault_management.events_suppression',
       'ngRoute'
     ])
+    .filter('fmDateFormat', fmDateFormat)
     .config(config);
 
   config.$inject = ['$provide', '$windowProvider', '$routeProvider'];
@@ -44,5 +45,23 @@
     var path = $windowProvider.$get().STATIC_URL + 'dashboard/fault_management/';
     $provide.constant('horizon.dashboard.fault_management.basePath', path);
   }
+
+  fmDateFormat.$inject = ['$filter'];
+    function fmDateFormat($filter) {
+      return function (utcDateString) {
+        if (!utcDateString) {
+          return;
+        }
+
+        // append 'Z' to the date string to indicate UTC time if the timezone isn't already specified
+        if (utcDateString.indexOf('Z') === -1 && utcDateString.indexOf('+') === -1) {
+          utcDateString += 'Z';
+        }
+
+        // convert and format date using the built in angularjs date filter
+        var format = 'yyyy-MM-ddTHH:mm:ss';
+        return $filter('date')(utcDateString, format);
+        };
+    }
   /* eslint-disable no-unused-vars */
 })();

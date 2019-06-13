@@ -161,7 +161,7 @@
       reason_text: { label: gettext('Reason Text'), filters: ['noValue'] },
       entity_instance_id: { label: gettext('Entity Instance ID'), filters: ['noValue'] },
       severity: { label: gettext('Severity'), filters: ['noValue'] },
-      timestamp: { label: gettext('Timestamp'), filters: ['noValue'] },
+      timestamp: { label: gettext('Timestamp'), filters: ['fmDateFormat'] },
       suppression_status: { label: gettext('Suppression Status'), filters: ['noValue'] },
       suppression: { label: gettext('Suppression'), filters: ['noValue'] },
       state: { label: gettext('State'), filters: ['noValue'] },
