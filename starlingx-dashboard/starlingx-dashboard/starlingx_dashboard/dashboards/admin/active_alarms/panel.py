@@ -29,8 +29,6 @@ class ActiveAlarms(horizon.Panel):
     def allowed(self, context):
         if context['request'].user.services_region == 'SystemController':
             return False
-        if not base.is_service_enabled(context['request'], 'platform'):
-            return False
         else:
             return super(ActiveAlarms, self).allowed(context)
 
