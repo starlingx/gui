@@ -175,8 +175,6 @@ class AddDiskProfileView(forms.ModalFormView):
                 for l in host.lvgs:
                     l.instance_backing = l.capabilities.get(
                         sysinv.LVG_NOVA_PARAM_BACKING)
-                    l.concurrent_disk_operations = l.capabilities.get(
-                        sysinv.LVG_NOVA_PARAM_DISK_OPS)
 
                     l.lvm_type = l.capabilities.get(
                         sysinv.LVG_CINDER_PARAM_LVM_TYPE)

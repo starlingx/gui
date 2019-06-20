@@ -23,8 +23,6 @@ LOG = logging.getLogger(__name__)
 NOVA_PARAMS_FIELD_MAP = {
     sysinv.LVG_NOVA_PARAM_BACKING:
     sysinv.LVG_NOVA_PARAM_BACKING,
-    sysinv.LVG_NOVA_PARAM_DISK_OPS:
-    sysinv.LVG_NOVA_PARAM_DISK_OPS,
 }
 
 CINDER_PARAMS_FIELD_MAP = {
@@ -35,8 +33,6 @@ CINDER_PARAMS_FIELD_MAP = {
 NOVA_PARAMS_KEY_MAP = (
     (sysinv.LVG_NOVA_PARAM_BACKING,
      _("Instance Backing")),
-    (sysinv.LVG_NOVA_PARAM_DISK_OPS,
-     _("Concurrent Disk Operations")),
 )
 
 CINDER_PARAMS_KEY_MAP = (
@@ -48,9 +44,6 @@ PARAMS_HELP = {
     sysinv.LVG_NOVA_PARAM_BACKING:
     'Determines the format and location of instance disks. Local CoW image \
     file backed, or remote RAW Ceph storage backed',
-    sysinv.LVG_NOVA_PARAM_DISK_OPS:
-    'Number of parallel disk I/O intensive operations (glance image downloads, \
-    image format conversions, etc.).',
     sysinv.LVG_CINDER_PARAM_LVM_TYPE:
     'Cinder configuration setting which determines how the volume group is \
     provisioned. Thick provisioning will be used if the value is set to: \
@@ -153,18 +146,6 @@ class ParamForm(ParamMixin, forms.SelfHandlingForm):
                     'class': 'switched',
                     'data-switch-on': 'type',
                     'data-type-instance_backing': ''}))
-
-            self.fields[sysinv.LVG_NOVA_PARAM_DISK_OPS] = forms.IntegerField(
-                label=_("Concurrent Disk Operations"),
-                initial=caps.get(sysinv.LVG_NOVA_PARAM_DISK_OPS),
-                required=True,
-                help_text=(_("%s") %
-                           PARAMS_HELP.get(sysinv.LVG_NOVA_PARAM_DISK_OPS,
-                                           None)),
-                widget=forms.TextInput(attrs={
-                    'class': 'switched',
-                    'data-switch-on': 'type',
-                    'data-type-concurrent_disk_operations': ''}))
 
         elif self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
             self.fields[sysinv.LVG_CINDER_PARAM_LVM_TYPE] = forms.ChoiceField(
