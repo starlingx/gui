@@ -35,8 +35,6 @@ def get_parameters_value(datum):
     value = None
     if datum.key == stx_api.sysinv.LVG_NOVA_PARAM_BACKING:
         value = datum.value
-    if datum.key == stx_api.sysinv.LVG_NOVA_PARAM_DISK_OPS:
-        value = datum.value
     if datum.key == stx_api.sysinv.LVG_CINDER_PARAM_LVM_TYPE:
         value = datum.value
     return value

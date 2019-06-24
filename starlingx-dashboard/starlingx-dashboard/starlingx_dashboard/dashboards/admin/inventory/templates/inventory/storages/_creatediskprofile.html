@@ -72,7 +72,7 @@
                             {{ "instances_lv size GiB"}} {{": "}} {{lvg.instances_lv_size_gib }}
                             {{ "<br>" }}
                         {% endif %}
-                        {{ "concurrent disk operations"}} {{": "}} {{lvg.concurrent_disk_operations }}</td>
+                        </td>
                         <td>{{ "devices"}} {{": "}} {{ lvg.dev_paths }}</td>
                     {% endfor %}
                     <td>{% for part in host.partitions %}
