@@ -45,11 +45,12 @@ class CreateStorageVolume(tables.LinkAction):
             return False
 
         if host._administrative == 'unlocked':
-            if is_host_with_storage:
-                if "disabled" not in self.classes:
-                    self.classes = [c for c in self.classes] + ['disabled']
-                    self.verbose_name = string_concat(self.verbose_name, ' ',
-                                                      _("(Node Unlocked)"))
+            if (is_host_with_storage and
+                    host._personality == sysinv.PERSONALITY_STORAGE and
+                    "disabled" not in self.classes):
+                self.classes = [c for c in self.classes] + ['disabled']
+                self.verbose_name = string_concat(self.verbose_name, ' ',
+                                                  _("(Node Unlocked)"))
 
         return True
 
