@@ -81,9 +81,6 @@ PV_ADD = 'adding'
 PV_DEL = 'removing'
 
 # Storage: Volume Group Parameter Types
-LVG_NOVA_PARAM_BACKING = 'instance_backing'
-LVG_NOVA_BACKING_IMAGE = 'image'
-LVG_NOVA_BACKING_REMOTE = 'remote'
 LVG_CINDER_PARAM_LVM_TYPE = 'lvm_type'
 LVG_CINDER_LVM_TYPE_THIN = 'thin'
 LVG_CINDER_LVM_TYPE_THICK = 'thick'

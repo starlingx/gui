@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 Wind River Systems, Inc.
+# Copyright (c) 2015-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -33,8 +33,6 @@ def get_parameters_value(datum):
     if datum is None or datum.value is None:
         return None
     value = None
-    if datum.key == stx_api.sysinv.LVG_NOVA_PARAM_BACKING:
-        value = datum.value
     if datum.key == stx_api.sysinv.LVG_CINDER_PARAM_LVM_TYPE:
         value = datum.value
     return value

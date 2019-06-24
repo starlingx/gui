@@ -66,8 +66,6 @@
                     {% for lvg in host.lvgs %}
                         <td>{{ "name"}} {{": "}} {{ lvg.lvm_vg_name }}
                         {{ "<br>" }}
-                        {{ "instance backing"}} {{": "}} {{lvg.instance_backing }}
-                        {{ "<br>" }}
                         {% if lvg.instances_lv_size_gib %}
                             {{ "instances_lv size GiB"}} {{": "}} {{lvg.instances_lv_size_gib }}
                             {{ "<br>" }}

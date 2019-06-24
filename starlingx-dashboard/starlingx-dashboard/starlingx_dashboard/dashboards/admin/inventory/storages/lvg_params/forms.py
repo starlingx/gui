@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2018 Wind River Systems, Inc.
+# Copyright (c) 2015-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -20,20 +20,10 @@ from starlingx_dashboard.api import sysinv
 
 LOG = logging.getLogger(__name__)
 
-NOVA_PARAMS_FIELD_MAP = {
-    sysinv.LVG_NOVA_PARAM_BACKING:
-    sysinv.LVG_NOVA_PARAM_BACKING,
-}
-
 CINDER_PARAMS_FIELD_MAP = {
     sysinv.LVG_CINDER_PARAM_LVM_TYPE:
     sysinv.LVG_CINDER_PARAM_LVM_TYPE,
 }
-
-NOVA_PARAMS_KEY_MAP = (
-    (sysinv.LVG_NOVA_PARAM_BACKING,
-     _("Instance Backing")),
-)
 
 CINDER_PARAMS_KEY_MAP = (
     (sysinv.LVG_CINDER_PARAM_LVM_TYPE,
@@ -41,27 +31,15 @@ CINDER_PARAMS_KEY_MAP = (
 )
 
 PARAMS_HELP = {
-    sysinv.LVG_NOVA_PARAM_BACKING:
-    'Determines the format and location of instance disks. Local CoW image \
-    file backed, or remote RAW Ceph storage backed',
     sysinv.LVG_CINDER_PARAM_LVM_TYPE:
     'Cinder configuration setting which determines how the volume group is \
     provisioned. Thick provisioning will be used if the value is set to: \
     thick. Thin provisioning will be used in the value is set to: thin',
 }
 
-NOVA_PARAMS_KEY_NAMES = dict(NOVA_PARAMS_KEY_MAP)
-
-NOVA_PARAMS_CHOICES = NOVA_PARAMS_KEY_MAP
-
 CINDER_PARAMS_KEY_NAMES = dict(CINDER_PARAMS_KEY_MAP)
 
 CINDER_PARAMS_CHOICES = CINDER_PARAMS_KEY_MAP
-
-BACKING_CHOICES = (
-    (sysinv.LVG_NOVA_BACKING_IMAGE, _("Local CoW image backed")),
-    (sysinv.LVG_NOVA_BACKING_REMOTE, _("Remote RAW Ceph storage backed")),
-)
 
 LVM_TYPE_CHOICES = (
     (sysinv.LVG_CINDER_LVM_TYPE_THICK, _("Thick Provisioning (thick)")),
@@ -70,9 +48,7 @@ LVM_TYPE_CHOICES = (
 
 
 def get_param_key_name(key):
-    name = NOVA_PARAMS_KEY_NAMES.get(key, None)
-    if not name:
-        name = CINDER_PARAMS_KEY_NAMES.get(key, None)
+    name = CINDER_PARAMS_KEY_NAMES.get(key, None)
     return name
 
 
@@ -133,21 +109,7 @@ class ParamForm(ParamMixin, forms.SelfHandlingForm):
         self._lvg = self.get_lvg_lvm_info(kwargs['initial']['lvg_id'])
         caps = self._lvg['lvg'].capabilities
 
-        if self._lvg['lvg'].lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
-            self.fields[sysinv.LVG_NOVA_PARAM_BACKING] = forms.ChoiceField(
-                label=_("Instance Backing"),
-                initial=caps.get(sysinv.LVG_NOVA_PARAM_BACKING),
-                required=True,
-                choices=BACKING_CHOICES,
-                help_text=(_("%s") %
-                           PARAMS_HELP.get(sysinv.LVG_NOVA_PARAM_BACKING,
-                                           None)),
-                widget=forms.Select(attrs={
-                    'class': 'switched',
-                    'data-switch-on': 'type',
-                    'data-type-instance_backing': ''}))
-
-        elif self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
+        if self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
             self.fields[sysinv.LVG_CINDER_PARAM_LVM_TYPE] = forms.ChoiceField(
                 label=_("LVM Provisioning Type"),
                 initial=caps.get(sysinv.LVG_CINDER_PARAM_LVM_TYPE),
@@ -164,9 +126,7 @@ class ParamForm(ParamMixin, forms.SelfHandlingForm):
     def clean(self):
         cleaned_data = super(ParamForm, self).clean()
         key = cleaned_data.get('type', None)
-        if self._lvg['lvg'].lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
-            field = NOVA_PARAMS_FIELD_MAP.get(key, None)
-        elif self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
+        if self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
             field = CINDER_PARAMS_FIELD_MAP.get(key, None)
 
         if field is not None:
@@ -210,10 +170,7 @@ class EditParam(ParamForm):
             value = True
 
         # setup initial values for the fields based on the defined key/value
-        if self._lvg['lvg'].lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
-            field = NOVA_PARAMS_FIELD_MAP.get(key, None)
-            param_choices = NOVA_PARAMS_CHOICES
-        elif self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
+        if self._lvg['lvg'].lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
             field = CINDER_PARAMS_FIELD_MAP.get(key, None)
             param_choices = CINDER_PARAMS_CHOICES
 

@@ -173,9 +173,6 @@ class AddDiskProfileView(forms.ModalFormView):
                     s.disks = ", ".join(s.disks)
 
                 for l in host.lvgs:
-                    l.instance_backing = l.capabilities.get(
-                        sysinv.LVG_NOVA_PARAM_BACKING)
-
                     l.lvm_type = l.capabilities.get(
                         sysinv.LVG_CINDER_PARAM_LVM_TYPE)
 
