@@ -2011,8 +2011,8 @@ class Interface(base.APIResourceWrapper):
     """Wrapper for Inventory Interfaces"""
 
     _attrs = ['id', 'uuid', 'ifname', 'ifclass', 'iftype', 'imtu', 'imac',
-              'networks', 'aemode', 'txhashpolicy', 'vlan_id',
-              'uses', 'used_by', 'ihost_uuid', 'datanetworks',
+              'aemode', 'txhashpolicy', 'vlan_id',
+              'uses', 'used_by', 'ihost_uuid',
               'ipv4_mode', 'ipv6_mode', 'ipv4_pool', 'ipv6_pool',
               'sriov_numvfs', 'sriov_vf_driver']
 
@@ -2020,10 +2020,6 @@ class Interface(base.APIResourceWrapper):
         super(Interface, self).__init__(apiresource)
         if not self.ifname:
             self.ifname = '(' + str(self.uuid)[-8:] + ')'
-
-    @property
-    def datanetworks_csv(self):
-        return ",".join(self.datanetworks)
 
 
 def host_interface_list(request, host_id):
@@ -2125,6 +2121,49 @@ def interface_network_assign(request, **kwargs):
 
 def interface_network_remove(request, interface_network_uuid):
     return cgtsclient(request).interface_network.remove(interface_network_uuid)
+
+
+class InterfaceDataNetwork(base.APIResourceWrapper):
+    """Wrapper for Inventory Interface Networks"""
+    _attrs = ['forihostid', 'id', 'uuid', 'interface_id',
+              'interface_uuid', 'ifname', 'datanetwork_id',
+              'datanetwork_uuid', 'datanetwork_name', 'network_type']
+
+    def __init__(self, apiresource):
+        super(InterfaceDataNetwork, self).__init__(apiresource)
+
+
+def interface_datanetwork_list_by_host(request, host_uuid):
+    interface_datanetworks = cgtsclient(request).interface_datanetwork.\
+        list_by_host(host_uuid)
+    return [InterfaceDataNetwork(n) for n in interface_datanetworks]
+
+
+def interface_datanetwork_list_by_interface(request, interface_uuid):
+    interface_datanetworks = cgtsclient(request).interface_datanetwork.\
+        list_by_interface(interface_uuid)
+    return [InterfaceDataNetwork(n) for n in interface_datanetworks]
+
+
+def interface_datanetwork_get(request, interface_datanetwork_uuid):
+    interface_datanetwork = cgtsclient(request).interface_datanetwork.get(
+        interface_datanetwork_uuid)
+    if not interface_datanetwork:
+        raise ValueError(
+            'No match found for interface_datanetwork_uuid "%s".'
+            % interface_datanetwork_uuid)
+    return InterfaceDataNetwork(interface_datanetwork)
+
+
+def interface_datanetwork_assign(request, **kwargs):
+    interface_datanetwork = cgtsclient(request).interface_datanetwork.\
+        assign(**kwargs)
+    return InterfaceNetwork(interface_datanetwork)
+
+
+def interface_datanetwork_remove(request, interface_datanetwork_uuid):
+    return cgtsclient(request).interface_datanetwork.remove(
+        interface_datanetwork_uuid)
 
 
 class Address(base.APIResourceWrapper):
