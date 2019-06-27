@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2016 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -158,6 +158,11 @@ def get_platform_networks(interface):
     return platform_networks
 
 
+def get_data_networks(interface):
+    data_networks = ", ".join(interface.data_network_names)
+    return data_networks
+
+
 def get_link_url(interface):
     return reverse("horizon:admin:inventory:viewinterface",
                    args=(interface.host_id, interface.uuid))
@@ -194,8 +199,9 @@ class InterfacesTable(tables.DataTable):
     platform_networks = tables.Column(get_platform_networks,
                                       verbose_name=_('Platform Network(s)'))
 
-    datanetworks_csv = tables.Column('datanetworks_csv',
+    datanetworks_csv = tables.Column(get_data_networks,
                                      verbose_name=_('Data Network(s)'))
+
     attributes = tables.Column(get_attributes,
                                verbose_name=_('Attributes'))
 

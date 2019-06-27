@@ -401,15 +401,14 @@ class AddInterface(forms.SelfHandlingForm):
 
         # Populate Data Network Choices by querying SysInv
         self.extras = {}
-        interfaces = sysinv.host_interface_list(self.request, host_uuid)
 
         used_datanets = []
-        for i in interfaces:
-            if i.ifclass == 'data' and \
-                    i.datanetworks_csv and \
-                            i.uuid != this_interface_id:
-                used_datanets = used_datanets + \
-                    i.datanetworks_csv.split(",")
+        ifdns = sysinv.interface_datanetwork_list_by_host(self.request,
+                                                          host_uuid)
+        for i in ifdns:
+            if not current_interface or \
+                    i.interface_uuid != current_interface.uuid:
+                used_datanets.append(i.datanetwork_name)
 
         datanet_choices = []
         datanet_filtered = []
@@ -692,6 +691,20 @@ class UpdateInterface(AddInterface):
         else:
             self.fields['aemode'].choices = self.AE_MODE_CHOICES
 
+        if ifclass_val == 'data':
+            interface_datanetworks =\
+                sysinv.interface_datanetwork_list_by_interface(
+                    self.request, this_interface_id)
+            # Load the networks associated with this interface
+            datanetwork_choices = self.fields['datanetworks_data'].choices
+            datanetwork_choice_dict = dict(datanetwork_choices)
+            initial_datanetworks = []
+            for i in interface_datanetworks:
+                for name in datanetwork_choice_dict.keys():
+                    if i.datanetwork_name == name:
+                        initial_datanetworks.append(name)
+            self.fields['datanetworks_data'].initial = initial_datanetworks
+
         # Populate Address Pool selections
         pools = sysinv.address_pool_list(self.request)
         self.fields['ipv4_pool'].choices = _get_ipv4_pool_choices(pools)
@@ -776,6 +789,7 @@ class UpdateInterface(AddInterface):
         networks = cleaned_data.pop('networks', [])
         interface_networks = sysinv.interface_network_list_by_interface(
             self.request, interface_id)
+
         network_ids = []
         networks_to_add = []
         networks_to_remove = []
@@ -800,6 +814,38 @@ class UpdateInterface(AddInterface):
         cleaned_data['networks_to_add'] = networks_to_add
         cleaned_data['interface_networks_to_remove'] = \
             interface_networks_to_remove
+
+        datanetwork_names = cleaned_data.pop('datanetworks', [])
+        interface_datanetworks = \
+            sysinv.interface_datanetwork_list_by_interface(
+                self.request, interface_id)
+        datanetwork_uuids = []
+        datanetworks_to_add = []
+        datanetworks_to_remove = []
+        interface_datanetworks_to_remove = []
+        if ifclass == 'data' and datanetwork_names:
+            for i in interface_datanetworks:
+                datanetworks_to_remove.append(i.datanetwork_name)
+            datanetworks_list = sysinv.data_network_list(self.request)
+            for n in datanetwork_names.split(","):
+                for dn in datanetworks_list:
+                    if dn.name == n:
+                        datanetwork_uuids.append(dn.uuid)
+                        if dn.name in datanetworks_to_remove:
+                            datanetworks_to_remove.remove(dn.name)
+                        else:
+                            datanetworks_to_add.append(dn.uuid)
+            for i in interface_datanetworks:
+                if i.datanetwork_name in datanetworks_to_remove:
+                    interface_datanetworks_to_remove.append(i.uuid)
+        else:
+            for i in interface_datanetworks:
+                interface_datanetworks_to_remove.append(i.uuid)
+        cleaned_data['datanetworks'] = datanetwork_uuids
+        cleaned_data['datanetworks_to_add'] = datanetworks_to_add
+        cleaned_data['interface_datanetworks_to_remove'] = \
+            interface_datanetworks_to_remove
+
         return cleaned_data
 
     def handle(self, request, data):
@@ -844,12 +890,6 @@ class UpdateInterface(AddInterface):
                             data['ifname'] = p.get_port_display_name()
                             break
 
-                if current_interface.ifclass == 'data':
-                    data['datanetworks'] = 'none'
-
-            if not data['datanetworks']:
-                del data['datanetworks']
-
             if 'sriov_numvfs' in data:
                 data['sriov_numvfs'] = str(data['sriov_numvfs'])
 
@@ -883,6 +923,9 @@ class UpdateInterface(AddInterface):
             if data['interface_networks_to_remove']:
                 for n in data['interface_networks_to_remove']:
                     sysinv.interface_network_remove(request, n)
+            if data['interface_datanetworks_to_remove']:
+                for n in data['interface_datanetworks_to_remove']:
+                    sysinv.interface_datanetwork_remove(request, n)
 
             # Assign networks to the interface
             ifnet_data = {}
@@ -893,10 +936,17 @@ class UpdateInterface(AddInterface):
                 for n in data['networks_to_add']:
                     ifnet_data['network_uuid'] = n
                     sysinv.interface_network_assign(request, **ifnet_data)
+            elif data['datanetworks_to_add']:
+                for n in data['datanetworks_to_add']:
+                    ifnet_data['datanetwork_uuid'] = n
+                    sysinv.interface_datanetwork_assign(request, **ifnet_data)
 
             del data['networks']
             del data['networks_to_add']
             del data['interface_networks_to_remove']
+            del data['datanetworks']
+            del data['datanetworks_to_add']
+            del data['interface_datanetworks_to_remove']
             interface = sysinv.host_interface_update(request,
                                                      interface_id,
                                                      **data)

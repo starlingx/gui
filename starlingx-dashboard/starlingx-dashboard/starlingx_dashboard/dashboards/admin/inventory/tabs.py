@@ -556,6 +556,15 @@ class InterfacesTab(tabs.TableTab):
                             interface_network.network_name)
                 i.platform_network_names = platform_network_names
 
+                data_network_names = []
+                if i.ifclass == 'data':
+                    for interface_datanetwork in stx_api.sysinv.\
+                            interface_datanetwork_list_by_interface(
+                            self.request, i.uuid):
+                        data_network_names.append(
+                            interface_datanetwork.datanetwork_name)
+                i.data_network_names = data_network_names
+
                 if i.iftype == 'ethernet':
                     i.dpdksupport = [p.dpdksupport for p in host.ports if
                                      i.uuid == p.interface_uuid]

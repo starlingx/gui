@@ -28,9 +28,6 @@
         {% for interfaces in host.interfaces %}
             <li>
                 <strong>{{ interfaces.ifname }}</strong> {{":  "}} {{ interfaces.ifclass }}
-                {% if interfaces.ifclass == 'data' %}
-                    {{"("}} {{ interfaces.datanetworks_csv }} {{")"}}
-                {% endif %}
                 {{ " | " }} {{ interfaces.iftype }}
                 {% if interfaces.iftype != 'ae' and interfaces.iftype != 'vlan' %}
                     {{ " | " }}<u>{{"PORTS ="}} {{ interfaces.ports }}</u>

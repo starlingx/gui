@@ -260,10 +260,7 @@ class UpdateView(forms.ModalFormView):
 
     def get_initial(self):
         interface = self._get_object()
-        datanetworks_csv = []
-        if interface.datanetworks_csv:
-            for pn in interface.datanetworks_csv.split(","):
-                datanetworks_csv.append(str(pn))
+
         try:
             host = stx_api.sysinv.host_get(self.request, interface.host_id)
         except Exception:
@@ -289,10 +286,6 @@ class UpdateView(forms.ModalFormView):
                 # 'ports': interface.ports,
                 # 'uses': interface.uses,
                 'ifclass': interface.ifclass,
-                'datanetworks_csv_data': datanetworks_csv,
-                'datanetworks_csv_data-external': datanetworks_csv,
-                'datanetworks_csv_pci': datanetworks_csv,
-                'datanetworks_csv_sriov': datanetworks_csv,
                 'sriov_numvfs': interface.sriov_numvfs,
                 'sriov_vf_driver': interface.sriov_vf_driver,
                 'imtu': interface.imtu,
