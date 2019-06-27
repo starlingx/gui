@@ -17,7 +17,6 @@
 
 from django.utils.translation import ugettext_lazy as _
 import horizon
-from openstack_dashboard.api import base
 
 
 class EventsSuppression(horizon.Panel):
@@ -32,8 +31,6 @@ class EventsSuppression(horizon.Panel):
 
     def nav(self, context):
         if context['request'].user.services_region == 'SystemController':
-            return False
-        if not base.is_service_enabled(context['request'], 'platform'):
             return False
         else:
             return True
