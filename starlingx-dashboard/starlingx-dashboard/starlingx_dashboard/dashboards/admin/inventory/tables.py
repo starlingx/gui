@@ -507,7 +507,8 @@ class SwactHost(tables.BatchAction):
 
     def allowed(self, request, host=None):
         return (host_controller(host) and not host_locked(host) and
-                not stx_api.sysinv.is_system_mode_simplex(request))
+                not stx_api.sysinv.is_system_mode_simplex(request) and
+                host.personality == "Controller-Active")
 
     def action(self, request, host_id):
         stx_api.sysinv.host_swact(request, host_id)
