@@ -408,7 +408,10 @@ class AddInterface(forms.SelfHandlingForm):
         for i in ifdns:
             if not current_interface or \
                     i.interface_uuid != current_interface.uuid:
-                used_datanets.append(i.datanetwork_name)
+                iface = sysinv.host_interface_get(self.request,
+                                                  i.interface_uuid)
+                if iface.ifclass == 'data':
+                    used_datanets.append(i.datanetwork_name)
 
         datanet_choices = []
         datanet_filtered = []
@@ -691,12 +694,17 @@ class UpdateInterface(AddInterface):
         else:
             self.fields['aemode'].choices = self.AE_MODE_CHOICES
 
-        if ifclass_val == 'data':
+        if ifclass_val in ['data', 'pci-passthrough', 'pci-sriov']:
             interface_datanetworks =\
                 sysinv.interface_datanetwork_list_by_interface(
                     self.request, this_interface_id)
             # Load the networks associated with this interface
-            datanetwork_choices = self.fields['datanetworks_data'].choices
+            if ifclass_val == 'data':
+                datanetwork_choices = self.fields['datanetworks_data'].choices
+            elif ifclass_val == 'pci-passthrough':
+                datanetwork_choices = self.fields['datanetworks_pci'].choices
+            elif ifclass_val == 'pci-sriov':
+                datanetwork_choices = self.fields['datanetworks_sriov'].choices
             datanetwork_choice_dict = dict(datanetwork_choices)
             initial_datanetworks = []
             for i in interface_datanetworks:
@@ -704,6 +712,8 @@ class UpdateInterface(AddInterface):
                     if i.datanetwork_name == name:
                         initial_datanetworks.append(name)
             self.fields['datanetworks_data'].initial = initial_datanetworks
+            self.fields['datanetworks_pci'].initial = initial_datanetworks
+            self.fields['datanetworks_sriov'].initial = initial_datanetworks
 
         # Populate Address Pool selections
         pools = sysinv.address_pool_list(self.request)
@@ -823,7 +833,8 @@ class UpdateInterface(AddInterface):
         datanetworks_to_add = []
         datanetworks_to_remove = []
         interface_datanetworks_to_remove = []
-        if ifclass == 'data' and datanetwork_names:
+        if ifclass in ['data', 'pci-passthrough', 'pci-sriov'] and \
+                datanetwork_names:
             for i in interface_datanetworks:
                 datanetworks_to_remove.append(i.datanetwork_name)
             datanetworks_list = sysinv.data_network_list(self.request)

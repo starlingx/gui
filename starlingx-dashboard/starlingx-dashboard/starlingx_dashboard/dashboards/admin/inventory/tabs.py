@@ -557,7 +557,7 @@ class InterfacesTab(tabs.TableTab):
                 i.platform_network_names = platform_network_names
 
                 data_network_names = []
-                if i.ifclass == 'data':
+                if i.ifclass in ['data', 'pci-passthrough', 'pci-sriov']:
                     for interface_datanetwork in stx_api.sysinv.\
                             interface_datanetwork_list_by_interface(
                             self.request, i.uuid):
