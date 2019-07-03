@@ -20,6 +20,6 @@ Links
 * Code Review: `Gerrit`_
 * Bugs: `Storyboard`_
 
-.. _stx-gui: https://git.starlingx.io/cgit/stx-gui/
-.. _Gerrit: https://review.openstack.org/#/q/project:openstack/stx-gui
-.. _Storyboard: https://storyboard.openstack.org/#!/project/openstack/stx-gui
+.. _stx-gui: https://opendev.org/starlingx/gui
+.. _Gerrit: https://review.opendev.org/#/q/project:starlingx/gui
+.. _Storyboard: https://storyboard.openstack.org/#!/project/starlingx/gui
