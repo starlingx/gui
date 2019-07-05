@@ -154,14 +154,13 @@ class AddInterfaceView(forms.ModalFormView):
         initial['host'] = host
 
         # get SDN configuration status
+        sdn_enabled = False
         try:
             sdn_enabled = stx_api.sysinv.get_sdn_enabled(self.request)
-            sdn_l3_mode = stx_api.sysinv.get_sdn_l3_mode_enabled(self.request)
         except Exception:
             exceptions.handle(self.request,
                               _('Unable to retrieve SDN configuration.'))
         initial['sdn_enabled'] = sdn_enabled
-        initial['sdn_l3_mode_enabled'] = sdn_l3_mode
         return initial
 
 
@@ -267,10 +266,9 @@ class UpdateView(forms.ModalFormView):
             exceptions.handle(self.request, _('Unable to retrieve host.'))
 
         # get SDN configuration status
+        sdn_enabled = False
         try:
-            sdn_enabled, sdn_l3_mode = False, False
             sdn_enabled = stx_api.sysinv.get_sdn_enabled(self.request)
-            sdn_l3_mode = stx_api.sysinv.get_sdn_l3_mode_enabled(self.request)
         except Exception:
             exceptions.handle(self.request,
                               _('Unable to retrieve SDN configuration.'))
@@ -293,8 +291,7 @@ class UpdateView(forms.ModalFormView):
                 'ipv4_pool': getattr(interface, 'ipv4_pool', None),
                 'ipv6_mode': getattr(interface, 'ipv6_mode', 'disabled'),
                 'ipv6_pool': getattr(interface, 'ipv6_pool', None),
-                'sdn_enabled': sdn_enabled,
-                'sdn_l3_mode_enabled': sdn_l3_mode}
+                'sdn_enabled': sdn_enabled}
 
 
 class DetailView(tables.MultiTableView):
