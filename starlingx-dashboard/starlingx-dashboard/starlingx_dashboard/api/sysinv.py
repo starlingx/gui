@@ -97,14 +97,6 @@ JOURNAL_DEFAULT_SIZE = 1
 # Platform configuration
 PLATFORM_CONFIGURATION = '/etc/platform/platform.conf'
 
-# Neutron ML2 Service Parameters (ripped from sysinv constants)
-SERVICE_TYPE_NETWORK = 'network'
-SERVICE_PARAM_SECTION_NETWORK_DEFAULT = 'default'
-SERVICE_PARAM_NAME_DEFAULT_SERVICE_PLUGINS = 'service_plugins'
-SERVICE_PARAM_ODL_ROUTER_PLUGINS = [
-    'odl-router',
-    'networking_odl.l3.l3_odl.OpenDaylightL3RouterPlugin']
-
 # Kubernetes Labels
 K8S_LABEL_OPENSTACK_CONTROL_PLANE = 'openstack-control-plane'
 K8S_LABEL_OPENSTACK_COMPUTE_NODE = 'openstack-compute-node'
@@ -2654,24 +2646,6 @@ def get_vswitch_type(request):
             return None
     except Exception:
         return None
-
-
-def get_sdn_l3_mode_enabled(request):
-    # Get the Service Parameter list on this host
-    # and ensure that the L3 Enabled service parameter
-    # is set.
-    try:
-        allowed_vals = SERVICE_PARAM_ODL_ROUTER_PLUGINS
-        parameters = service_parameter_list(request)
-        for parameter in parameters:
-            if ((parameter.service == SERVICE_TYPE_NETWORK) and
-               (parameter.section == SERVICE_PARAM_SECTION_NETWORK_DEFAULT) and
-               (parameter.name == SERVICE_PARAM_NAME_DEFAULT_SERVICE_PLUGINS)):
-                return(any(sp in allowed_vals
-                           for sp in parameter.value.split(',')))
-    except Exception:
-        pass
-    return False
 
 
 def is_system_mode_simplex(request):
