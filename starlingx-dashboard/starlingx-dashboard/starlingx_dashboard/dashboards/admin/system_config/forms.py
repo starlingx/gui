@@ -689,28 +689,10 @@ class UpdateiStorage(forms.SelfHandlingForm):
         help_text=_("Glance image storage space in gibibytes."),
         min_value=0)
 
-    backup = forms.IntegerField(
-        label=_("Backup Storage (GiB)"),
-        required=True,
-        help_text=_("Backup storage space in gibibytes."),
-        min_value=0)
-
-    scratch = forms.IntegerField(
-        label=_("Scratch Storage (GiB)"),
-        required=True,
-        help_text=_("Platform Scratch storage space in gibibytes."),
-        min_value=0)
-
     extension = forms.IntegerField(
         label=_("Extension Storage (GiB)"),
         required=True,
         help_text=_("Platform Extension storage space in gibibytes."),
-        min_value=0)
-
-    docker = forms.IntegerField(
-        label=_("Docker Storage (GiB)"),
-        required=True,
-        help_text=_("Docker storage space in gibibytes."),
         min_value=0)
 
     etcd = forms.IntegerField(

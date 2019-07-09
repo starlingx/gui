@@ -1639,15 +1639,13 @@ class CephMon(base.APIResourceWrapper):
 
 class STORAGE(base.APIResourceWrapper):
     """..."""
-    _attrs = ['isystem_uuid', 'backup_gib', 'scratch_gib', 'cgcs_gib',
+    _attrs = ['isystem_uuid', 'cgcs_gib',
               'img_conversions_gib', 'database_gib', 'uuid', 'link']
 
     def __init__(self, controller_fs, ceph_mon):
         if controller_fs:
             super(STORAGE, self).__init__(controller_fs)
 
-        self._backup_gib = None
-        self._scratch_gib = None
         self._cgcs_gib = None
         self._img_conversions_gib = None
         self._database_gib = None
@@ -1655,8 +1653,6 @@ class STORAGE(base.APIResourceWrapper):
 
         if hasattr(self, 'uuid'):
             if controller_fs:
-                self._backup_gib = controller_fs.backup_gib
-                self._scratch_gib = controller_fs.scratch_gib
                 self._cgcs_gib = controller_fs.cgcs_gib
                 self._img_conversions_gib = controller_fs.img_conversions_gib
                 self._database_gib = controller_fs.database_gib
@@ -1665,14 +1661,6 @@ class STORAGE(base.APIResourceWrapper):
                 self._device_path = ceph_mon.device_path
                 self._ceph_mon_gib = ceph_mon.ceph_mon_gib
                 self._hostname = ceph_mon.hostname
-
-    @property
-    def backup_gib(self):
-        return self._backup_gib
-
-    @property
-    def scratch_gib(self):
-        return self._scratch_gib
 
     @property
     def cgcs_gib(self):
