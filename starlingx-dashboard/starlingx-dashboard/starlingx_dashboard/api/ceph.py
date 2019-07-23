@@ -108,21 +108,30 @@ def storage_get():
     }
 
     # # I/O info
-    response, body = cephwrapper().osd_pool_stats(body='json',
-                                                  pool_name='cinder-volumes')
+    response, body = cephwrapper().status(body='json')
     if not response.ok:
         response.raise_for_status()
-    stats = body['output'][0]['client_io_rate']
-    # not showing reads/sec at the moment
-    # reads_per_sec = stats['read_bytes_sec'] if (
-    #    'read_bytes_sec' in stats) else 0
+    stats = body['output']['pgmap']
+    reads_per_sec = stats['read_bytes_sec'] if (
+        'read_bytes_sec' in stats) else 0
+    read_operations_per_sec = stats['read_op_per_sec'] if (
+        'read_op_per_sec' in stats) else 0
     writes_per_sec = stats['write_bytes_sec'] if (
         'write_bytes_sec' in stats) else 0
-    operations_per_sec = stats['op_per_sec'] if ('op_per_sec' in stats) else 0
-    io = {
-        'writes_per_sec': writes_per_sec / 1024,
-        'operations_per_sec': operations_per_sec
-    }
+    write_operations_per_sec = stats['write_op_per_sec'] if (
+        'write_op_per_sec' in stats) else 0
+    if reads_per_sec:
+        io = {
+            'reads_per_sec': reads_per_sec / 1024,
+            'read_operations_per_sec': read_operations_per_sec,
+            'writes_per_sec': writes_per_sec / 1024,
+            'write_operations_per_sec': write_operations_per_sec
+        }
+    else:
+        io = {
+            'writes_per_sec': writes_per_sec / 1024,
+            'write_operations_per_sec': write_operations_per_sec
+        }
 
     storage = {}
     storage.update(space)
