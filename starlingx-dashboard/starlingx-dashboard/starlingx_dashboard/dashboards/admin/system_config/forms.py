@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -683,10 +683,10 @@ class UpdateiStorage(forms.SelfHandlingForm):
         help_text=_("Database storage space in gibibytes."),
         min_value=0)
 
-    glance = forms.IntegerField(
-        label=_("Glance Storage (GiB)"),
+    platform = forms.IntegerField(
+        label=_("Platform Storage (GiB)"),
         required=True,
-        help_text=_("Glance image storage space in gibibytes."),
+        help_text=_("Platform storage space in gibibytes."),
         min_value=0)
 
     extension = forms.IntegerField(
