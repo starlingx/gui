@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -13,6 +13,8 @@ from starlingx_dashboard.dashboards.admin.inventory.cpu_functions import \
     views as cpu_functions_views
 from starlingx_dashboard.dashboards.admin.inventory.devices import \
     views as device_views
+from starlingx_dashboard.dashboards.admin.inventory.filesystems import \
+    views as fs_views
 from starlingx_dashboard.dashboards.admin.inventory.interfaces.address import \
     views as address_views
 from starlingx_dashboard.dashboards.admin.inventory.interfaces.route import \
@@ -155,5 +157,8 @@ urlpatterns = [
         name='editpartition'),
     url(r'^(?P<host_id>[^/]+)/assignlabel/$',
         label_views.AssignLabelView.as_view(),
-        name='assignlabel')
+        name='assignlabel'),
+    url(r'^(?P<host_id>[^/]+)/updatefilesystems/$',
+        fs_views.UpdateFilesystemsView.as_view(),
+        name='updatefilesystems')
 ]

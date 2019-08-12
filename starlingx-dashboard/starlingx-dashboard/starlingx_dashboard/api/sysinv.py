@@ -1593,6 +1593,14 @@ class ControllerFS(base.APIResourceWrapper):
         return self._replicated
 
 
+class HostFilesystem(base.APIResourceWrapper):
+    _attrs = ['uuid', 'id', 'name', 'size', 'logical_volume', 'forihostid',
+              'ihost_uuid']
+
+    def __init__(self, apiresource):
+        super(HostFilesystem, self).__init__(apiresource)
+
+
 class CephMon(base.APIResourceWrapper):
     """..."""
     _attrs = ['device_path', 'ceph_mon_gib', 'hostname',
@@ -1835,6 +1843,24 @@ def get_cinder_backend(request):
                 cinder_backends.append(storage.backend)
 
     return cinder_backends
+
+
+def host_filesystems_list(request, host_id):
+    filesystems = cgtsclient(request).host_fs.list(host_id)
+    return [HostFilesystem(n) for n in filesystems]
+
+
+def host_filesystems_update(request, host_id, **kwargs):
+    patch_list = []
+
+    for key, value in kwargs.items():
+        patch = []
+        patch.append({'op': 'replace', 'path': '/name', 'value': key})
+        patch.append({'op': 'replace', 'path': '/size', 'value': value})
+        patch_list.append(patch)
+
+    LOG.info("host_filesystems_update patch_list=%s", patch_list)
+    return cgtsclient(request).host_fs.update_many(host_id, patch_list)
 
 
 def host_node_list(request, host_id):

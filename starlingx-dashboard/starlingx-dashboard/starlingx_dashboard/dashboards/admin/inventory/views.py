@@ -138,6 +138,9 @@ class DetailView(tabs.TabbedTableView):
                 host.partitions = stx_api.sysinv.host_disk_partition_list(
                     self.request, host.uuid)
 
+                host.filesystems = stx_api.sysinv.host_filesystems_list(
+                    self.request, host.uuid)
+
                 # Translate partition state codes:
                 for p in host.partitions:
                     p.status = stx_api.sysinv.PARTITION_STATUS_MSG[p.status]
