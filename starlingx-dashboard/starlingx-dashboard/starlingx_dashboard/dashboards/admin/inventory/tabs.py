@@ -20,6 +20,8 @@ from starlingx_dashboard.dashboards.admin.inventory.cpu_functions import \
     tables as cpufunctions_tables
 from starlingx_dashboard.dashboards.admin.inventory.devices import \
     tables as device_tables
+from starlingx_dashboard.dashboards.admin.inventory.filesystems import \
+    tables as filesystems_tables
 from starlingx_dashboard.dashboards.admin.inventory.interfaces import \
     tables as interface_tables
 from starlingx_dashboard.dashboards.admin.inventory.kubernetes_labels import \
@@ -699,8 +701,21 @@ class LabelsTab(tabs.TableTab):
         return host.labels
 
 
+class FilesystemsTab(tabs.TableTab):
+    table_classes = (filesystems_tables.FilesystemsTable, )
+    name = _("Filesystems")
+    slug = "filesystems"
+    template_name = ("admin/inventory/_detail_filesystems.html")
+
+    def get_filesystems_data(self):
+        host = self.tab_group.kwargs['host']
+        host.filesystems.sort(key=lambda f: (f.name))
+        return host.filesystems
+
+
 class HostDetailTabs(tabs.TabGroup):
     slug = "inventory_details"
-    tabs = (OverviewTab, CpuFunctionsTab, MemorysTab, StorageTab, PortsTab,
-            InterfacesTab, LldpTab, SensorTab, DevicesTab, LabelsTab, )
+    tabs = (OverviewTab, CpuFunctionsTab, MemorysTab, StorageTab,
+            FilesystemsTab, PortsTab, InterfacesTab, LldpTab, SensorTab,
+            DevicesTab, LabelsTab,)
     sticky = True
