@@ -24,7 +24,11 @@
                             {{ storage.total }} {{" GiB total"}}</dd>
                         <dt>{% trans "Storage I/O" %}</dt>
                         <dd>{{ storage.writes_per_sec }} {{" kiB/s write, "}}
-                            {{ storage.operations_per_sec }} {{" operations/second"}}</dd>
+                            {{ storage.write_operations_per_sec }} {{" operations/second write"}}</dd>
+                        {% if storage.reads_per_sec %}
+                          <dd>{{ storage.reads_per_sec }} {{" kiB/s read, "}}
+                              {{ storage.read_operations_per_sec }} {{" operations/second read"}}</dd>
+                        {% endif %}
                     </dl>
                 </div>
               {% else %}
