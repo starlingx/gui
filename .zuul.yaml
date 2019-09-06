@@ -24,7 +24,7 @@
       - starlingx/config
       - starlingx/distcloud-client
       - starlingx/fault
-      - starlingx/update
-      - starlingx/nfv
       - starlingx/ha
-      - starlingx/integ
+      - starlingx/nfv
+      - starlingx/update
+      - starlingx/utilities
