@@ -217,10 +217,6 @@ class UpdatecDNS(forms.SelfHandlingForm):
 
 class UpdatecNTP(forms.SelfHandlingForm):
     uuid = forms.CharField(widget=forms.widgets.HiddenInput)
-    enabled = forms.BooleanField(
-        label=_("Enabled"),
-        help_text=_('Enable NTP service.'),
-        required=False)
 
     NTP_SERVER_1 = forms.CharField(label=_("NTP Server 1 Address"),
                                    initial='NTP_SERVER_1',
@@ -264,12 +260,6 @@ class UpdatecNTP(forms.SelfHandlingForm):
                 else:
                     data['uuid'] = ' '
 
-                if 'enabled' in data.keys():
-                    if not data['enabled']:
-                        data['enabled'] = 'False'
-                else:
-                    data['enabled'] = 'False'
-
                 for index in range(1, max_ntp_servers + 1):
                     if data['NTP_SERVER_%s' % index] and data[
                             'NTP_SERVER_%s' % index] != ' ':
@@ -281,32 +271,26 @@ class UpdatecNTP(forms.SelfHandlingForm):
                 if hasattr(ntp_config, 'uuid'):
 
                     ntp_config_uuid = ntp_config.uuid
-                    ntp_enabled = ntp_config.enabled
                     if ntp_config.ntpservers:
                         ntpservers = ntp_config.ntpservers.split(',')
                     else:
                         ntpservers = []
 
-                    if ntp_enabled != data['enabled']:
+                    # if their sizes are different, then action=apply
+                    if len(NTPSERVERS) != len(ntpservers):
                         data['action'] = 'apply'
-                        data['enabled'] = str(data['enabled'])
                         send_to_sysinv = True
                     else:
-                        # if their sizes are different, then action=apply
-                        if len(NTPSERVERS) != len(ntpservers):
-                            data['action'] = 'apply'
-                            send_to_sysinv = True
-                        else:
-                            # If lengths are same,
-                            # check if order of values have been changed
-                            if set(ntpservers) != set(NTPSERVERS.values()):
-                                for index in range(len(ntpservers)):
-                                    if ntpservers[index] != NTPSERVERS[
-                                            'NTP_SERVER_%s' % (index + 1)]:
-                                        data['action'] = 'apply'
-                                        send_to_sysinv = True
-                                        # we need to do action=apply only once
-                                        break
+                        # If lengths are same,
+                        # check if order of values have been changed
+                        if set(ntpservers) != set(NTPSERVERS.values()):
+                            for index in range(len(ntpservers)):
+                                if ntpservers[index] != NTPSERVERS[
+                                        'NTP_SERVER_%s' % (index + 1)]:
+                                    data['action'] = 'apply'
+                                    send_to_sysinv = True
+                                    # we need to do action=apply only once
+                                    break
 
                     # sysinv accepts csv values as the ntpservers
                     data['ntpservers'] = ','.join(NTPSERVERS.values())
@@ -321,7 +305,7 @@ class UpdatecNTP(forms.SelfHandlingForm):
 
             else:
                 ntp_config_uuid = ' '
-                data = {'enabled': 'False', 'ntpservers': ''}
+                data = {'ntpservers': ''}
 
             LOG.debug(data)
 
@@ -360,10 +344,6 @@ class UpdatecNTP(forms.SelfHandlingForm):
 
 class UpdatecPTP(forms.SelfHandlingForm):
     uuid = forms.CharField(widget=forms.widgets.HiddenInput)
-    enabled = forms.BooleanField(
-        label=_("Enabled"),
-        help_text=_('Enable PTP service.'),
-        required=False)
 
     PTP_MODE_CHOICES = (
         ('hardware', _('Hardware time stamping')),
@@ -407,12 +387,6 @@ class UpdatecPTP(forms.SelfHandlingForm):
                 else:
                     data['uuid'] = ' '
 
-                if 'enabled' in data.keys():
-                    if not data['enabled']:
-                        data['enabled'] = 'False'
-                else:
-                    data['enabled'] = 'False'
-
                 if 'mode' in data.keys():
                     if not data['mode']:
                         data['mode'] = 'hardware'
@@ -435,10 +409,7 @@ class UpdatecPTP(forms.SelfHandlingForm):
 
                 if hasattr(ptp_config, 'uuid'):
                     ptp_config_uuid = ptp_config.uuid
-                    ptp_enabled = ptp_config.enabled
-                    if ptp_enabled != data['enabled']:
-                        data['enabled'] = str(data['enabled'])
-                        send_to_sysinv = True
+
                     if ptp_config.mode != data['mode']:
                         send_to_sysinv = True
                     if ptp_config.transport != data['transport']:
@@ -453,8 +424,7 @@ class UpdatecPTP(forms.SelfHandlingForm):
 
             else:
                 ptp_config_uuid = ' '
-                data = {'enabled': 'False',
-                        'mode': '',
+                data = {'mode': '',
                         'transport': '',
                         'mechanism': ''}
 

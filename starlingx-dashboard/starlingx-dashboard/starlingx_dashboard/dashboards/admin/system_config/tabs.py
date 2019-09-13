@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -103,7 +103,6 @@ class cNTPTab(tabs.TableTab):
 
         try:
             ntp_data = {'uuid': ' ',
-                        'enabled': False,
                         'ntpserver_1': ' ',
                         'ntpserver_2': ' ',
                         'ntpserver_3': ' '}
@@ -113,7 +112,6 @@ class cNTPTab(tabs.TableTab):
                 ntp = ntp_list[0]
 
                 ntp_data['uuid'] = ntp.uuid
-                ntp_data['enabled'] = ntp.enabled
                 if ntp.ntpservers:
                     servers = ntp.ntpservers.split(",")
                     for index, server in enumerate(servers):
@@ -140,7 +138,6 @@ class cPTPTab(tabs.TableTab):
 
         try:
             ptp_data = {'uuid': ' ',
-                        'enabled': False,
                         'mode': ' ',
                         'transport': ' ',
                         'mechanism': ' '}
@@ -150,7 +147,6 @@ class cPTPTab(tabs.TableTab):
                 ptp = ptp_list[0]
 
                 ptp_data['uuid'] = ptp.uuid
-                ptp_data['enabled'] = ptp.enabled
                 ptp_data['mode'] = ptp.mode
                 ptp_data['transport'] = ptp.transport
                 ptp_data['mechanism'] = ptp.mechanism

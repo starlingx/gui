@@ -103,6 +103,11 @@ K8S_LABEL_OPENSTACK_COMPUTE_NODE = 'openstack-compute-node'
 K8S_LABEL_OPENVSWITCH = 'openvswitch'
 K8S_LABEL_SRIOV = 'sriov'
 
+CLOCK_SYNCHRONIZATION_CHOICES = (
+    (constants.NTP, _("ntp")),
+    (constants.PTP, _("ptp")),
+)
+
 LOG = logging.getLogger(__name__)
 
 
@@ -841,7 +846,8 @@ class Host(base.APIResourceWrapper):
               'config_status', 'vim_progress_status', 'patch_current',
               'requires_reboot', 'boot_device', 'rootfs_device',
               'install_output', 'console', 'ttys_dcd', 'patch_state',
-              'allow_insvc_patching', 'install_state', 'install_state_info']
+              'allow_insvc_patching', 'install_state', 'install_state_info',
+              'clock_synchronization']
 
     PERSONALITY_DISPLAY_CHOICES = (
         (PERSONALITY_CONTROLLER, _("Controller")),
@@ -912,6 +918,7 @@ class Host(base.APIResourceWrapper):
         self.requires_reboot = "N/A"
         self.allow_insvc_patching = True
         self._patch_state = patch_constants.PATCH_AGENT_STATE_IDLE
+        self._clock_synchronizations = self.clock_synchronization
 
         self._install_state = self.install_state
         if self._install_state is not None:
@@ -1012,6 +1019,11 @@ class Host(base.APIResourceWrapper):
     @property
     def ttys_dcd(self):
         return self._ttys_dcd == 'True'
+
+    @property
+    def clock_synchronization(self):
+        return self._get_display_value(CLOCK_SYNCHRONIZATION_CHOICES,
+                                       self._clock_synchronization)
 
     @property
     def patch_state(self):
@@ -1197,7 +1209,7 @@ def dns_list(request):
 class NTP(base.APIResourceWrapper):
     """..."""
 
-    _attrs = ['isystem_uuid', 'enabled', 'ntpservers', 'uuid', 'link']
+    _attrs = ['isystem_uuid', 'ntpservers', 'uuid', 'link']
 
     def __init__(self, apiresource):
         super(NTP, self).__init__(apiresource)
@@ -1235,7 +1247,7 @@ def ntp_list(request):
 class PTP(base.APIResourceWrapper):
     """..."""
 
-    _attrs = ['isystem_uuid', 'enabled', 'mode',
+    _attrs = ['isystem_uuid', 'mode',
               'transport', 'mechanism', 'uuid', 'link']
 
     def __init__(self, apiresource):

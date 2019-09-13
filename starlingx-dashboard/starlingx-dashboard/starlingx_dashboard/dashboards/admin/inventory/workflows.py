@@ -257,6 +257,10 @@ class UpdateHostInfoAction(workflows.Action):
                                required=False,
                                help_text=_("Physical location of Host."))
 
+    clock_synchronization = forms.ChoiceField(
+        label=_("Clock Synchronization"),
+        choices=stx_api.sysinv.CLOCK_SYNCHRONIZATION_CHOICES)
+
     cpuProfile = forms.ChoiceField(label=_("CPU Profile"),
                                    required=False)
 
@@ -502,7 +506,8 @@ class UpdateHostInfo(workflows.Step):
                    "interfaceProfile",
                    "diskProfile",
                    "memoryProfile",
-                   "ttys_dcd")
+                   "ttys_dcd",
+                   "clock_synchronization")
 
 
 class UpdateInstallParamsAction(workflows.Action):
@@ -813,6 +818,10 @@ class UpdateHost(workflows.Workflow):
             # subfunctions cannot be modified once host is configured
             if host._subfunctions and 'subfunctions' in data:
                 data.pop('subfunctions')
+
+            # if not trying to change clock_synchronization, skip check
+            if host.clock_synchronization == data['clock_synchronization']:
+                data.pop('clock_synchronization')
 
             host = stx_api.sysinv.host_update(request, **data)
             return True if host else False

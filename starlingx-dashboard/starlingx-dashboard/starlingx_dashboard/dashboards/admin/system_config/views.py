@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -146,7 +146,6 @@ class UpdatecNTPView(forms.ModalFormView):
 
     def get_initial(self):
         ntp_form_data = {'uuid': ' ',
-                         'enabled': False,
                          'NTP_SERVER_1': None,
                          'NTP_SERVER_2': None,
                          'NTP_SERVER_3': None}
@@ -158,7 +157,6 @@ class UpdatecNTPView(forms.ModalFormView):
                 ntp = ntp_list[0]
 
                 ntp_form_data['uuid'] = ntp.uuid
-                ntp_form_data['enabled'] = ntp.enabled
                 if ntp.ntpservers:
                     servers = ntp.ntpservers.split(",")
                     for index, server in enumerate(servers):
@@ -195,7 +193,6 @@ class UpdatecPTPView(forms.ModalFormView):
 
     def get_initial(self):
         ptp_form_data = {'uuid': ' ',
-                         'enabled': False,
                          'mode': None,
                          'transport': None,
                          'mechanism': None}
@@ -206,7 +203,6 @@ class UpdatecPTPView(forms.ModalFormView):
             if ptp_list:
                 ptp = ptp_list[0]
                 ptp_form_data['uuid'] = ptp.uuid
-                ptp_form_data['enabled'] = ptp.enabled
                 ptp_form_data['mode'] = ptp.mode
                 ptp_form_data['transport'] = ptp.transport
                 ptp_form_data['mechanism'] = ptp.mechanism
