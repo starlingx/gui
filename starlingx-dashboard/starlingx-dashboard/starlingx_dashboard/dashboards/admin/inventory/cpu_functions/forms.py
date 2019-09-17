@@ -18,82 +18,17 @@ from horizon import forms
 from horizon import messages
 
 from starlingx_dashboard.api import sysinv
+from starlingx_dashboard.dashboards.admin.inventory.cpu_functions \
+    import utils as cpu_utils
 from starlingx_dashboard.horizon.forms.fields import DynamicIntegerField
 
 LOG = logging.getLogger(__name__)
 
+FUNCTION_LABEL = _(
+    "------------------------ Function ------------------------")
+
 
 class UpdateCpuFunctions(forms.SelfHandlingForm):
-    host = forms.CharField(label=_("host"),
-                           required=False,
-                           widget=forms.widgets.HiddenInput)
-    host_id = forms.CharField(label=_("host_id"),
-                              required=False,
-                              widget=forms.widgets.HiddenInput)
-
-    platform = forms.CharField(
-        label=_("------------------------ Function ------------------------"),
-        required=False,
-        widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-
-    platform_processor0 = DynamicIntegerField(
-        label=_("# of Platform Physical Cores on Processor 0:"),
-        min_value=0, max_value=99,
-        required=False)
-    platform_processor1 = DynamicIntegerField(
-        label=_("# of Platform Physical Cores on Processor 1:"),
-        min_value=0, max_value=99,
-        required=False)
-    platform_processor2 = DynamicIntegerField(
-        label=_("# of Platform Physical Cores on Processor 2:"),
-        min_value=0, max_value=99,
-        required=False)
-    platform_processor3 = DynamicIntegerField(
-        label=_("# of Platform Physical Cores on Processor 3:"),
-        min_value=0, max_value=99,
-        required=False)
-
-    vswitch = forms.CharField(
-        label=_("------------------------ Function ------------------------"),
-        required=False,
-        widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-    num_cores_on_processor0 = DynamicIntegerField(
-        label=_("# of vSwitch Physical Cores on Processor 0:"),
-        min_value=0, max_value=99,
-        required=False)
-    num_cores_on_processor1 = DynamicIntegerField(
-        label=_("# of vSwitch Physical Cores on Processor 1:"),
-        min_value=0, max_value=99,
-        required=False)
-    num_cores_on_processor2 = DynamicIntegerField(
-        label=_("# of vSwitch Physical Cores on Processor 2:"),
-        min_value=0, max_value=99,
-        required=False)
-    num_cores_on_processor3 = DynamicIntegerField(
-        label=_("# of vSwitch Physical Cores on Processor 3:"),
-        min_value=0, max_value=99,
-        required=False)
-
-    shared_vcpu = forms.CharField(
-        label=_("------------------------ Function ------------------------"),
-        required=False,
-        widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-    num_shared_on_processor0 = DynamicIntegerField(
-        label=_("# of Shared Physical Cores on Processor 0:"),
-        min_value=0, max_value=99,
-        required=False)
-    num_shared_on_processor1 = DynamicIntegerField(
-        label=_("# of Shared Physical Cores on Processor 1:"),
-        min_value=0, max_value=99,
-        required=False)
-    num_shared_on_processor2 = DynamicIntegerField(
-        label=_("# of Shared Physical Cores on Processor 2:"),
-        min_value=0, max_value=99,
-        required=False)
-    num_shared_on_processor3 = DynamicIntegerField(
-        label=_("# of Shared Physical Cores on Processor 3:"),
-        min_value=0, max_value=99,
-        required=False)
 
     failure_url = 'horizon:admin:inventory:detail'
 
@@ -101,244 +36,95 @@ class UpdateCpuFunctions(forms.SelfHandlingForm):
         super(UpdateCpuFunctions, self).__init__(*args, **kwargs)
 
         self.host = kwargs['initial']['host']
+        self.cpu_assignments = kwargs['initial']['cpu_assignments']
 
-        if kwargs['initial']['platform_processor0'] == 99:  # No Processor
-            self.fields[
-                'platform_processor0'].widget = forms.widgets.HiddenInput()
-        else:
-            avail_socket_cores = self.host.physical_cores.get(0, 0)
-            self.fields['platform_processor0'].set_max_value(
-                avail_socket_cores)
-            self.fields[
-                'platform_processor0'].help_text = \
-                "Processor 0 has %s physical cores." % avail_socket_cores
+        numa_count = len(self.host.nodes)
 
-        if kwargs['initial']['platform_processor1'] == 99:  # No Processor
-            self.fields[
-                'platform_processor1'].widget = forms.widgets.HiddenInput()
-        else:
-            avail_socket_cores = self.host.physical_cores.get(1, 0)
-            self.fields['platform_processor1'].set_max_value(
-                avail_socket_cores)
-            self.fields[
-                'platform_processor1'].help_text =\
-                "Processor 1 has %s physical cores." % avail_socket_cores
+        default_label_text = _("# of %(type)s Cores on Processor %(numa)s:")
+        default_help_text = _(
+            "Processor %(numa)s has %(count)s physical cores.")
+        shared_help_text = _(
+            "Each processor can have at most one shared core.")
 
-        if kwargs['initial']['platform_processor2'] == 99:  # No Processor
-            self.fields[
-                'platform_processor2'].widget = forms.widgets.HiddenInput()
-        else:
-            avail_socket_cores = self.host.physical_cores.get(2, 0)
-            self.fields['platform_processor2'].set_max_value(
-                avail_socket_cores)
-            self.fields[
-                'platform_processor2'].help_text = \
-                "Processor 2 has %s physical cores." % avail_socket_cores
-
-        if kwargs['initial']['platform_processor3'] == 99:  # No Processor
-            self.fields[
-                'platform_processor3'].widget = forms.widgets.HiddenInput()
-        else:
-            avail_socket_cores = self.host.physical_cores.get(3, 0)
-            self.fields['platform_processor3'].set_max_value(
-                avail_socket_cores)
-            self.fields[
-                'platform_processor3'].help_text = \
-                "Processor 3 has %s physical cores." % avail_socket_cores
+        self.field_matrix = dict(cpu_utils.CPU_TYPE_MATRIX)
 
         if 'worker' not in self.host.subfunctions:
-            self.fields['vswitch'].widget = forms.widgets.HiddenInput()
-            self.fields[
-                'num_cores_on_processor0'].widget = forms.widgets.HiddenInput()
-            self.fields[
-                'num_cores_on_processor1'].widget = forms.widgets.HiddenInput()
-            self.fields[
-                'num_cores_on_processor2'].widget = forms.widgets.HiddenInput()
-            self.fields[
-                'num_cores_on_processor3'].widget = forms.widgets.HiddenInput()
+            # Ignore worker-only cpu types
+            self.field_matrix = dict(
+                field for field in self.field_matrix.items()
+                if not field[1]['worker-only'])
         else:
-            if kwargs['initial'][
-                    'num_cores_on_processor0'] == 99:  # No Processor
-                self.fields[
-                    'num_cores_on_processor0'].widget =\
-                    forms.widgets.HiddenInput()
-            else:
-                avail_socket_cores = self.host.physical_cores.get(0, 0)
-                self.fields[
-                    'num_cores_on_processor0'].set_max_value(
-                    avail_socket_cores)
-                self.fields[
-                    'num_cores_on_processor0'].help_text = \
-                    "Processor 0 has %s physical cores." % avail_socket_cores
+            # Update the help text and max value for the shared cpu type
+            self.field_matrix[cpu_utils.SHARED_CPU_TYPE].update({
+                "help_text": shared_help_text,
+                "max_value": 1})
 
-            if kwargs['initial'][
-                    'num_cores_on_processor1'] == 99:  # No Processor
-                self.fields[
-                    'num_cores_on_processor1'].widget =\
-                    forms.widgets.HiddenInput()
-            else:
-                avail_socket_cores = self.host.physical_cores.get(1, 0)
-                self.fields[
-                    'num_cores_on_processor1'].set_max_value(
-                    avail_socket_cores)
-                self.fields[
-                    'num_cores_on_processor1'].help_text =\
-                    "Processor 1 has %s physical cores." % avail_socket_cores
+        for cpu_type, cpu_type_properties in self.field_matrix.items():
+            cpu_format = cpu_type_properties['format']
+            index = "%s_function_label" % cpu_type
 
-            if kwargs['initial'][
-                    'num_cores_on_processor2'] == 99:  # No Processor
-                self.fields[
-                    'num_cores_on_processor2'].widget =\
-                    forms.widgets.HiddenInput()
-            else:
-                avail_socket_cores = self.host.physical_cores.get(2, 0)
-                self.fields[
-                    'num_cores_on_processor2'].set_max_value(
-                    avail_socket_cores)
-                self.fields[
-                    'num_cores_on_processor2'].help_text =\
-                    "Processor 2 has %s physical cores." % avail_socket_cores
+            # Add function header label
+            self.fields[index] = \
+                forms.CharField(
+                    label=FUNCTION_LABEL,
+                    initial=cpu_format,
+                    required=False,
+                    widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
-            if kwargs['initial'][
-                    'num_cores_on_processor3'] == 99:  # No Processor
-                self.fields[
-                    'num_cores_on_processor3'].widget =\
-                    forms.widgets.HiddenInput()
-            else:
-                avail_socket_cores = self.host.physical_cores.get(3, 0)
-                self.fields[
-                    'num_cores_on_processor3'].set_max_value(
-                    avail_socket_cores)
-                self.fields[
-                    'num_cores_on_processor3'].help_text =\
-                    "Processor 3 has %s physical cores." % avail_socket_cores
+            for numa_node in range(numa_count):
+                avail_socket_cores = self.host.physical_cores.get(numa_node, 0)
+                label_text = cpu_type_properties.get(
+                    "label", default_label_text % {'type': cpu_format,
+                                                   'numa': numa_node})
+                max_value = cpu_type_properties.get(
+                    "max_value", avail_socket_cores)
+                help_text = cpu_type_properties.get(
+                    "help_text", default_help_text % {
+                        'numa': numa_node, 'count': avail_socket_cores})
 
-        for s in range(0, 4):
-            processor = 'num_shared_on_processor{0}'.format(s)
-            if ('worker' not in self.host.subfunctions or
-                    kwargs['initial'][processor] == 99):  # No Processor
-                self.fields[processor].widget = forms.widgets.HiddenInput()
-            else:
-                self.fields[processor].set_max_value(1)
-                self.fields[processor].help_text =\
-                    "Each processor can have at most one shared core."
+                index = "%s_%s" % (cpu_type, numa_node)
+                core_count = self.cpu_assignments[cpu_type][numa_node]
+
+                # Add input field with appropriate values
+                self.fields[index] = \
+                    DynamicIntegerField(
+                        label=label_text,
+                        min_value=0,
+                        max_value=max_value,
+                        help_text=help_text,
+                        initial=core_count,
+                        required=False)
 
     def clean(self):
         cleaned_data = super(UpdateCpuFunctions, self).clean()
 
-        # host_id = cleaned_data.get('host_id')
+        numa_count = len(self.host.nodes)
+
+        updated_cpu_assignments = {}
 
         try:
-            cleaned_data['platform_processor0'] = str(
-                cleaned_data['platform_processor0'])
-            cleaned_data['platform_processor1'] = str(
-                cleaned_data['platform_processor1'])
-            cleaned_data['platform_processor2'] = str(
-                cleaned_data['platform_processor2'])
-            cleaned_data['platform_processor3'] = str(
-                cleaned_data['platform_processor3'])
+            for cpu_type in self.field_matrix.keys():
+                # Build up the updated_cpu_assignments structure
+                core_counts = [0] * numa_count
+                updated_cpu_assignments.update({cpu_type: core_counts})
 
-            cleaned_data['num_cores_on_processor0'] = str(
-                cleaned_data['num_cores_on_processor0'])
-            cleaned_data['num_cores_on_processor1'] = str(
-                cleaned_data['num_cores_on_processor1'])
-            cleaned_data['num_cores_on_processor2'] = str(
-                cleaned_data['num_cores_on_processor2'])
-            cleaned_data['num_cores_on_processor3'] = str(
-                cleaned_data['num_cores_on_processor3'])
-
-            cleaned_data['num_shared_on_processor0'] = str(
-                cleaned_data['num_shared_on_processor0'])
-            cleaned_data['num_shared_on_processor1'] = str(
-                cleaned_data['num_shared_on_processor1'])
-            cleaned_data['num_shared_on_processor2'] = str(
-                cleaned_data['num_shared_on_processor2'])
-            cleaned_data['num_shared_on_processor3'] = str(
-                cleaned_data['num_shared_on_processor3'])
-
-            num_platform_cores = {}
-            num_platform_cores[0] = cleaned_data.get('platform_processor0',
-                                                     'None')
-            num_platform_cores[1] = cleaned_data.get('platform_processor1',
-                                                     'None')
-            num_platform_cores[2] = cleaned_data.get('platform_processor2',
-                                                     'None')
-            num_platform_cores[3] = cleaned_data.get('platform_processor3',
-                                                     'None')
-
-            num_vswitch_cores = {}
-            num_vswitch_cores[0] = cleaned_data.get('num_cores_on_processor0',
-                                                    'None')
-            num_vswitch_cores[1] = cleaned_data.get('num_cores_on_processor1',
-                                                    'None')
-            num_vswitch_cores[2] = cleaned_data.get('num_cores_on_processor2',
-                                                    'None')
-            num_vswitch_cores[3] = cleaned_data.get('num_cores_on_processor3',
-                                                    'None')
-
-            num_shared_on_map = {}
-            num_shared_on_map[0] = cleaned_data.get('num_shared_on_processor0',
-                                                    'None')
-            num_shared_on_map[1] = cleaned_data.get('num_shared_on_processor1',
-                                                    'None')
-            num_shared_on_map[2] = cleaned_data.get('num_shared_on_processor2',
-                                                    'None')
-            num_shared_on_map[3] = cleaned_data.get('num_shared_on_processor3',
-                                                    'None')
-
-            if ('None' in num_platform_cores.values() or
-                'None' in num_vswitch_cores.values() or
-                    'None' in num_shared_on_map.values()):
-                raise forms.ValidationError(_("Invalid entry."))
+                # Add the data for each input
+                for numa_node in range(numa_count):
+                    index = "%s_%s" % (cpu_type, numa_node)
+                    if cleaned_data[index] is None:
+                        raise forms.ValidationError(_("Invalid entry."))
+                    updated_cpu_assignments[cpu_type][numa_node] = \
+                        str(cleaned_data[index])
         except Exception as e:
             LOG.error(e)
             raise forms.ValidationError(_("Invalid entry."))
 
-        # Since only vswitch is allowed to be modified
-        cleaned_data['function'] = 'vswitch'
-        # NOTE:  shared_vcpu can be changed
-
-        return cleaned_data
+        return updated_cpu_assignments
 
     def handle(self, request, data):
-        host_id = data['host_id']
-        del data['host_id']
-        del data['host']
-
+        host_id = self.host.uuid
         try:
-            host = sysinv.host_get(self.request, host_id)
-            cpudata = {}
-            sharedcpudata = {}
-            platformcpudata = {}
-            for key, val in data.items():
-                if 'num_cores_on_processor' in key or 'function' in key:
-                    if key not in self.fields:
-                        cpudata[key] = val
-                    elif not type(self.fields[key].widget) is\
-                            forms.widgets.HiddenInput:
-                        cpudata[key] = val
-                if 'platform_processor' in key:
-                    update_key = 'num_cores_on_processor' + key[-1:]
-                    if key not in self.fields:
-                        platformcpudata[update_key] = val
-                    elif not type(self.fields[key].widget) is\
-                            forms.widgets.HiddenInput:
-                        platformcpudata[update_key] = val
-                if 'num_shared_on_processor' in key:
-                    key2 = key.replace('shared', 'cores')
-                    if key not in self.fields:
-                        sharedcpudata[key2] = val
-                    elif not type(self.fields[key].widget) is\
-                            forms.widgets.HiddenInput:
-                        sharedcpudata[key2] = val
-
-            sharedcpudata['function'] = 'shared'
-            platformcpudata['function'] = 'platform'
-
-            sysinv.host_cpus_modify(request, host.uuid,
-                                    platformcpudata,
-                                    cpudata,
-                                    sharedcpudata)
+            sysinv.host_cpus_modify(request, host_id, data)
             msg = _('CPU Assignments were successfully updated.')
             LOG.debug(msg)
             messages.success(request, msg)
