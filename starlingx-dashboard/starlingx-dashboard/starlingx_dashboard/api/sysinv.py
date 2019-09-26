@@ -1892,37 +1892,19 @@ def host_cpu_list(request, host_id):
     return [Cpu(n) for n in cpus]
 
 
-def _update_cpu_capability(cpu_data):
-    capability = {'function': cpu_data.get('function')}
-    sockets = []
-    for k, v in cpu_data.items():
-        if k.startswith('num_cores_on_processor'):
-            sockets.append({k.strip('num_cores_on_processor'): v})
-
-    capability.update({'sockets': sockets})
-    LOG.info("_update_cpu_capability=%s", capability)
-    return capability
-
-
-def host_cpus_modify(request, host_uuid,
-                     platform_cpu_data,
-                     vswitch_cpu_data,
-                     shared_cpu_data):
+def host_cpus_modify(request, host_uuid, cpu_data):
 
     capabilities = []
-    if platform_cpu_data:
-        capability = _update_cpu_capability(platform_cpu_data)
-        capabilities.append(capability)
-    if vswitch_cpu_data:
-        capability = _update_cpu_capability(vswitch_cpu_data)
-        capabilities.append(capability)
-    if shared_cpu_data:
-        capability = _update_cpu_capability(shared_cpu_data)
-        capabilities.append(capability)
 
-    LOG.info("host_cpus_modify host_uuid=%s capabilities=%s",
-             host_uuid, capabilities)
-
+    for function, counts in cpu_data.items():
+        # We need to go from [2,0] to [{'0': '2'}, {'1': '0'}]
+        sockets = []
+        for i in range(len(counts)):
+            sockets.append({i: counts[i]})
+        capabilities.append({
+            'function': function,
+            'sockets': sockets
+        })
     return cgtsclient(request).ihost.host_cpus_modify(host_uuid, capabilities)
 
 

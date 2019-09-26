@@ -72,81 +72,26 @@ class UpdateCpuFunctionsView(forms.ModalFormView):
     def get_initial(self):
         host = self._get_object()
 
-        platform_processor0 = 99  # NO_PROCESSOR
-        platform_processor1 = 99  # NO_PROCESSOR
-        platform_processor2 = 99  # NO_PROCESSOR
-        platform_processor3 = 99  # NO_PROCESSOR
+        cpu_assignments = {}
+        numa_count = len(host.nodes)
 
-        num_cores_on_processor0 = 99  # NO_PROCESSOR
-        num_cores_on_processor1 = 99  # NO_PROCESSOR
-        num_cores_on_processor2 = 99  # NO_PROCESSOR
-        num_cores_on_processor3 = 99  # NO_PROCESSOR
+        for function in icpu_utils.CPU_TYPE_LIST:
+            core_counts = [0] * numa_count
+            cpu_assignments.update({function: core_counts})
 
-        num_shared_on_processor0 = 99  # NO_PROCESSOR
-        num_shared_on_processor1 = 99  # NO_PROCESSOR
-        num_shared_on_processor2 = 99  # NO_PROCESSOR
-        num_shared_on_processor3 = 99  # NO_PROCESSOR
+        for cpu in host.cpus:
+            # We only want physical cores
+            if cpu.thread != 0:
+                continue
+            cpu_assignments[cpu.allocated_function][cpu.numa_node] += 1
 
-        for cpufunc in host.core_assignment:
-            if cpufunc.allocated_function == icpu_utils.PLATFORM_CPU_TYPE:
-                if host.sockets > 0:
-                    platform_processor0 = self.get_physical_core_count(
-                        host, cpufunc, 0)
-                if host.sockets > 1:
-                    platform_processor1 = self.get_physical_core_count(
-                        host, cpufunc, 1)
-                if host.sockets > 2:
-                    platform_processor2 = self.get_physical_core_count(
-                        host, cpufunc, 2)
-                if host.sockets > 3:
-                    platform_processor3 = self.get_physical_core_count(
-                        host, cpufunc, 3)
+        formatted_data = {
+            'host': host,
+            'host_id': host.host_id,
+            'cpu_assignments': cpu_assignments
+        }
 
-            elif cpufunc.allocated_function == icpu_utils.VSWITCH_CPU_TYPE:
-                if host.sockets > 0:
-                    num_cores_on_processor0 = \
-                        self.get_physical_core_count(host, cpufunc, 0)
-                if host.sockets > 1:
-                    num_cores_on_processor1 = \
-                        self.get_physical_core_count(host, cpufunc, 1)
-                if host.sockets > 2:
-                    num_cores_on_processor2 = \
-                        self.get_physical_core_count(host, cpufunc, 2)
-                if host.sockets > 3:
-                    num_cores_on_processor3 = \
-                        self.get_physical_core_count(host, cpufunc, 3)
-
-            elif cpufunc.allocated_function == icpu_utils.SHARED_CPU_TYPE:
-                if host.sockets > 0:
-                    num_shared_on_processor0 = \
-                        self.get_physical_core_count(host, cpufunc, 0)
-                if host.sockets > 1:
-                    num_shared_on_processor1 = \
-                        self.get_physical_core_count(host, cpufunc, 1)
-                if host.sockets > 2:
-                    num_shared_on_processor2 = \
-                        self.get_physical_core_count(host, cpufunc, 2)
-                if host.sockets > 3:
-                    num_shared_on_processor3 = \
-                        self.get_physical_core_count(host, cpufunc, 3)
-
-        return {'host': host,
-                'host_id': host.host_id,
-                'platform': icpu_utils.PLATFORM_CPU_TYPE_FORMAT,
-                'platform_processor0': platform_processor0,
-                'platform_processor1': platform_processor1,
-                'platform_processor2': platform_processor2,
-                'platform_processor3': platform_processor3,
-                'vswitch': icpu_utils.VSWITCH_CPU_TYPE_FORMAT,
-                'num_cores_on_processor0': num_cores_on_processor0,
-                'num_cores_on_processor1': num_cores_on_processor1,
-                'num_cores_on_processor2': num_cores_on_processor2,
-                'num_cores_on_processor3': num_cores_on_processor3,
-                'shared_vcpu': icpu_utils.SHARED_CPU_TYPE_FORMAT,
-                'num_shared_on_processor0': num_shared_on_processor0,
-                'num_shared_on_processor1': num_shared_on_processor1,
-                'num_shared_on_processor2': num_shared_on_processor2,
-                'num_shared_on_processor3': num_shared_on_processor3}
+        return formatted_data
 
 
 class AddCpuProfileView(forms.ModalFormView):

@@ -10,26 +10,42 @@ from django.utils.translation import ugettext_lazy as _
 PLATFORM_CPU_TYPE = "Platform"
 VSWITCH_CPU_TYPE = "Vswitch"
 SHARED_CPU_TYPE = "Shared"
-APPLICATIONS_CPU_TYPE = "Applications"
+APPLICATION_CPU_TYPE = "Applications"
+ISOLATED_CPU_TYPE = "Isolated"
 NONE_CPU_TYPE = "None"
-COMPUTE_NODE_LABEL_KEY = 'openstack-compute-node'
 
 CPU_TYPE_LIST = [PLATFORM_CPU_TYPE, VSWITCH_CPU_TYPE,
-                 SHARED_CPU_TYPE, APPLICATIONS_CPU_TYPE,
+                 SHARED_CPU_TYPE, APPLICATION_CPU_TYPE, ISOLATED_CPU_TYPE,
                  NONE_CPU_TYPE]
-
 
 PLATFORM_CPU_TYPE_FORMAT = _("Platform")
 VSWITCH_CPU_TYPE_FORMAT = _("vSwitch")
 SHARED_CPU_TYPE_FORMAT = _("Shared")
-APPLICATIONS_CPU_TYPE_FORMAT = _("Applications")
+APPLICATION_CPU_TYPE_FORMAT = _("Applications")
+ISOLATED_CPU_TYPE_FORMAT = _("Isolated")
 NONE_CPU_TYPE_FORMAT = _("None")
 
 CPU_TYPE_FORMATS = {PLATFORM_CPU_TYPE: PLATFORM_CPU_TYPE_FORMAT,
                     VSWITCH_CPU_TYPE: VSWITCH_CPU_TYPE_FORMAT,
                     SHARED_CPU_TYPE: SHARED_CPU_TYPE_FORMAT,
-                    APPLICATIONS_CPU_TYPE: APPLICATIONS_CPU_TYPE_FORMAT,
+                    APPLICATION_CPU_TYPE: APPLICATION_CPU_TYPE_FORMAT,
+                    ISOLATED_CPU_TYPE: ISOLATED_CPU_TYPE_FORMAT,
                     NONE_CPU_TYPE: NONE_CPU_TYPE_FORMAT}
+
+CPU_TYPE_MATRIX = {
+    PLATFORM_CPU_TYPE: {
+        "format": PLATFORM_CPU_TYPE_FORMAT,
+        "worker-only": False},
+    VSWITCH_CPU_TYPE: {
+        "format": VSWITCH_CPU_TYPE_FORMAT,
+        "worker-only": True},
+    SHARED_CPU_TYPE: {
+        "format": SHARED_CPU_TYPE_FORMAT,
+        "worker-only": True},
+    ISOLATED_CPU_TYPE: {
+        "format": ISOLATED_CPU_TYPE_FORMAT,
+        "worker-only": True}
+}
 
 
 class CpuFunction(object):
@@ -45,6 +61,7 @@ class CpuProfile(object):
             self.platform = 0
             self.vswitch = 0
             self.shared = 0
+            self.isolated = 0
             self.vms = 0
             self.numa_node = 0
 
@@ -82,8 +99,10 @@ class CpuProfile(object):
                 cur_processor.vswitch += 1
             elif cpu.allocated_function == SHARED_CPU_TYPE:
                 cur_processor.shared += 1
-            elif cpu.allocated_function == APPLICATIONS_CPU_TYPE:
+            elif cpu.allocated_function == APPLICATION_CPU_TYPE:
                 cur_processor.vms += 1
+            elif cpu.allocated_function == ISOLATED_CPU_TYPE:
+                cur_processor.isolated += 1
 
         self.cores_per_cpu = len(cores)
         self.number_of_cpu = len(self.processors)
@@ -118,11 +137,13 @@ class HostCpuProfile(CpuProfile):
         vswitch_cores = 0
         shared_cores = 0
         vm_cores = 0
+        isolated_cores = 0
         for cpu in profile.processors:
             platform_cores += cpu.platform
             vswitch_cores += cpu.vswitch
             shared_cores += cpu.shared
             vm_cores += cpu.vms
+            isolated_cores += cpu.isolated
 
         result = True
         if platform_cores == 0:
@@ -221,7 +242,7 @@ def check_core_functions(personality, icpus):
             vswitch_cores += 1
         elif allocated_function == SHARED_CPU_TYPE:
             shared_vcpu_cores += 1
-        elif allocated_function == APPLICATIONS_CPU_TYPE:
+        elif allocated_function in [APPLICATION_CPU_TYPE, ISOLATED_CPU_TYPE]:
             vm_cores += 1
 
     # No limiations for shared_vcpu cores
@@ -229,24 +250,7 @@ def check_core_functions(personality, icpus):
     if platform_cores == 0:
         error_string = "There must be at least one" \
                        " core for %s." % PLATFORM_CPU_TYPE_FORMAT
-    elif 'worker' in personality and vswitch_cores == 0:
-        error_string = "There must be at least one" \
-                       " core for %s." % VSWITCH_CPU_TYPE_FORMAT
     elif 'worker' in personality and vm_cores == 0:
         error_string = "There must be at least one" \
-                       " core for %s." % APPLICATIONS_CPU_TYPE_FORMAT
+                       " core for %s." % APPLICATION_CPU_TYPE_FORMAT
     return error_string
-
-
-def has_openstack_compute(host):
-    """Returns true if the host has the openstack compute label set """
-    labels = host.labels
-    if not labels:
-        return False
-
-    for label in labels:
-        if label.label_key == COMPUTE_NODE_LABEL_KEY:
-            return 'enabled' == label.label_value.lower()
-
-    # We haven't found the openstack compute node key. Return False
-    return False
