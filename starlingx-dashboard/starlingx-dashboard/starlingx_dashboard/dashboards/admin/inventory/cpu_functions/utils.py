@@ -126,33 +126,9 @@ class HostCpuProfile(CpuProfile):
     def profile_applicable(self, profile):
         if self.number_of_cpu == profile.number_of_cpu and \
                 self.cores_per_cpu == profile.cores_per_cpu:
-            return self.check_profile_core_functions(profile)
+            return True
         else:
             return False
-
-        return not True
-
-    def check_profile_core_functions(self, profile):
-        platform_cores = 0
-        vswitch_cores = 0
-        shared_cores = 0
-        vm_cores = 0
-        isolated_cores = 0
-        for cpu in profile.processors:
-            platform_cores += cpu.platform
-            vswitch_cores += cpu.vswitch
-            shared_cores += cpu.shared
-            vm_cores += cpu.vms
-            isolated_cores += cpu.isolated
-
-        result = True
-        if platform_cores == 0:
-            result = False
-        elif 'worker' in self.personality and vswitch_cores == 0:
-            result = False
-        elif 'worker' in self.personality and vm_cores == 0:
-            result = False
-        return result
 
 
 def compress_range(c_list):
