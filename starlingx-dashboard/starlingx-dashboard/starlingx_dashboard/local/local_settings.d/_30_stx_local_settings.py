@@ -68,6 +68,9 @@ if distributed_cloud_role and distributed_cloud_role in ['systemcontroller',
                                                          'subcloud']:
     DC_MODE = True
 
+HORIZON_CONFIG["user_home"] = \
+    "starlingx_dashboard.utils.settings.get_user_home"
+
 OPENSTACK_ENDPOINT_TYPE = "internalURL"
 
 # Override Django tempory file upload directory
