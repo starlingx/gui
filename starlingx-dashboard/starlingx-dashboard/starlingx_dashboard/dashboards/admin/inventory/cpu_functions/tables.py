@@ -31,7 +31,9 @@ class EditCpuFunctions(tables.LinkAction):
 
     def allowed(self, request, cpufunction=None):
         host = self.table.kwargs['host']
-        return host._administrative == 'locked'
+        allowed = host._administrative == 'locked' and \
+            'worker' in host.subfunctions
+        return allowed
 
 
 class CreateCpuProfile(tables.LinkAction):
@@ -45,7 +47,10 @@ class CreateCpuProfile(tables.LinkAction):
         return reverse(self.url, args=(host_id,))
 
     def allowed(self, request, cpufunction=None):
-        return not stx_api.sysinv.is_system_mode_simplex(request)
+        host = self.table.kwargs['host']
+        allowed = not stx_api.sysinv.is_system_mode_simplex(request) and \
+            'worker' in host.subfunctions
+        return allowed
 
 
 def get_function_name(datum):

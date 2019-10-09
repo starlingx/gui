@@ -70,17 +70,6 @@ def ifprofile_applicable(request, host, profile):
     return True
 
 
-def cpuprofile_applicable(host, profile):
-    if (host.sockets == profile.sockets and
-            host.physical_cores == profile.physical_cores and
-            host.hyperthreading == profile.hyperthreading):
-        errorstring = icpu_utils.check_core_functions(host.subfunctions,
-                                                      profile.cpus)
-        if not errorstring:
-            return True
-    return False
-
-
 def diskprofile_applicable(host, diskprofile):
     # if host contain sufficient number of disks for diskprofile
     if not len(host.disks) >= len(diskprofile.disks):
@@ -328,6 +317,7 @@ class UpdateHostInfoAction(workflows.Action):
         personality = self.initial['personality']
 
         mem_profile_configurable = False
+        cpu_profile_configurable = False
 
         if personality and self.system_mode != constants.SYSTEM_MODE_SIMPLEX:
             self.fields['personality'].widget.attrs['readonly'] = 'readonly'
@@ -342,38 +332,13 @@ class UpdateHostInfoAction(workflows.Action):
 
             if 'worker' in host.subfunctions:
                 mem_profile_configurable = True
+                cpu_profile_configurable = True
                 host.memory = stx_api.sysinv.host_memory_list(
                     self.request, host.uuid)
             else:
                 del self.fields['memoryProfile']
 
             if host.nodes and host.cpus and host.ports:
-                # Populate Available Cpu Profile Choices
-                try:
-                    avail_cpu_profile_list = \
-                        stx_api.sysinv.host_cpuprofile_list(self.request)
-
-                    host_profile = icpu_utils.HostCpuProfile(
-                        host.subfunctions,
-                        host.cpus, host.nodes)
-
-                    cpu_profile_tuple_list = [
-                        ('', _("Copy from an available cpu profile."))]
-                    for ip in avail_cpu_profile_list:
-                        nodes = stx_api.sysinv.host_node_list(self.request,
-                                                              ip.uuid)
-                        cpu_profile = icpu_utils.CpuProfile(ip.cpus, nodes)
-                        if host_profile.profile_applicable(cpu_profile):
-                            cpu_profile_tuple_list.append(
-                                (ip.profilename, ip.profilename))
-
-                except Exception:
-                    exceptions.handle(self.request, _(
-                        'Unable to retrieve list of cpu profiles.'))
-                    cpu_profile_tuple_list = []
-
-                self.fields['cpuProfile'].choices = cpu_profile_tuple_list
-
                 # Populate Available Interface Profile Choices
                 try:
                     avail_interface_profile_list = \
@@ -394,7 +359,6 @@ class UpdateHostInfoAction(workflows.Action):
                 self.fields[
                     'interfaceProfile'].choices = interface_profile_tuple_list
             else:
-                self.fields['cpuProfile'].widget = forms.widgets.HiddenInput()
                 self.fields[
                     'interfaceProfile'].widget = forms.widgets.HiddenInput()
 
@@ -423,6 +387,36 @@ class UpdateHostInfoAction(workflows.Action):
                 self.fields['diskProfile'].choices = disk_profile_tuple_list
             else:
                 self.fields['diskProfile'].widget = forms.widgets.HiddenInput()
+
+            # Populate Available Cpu Profile Choices
+            if cpu_profile_configurable and host.nodes and host.memory:
+                try:
+                    avail_cpu_profile_list = \
+                        stx_api.sysinv.host_cpuprofile_list(self.request)
+
+                    host_profile = icpu_utils.HostCpuProfile(
+                        host.subfunctions,
+                        host.cpus, host.nodes)
+
+                    cpu_profile_tuple_list = [
+                        ('', _("Copy from an available cpu profile."))]
+                    for ip in avail_cpu_profile_list:
+                        nodes = stx_api.sysinv.host_node_list(self.request,
+                                                              ip.uuid)
+                        cpu_profile = icpu_utils.CpuProfile(ip.cpus, nodes)
+                        if host_profile.profile_applicable(cpu_profile):
+                            cpu_profile_tuple_list.append(
+                                (ip.profilename, ip.profilename))
+
+                except Exception:
+                    exceptions.handle(self.request, _(
+                        'Unable to retrieve list of cpu profiles.'))
+                    cpu_profile_tuple_list = []
+
+                self.fields['cpuProfile'].choices = cpu_profile_tuple_list
+
+            else:
+                self.fields['cpuProfile'].widget = forms.widgets.HiddenInput()
 
             if mem_profile_configurable and host.nodes and host.memory:
                 # Populate Available Memory Profile Choices
