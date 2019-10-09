@@ -320,7 +320,7 @@ class UpdateHostInfoAction(workflows.Action):
 
         # subfunctions cannot be modified once it is set
         if self.initial['subfunctions']:
-            self.fields['subfunctions'].widget.attrs['disabled'] = 'disabled'
+            self.fields['subfunctions'].widget.attrs['readonly'] = 'readonly'
             self.fields['subfunctions'].required = False
 
         # personality cannot be modified once it is set
@@ -330,7 +330,7 @@ class UpdateHostInfoAction(workflows.Action):
         mem_profile_configurable = False
 
         if personality and self.system_mode != constants.SYSTEM_MODE_SIMPLEX:
-            self.fields['personality'].widget.attrs['disabled'] = 'disabled'
+            self.fields['personality'].widget.attrs['readonly'] = 'readonly'
             self.fields['personality'].required = False
             self._personality = personality
 
