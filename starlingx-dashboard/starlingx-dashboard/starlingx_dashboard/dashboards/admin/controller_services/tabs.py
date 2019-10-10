@@ -35,6 +35,7 @@ class ControllerServicesTab(tabs.TableTab):
     name = _("Controller Services")
     slug = "controller_services"
     template_name = ("horizon/common/_detail_table.html")
+    permissions = ('openstack.services.smapi',)
 
     def _find_service_group_names(self, sdas):
         service_group_names_set = set()
