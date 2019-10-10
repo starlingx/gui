@@ -510,22 +510,14 @@ class UpdateInstallParamsAction(workflows.Action):
         (stx_api.sysinv.INSTALL_OUTPUT_GRAPHICAL, _("graphical")),
     )
 
-    boot_device = forms.RegexField(label=_("Boot Device"),
-                                   max_length=255,
-                                   regex=r'^[^/\s]|(/dev/disk/by-path/(.+))',
-                                   error_messages={
-                                       'invalid':
-                                       _('Device path is relative to /dev')},
-                                   help_text=_("Device for boot partition."))
+    boot_device = forms.CharField(label=_("Boot Device"),
+                                  max_length=255,
+                                  help_text=_("Device for boot partition."))
 
-    rootfs_device = forms.RegexField(label=_("Rootfs Device"),
-                                     max_length=255,
-                                     regex=r'^[^/\s]|(/dev/disk/by-path/(.+))',
-                                     error_messages={
-                                         'invalid':
-                                         _('Device path is relative to /dev')},
-                                     help_text=_("Device for rootfs "
-                                                 "partition."))
+    rootfs_device = forms.CharField(label=_("Rootfs Device"),
+                                    max_length=255,
+                                    help_text=_("Device for "
+                                                "rootfs partition."))
 
     install_output = forms.ChoiceField(label=_("Installation Output"),
                                        choices=INSTALL_OUTPUT_CHOICES,
