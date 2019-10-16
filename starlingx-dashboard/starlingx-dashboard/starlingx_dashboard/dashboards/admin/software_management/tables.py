@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,6 +8,7 @@ import datetime
 import logging
 
 from django.core.urlresolvers import reverse  # noqa
+from django import shortcuts
 from django.template.defaultfilters import title  # noqa
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
@@ -59,6 +60,9 @@ class ApplyPatch(tables.BatchAction):
         except Exception as ex:
             messages.error(request, str(ex))
 
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
+
 
 class RemovePatch(tables.BatchAction):
     name = "remove"
@@ -99,6 +103,9 @@ class RemovePatch(tables.BatchAction):
         except Exception as ex:
             messages.error(request, str(ex))
 
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
+
 
 class DeletePatch(tables.BatchAction):
     name = "delete"
@@ -132,6 +139,9 @@ class DeletePatch(tables.BatchAction):
             messages.success(request, result)
         except Exception as ex:
             messages.error(request, str(ex))
+
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
 
 
 class UpdatePatchRow(tables.Row):
@@ -293,6 +303,9 @@ class DeleteStrategy(tables.Action):
             LOG.exception(ex)
             messages.error(request, str(ex))
 
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
+
 
 class DeletePatchStrategy(DeleteStrategy):
     name = "delete_patch_strategy"
@@ -340,6 +353,9 @@ class ApplyStrategy(tables.Action):
         except Exception as ex:
             LOG.exception(ex)
             messages.error(request, str(ex))
+
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
 
 
 class ApplyPatchStrategy(ApplyStrategy):
@@ -389,6 +405,8 @@ class AbortStrategy(tables.Action):
         except Exception as ex:
             LOG.exception(ex)
             messages.error(request, str(ex))
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
 
 
 class AbortPatchStrategy(AbortStrategy):
@@ -457,6 +475,9 @@ class ApplyStage(tables.BatchAction):
                 LOG.exception(ex)
                 messages.error(request, str(ex))
 
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
+
 
 class ApplyPatchStage(ApplyStage):
     name = "apply_patch_stage"
@@ -518,6 +539,8 @@ class AbortStage(tables.BatchAction):
             except Exception as ex:
                 LOG.exception(ex)
                 messages.error(request, str(ex))
+        url = reverse('horizon:admin:software_management:index')
+        return shortcuts.redirect(url)
 
 
 class AbortPatchStage(AbortStage):
