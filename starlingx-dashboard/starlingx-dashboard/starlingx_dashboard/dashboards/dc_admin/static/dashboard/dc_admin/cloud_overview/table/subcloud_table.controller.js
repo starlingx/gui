@@ -64,8 +64,6 @@
     ctrl.addSubcloud = addSubcloud;
     ctrl.editSubcloud = editSubcloud;
     ctrl.addSubcloudAction = addSubcloudAction;
-    ctrl.generateConfig = generateConfig;
-    ctrl.downloadConfig = downloadConfig;
     ctrl.goToAlarmDetails = goToAlarmDetails;
     ctrl.goToHostDetails = goToHostDetails;
 
@@ -279,96 +277,6 @@
       });
     }
 
-
-    ////////////////////
-    // GenerateConfig //
-    ////////////////////
-
-    var generateConfigSchema  = {
-      type: "object",
-      properties: {
-        "pxe-subnet": {
-          type: "string",
-          title: "PXE Subnet",},
-        "management-vlan": {
-          type: "number",
-          title: "Management VLAN",},
-        "management-interface-port": {
-          type: "string",
-          title: "Management Interface Port",},
-        "management-interface-mtu": {
-          type: "number",
-          title: "Management Interface MTU"},
-        "oam-subnet": {
-          type: "string",
-          title: "OAM Subnet"},
-        "oam-gateway-ip": {
-          type: "string",
-          title: "OAM Gateway IP"},
-        "oam-floating-ip": {
-          type: "string",
-          title: "OAM Floating IP"},
-        "oam-unit-0-ip": {
-          type: "string",
-          title: "OAM Unit-0 IP"},
-        "oam-unit-1-ip": {
-          type: "string",
-          title: "OAM Unit-1 IP"},
-        "oam-interface-port": {
-          type: "string",
-          title: "OAM Interface Port"},
-        "oam-interface-mtu": {
-          type: "number",
-          title: "OAM Interface MTU"},
-        "system-mode": {
-          type: "string",
-          title: "System Mode",
-          enum: ["duplex", "duplex-direct", "simplex"],
-          default: "duplex"},
-      },
-    };
-
-    function generateConfig(cloud) {
-      var model = {};
-      var config = {
-        title: gettext('Generate Subcloud Configuration File'),
-        schema: generateConfigSchema,
-        form: ["*"],
-        model: model,
-      };
-      return modalFormService.open(config).then(function(){
-        return dc_manager.generateConfig(cloud.subcloud_id, model).success(function(response) {
-          downloadConfig(response.config, cloud.name + "_config.ini");
-        });
-      });
-    }
-
-
-//    function generateConfig(cloud) {
-//      return dc_manager.generateConfig(cloud.subcloud_id, {}).success(function(response) {
-//        downloadConfig(response.config, cloud.name + "_config.ini");
-//      });
-//    }
-
-    function downloadConfig(text, filename) {
-      // create text file as object url
-      var blob = new Blob([ text ], { "type" : "text/plain" });
-      window.URL = window.URL || window.webkitURL;
-      var fileurl = window.URL.createObjectURL(blob);
-      // provide text as downloaded file
-      $timeout(function() {
-        //Update view
-        var a = angular.element('<a></a>');
-        a.attr("href", fileurl);
-        a.attr("download", filename);
-        a.attr("target", "_blank");
-        angular.element(document.body).append(a);
-        a[0].click();
-        a.remove();
-      }, 0);
-    }
-
-
     /////////////
     // Details //
     /////////////
@@ -407,7 +315,7 @@
 
       keystone.getCurrentUserSession().success(function(session){
         if (session.available_services_regions.indexOf(cloud.name) > -1) {
-          $window.location.href = "/auth/switch_services_region/"+ cloud.name + "/?next=/admin/inventory/";
+          $window.location.href = "/auth/switch_services_region/"+ cloud.name + "/?next=/admin/";
         } else {
           toast.add('error', ctrl.endpointErrorMsg);
         }

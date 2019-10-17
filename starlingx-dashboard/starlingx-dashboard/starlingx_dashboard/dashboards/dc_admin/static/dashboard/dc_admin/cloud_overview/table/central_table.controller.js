@@ -109,7 +109,7 @@
     }
 
     function goToCentralHostDetails(cloud) {
-      $window.location.href = "/auth/switch_services_region/RegionOne/?next=/admin/inventory/";
+      $window.location.href = "/auth/switch_services_region/RegionOne/?next=/admin/";
     }
 
   }
