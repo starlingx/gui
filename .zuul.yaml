@@ -20,6 +20,8 @@
     description: Run pylint for stx-gui
     vars:
       tox_envlist: pylint
+      tox_environment:
+        STX_DC_CLIENT: distcloud-client
     required-projects:
       - starlingx/config
       - starlingx/distcloud-client
