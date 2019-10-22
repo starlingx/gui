@@ -176,6 +176,7 @@ class Memory(base.APIResourceWrapper):
               'platform_reserved_mib',
               'memavail_mib',
               'hugepages_configured',
+              'vm_pending_as_percentage',
               'vm_hugepages_nr_2M_pending',
               'vm_hugepages_avail_2M',
               'vm_hugepages_nr_1G_pending',

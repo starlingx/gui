@@ -1,4 +1,3 @@
-#
 # Copyright (c) 2013-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
@@ -17,6 +16,8 @@ from horizon import exceptions
 from horizon import forms
 from horizon import messages
 
+from sysinv.common import constants
+
 from starlingx_dashboard import api as stx_api
 
 LOG = logging.getLogger(__name__)
@@ -28,6 +29,49 @@ class UpdateMemory(forms.SelfHandlingForm):
         ('1024', _("1 GB"))
     )
 
+    APP_HP_SETTING_CHOICES = (
+        ('percent', _('Percent Value')),
+        ('integer', _('Integer Value'))
+    )
+
+    memtotal_mib = forms.CharField(
+        label=_("memtotal_mib"),
+        required=False,
+        widget=forms.widgets.HiddenInput
+    )
+
+    memtotal_mib_two = forms.CharField(
+        label=_("memtotal_mib_two"),
+        required=False,
+        widget=forms.widgets.HiddenInput
+    )
+
+    memtotal_mib_three = forms.CharField(
+        label=_("memtotal_mib_three"),
+        required=False,
+        widget=forms.widgets.HiddenInput
+    )
+
+    memtotal_mib_four = forms.CharField(
+        label=_("memtotal_mib_four"),
+        required=False,
+        widget=forms.widgets.HiddenInput
+    )
+
+    size_mib_2M = forms.CharField(
+        label=_("size_mib_2M"),
+        required=False,
+        widget=forms.widgets.HiddenInput,
+        initial=constants.MIB_2M
+    )
+
+    size_mib_1G = forms.CharField(
+        label=_("size_mib_1G"),
+        required=False,
+        widget=forms.widgets.HiddenInput,
+        initial=constants.MIB_1G
+    )
+
     host = forms.CharField(label=_("host"),
                            required=False,
                            widget=forms.widgets.HiddenInput)
@@ -37,16 +81,45 @@ class UpdateMemory(forms.SelfHandlingForm):
                               widget=forms.widgets.HiddenInput)
 
     platform_memory = forms.CharField(
-        label=_("Platform Memory for Node 0"),
+        label=_("#(MiB) of Platform Memory for Node 0"),
         required=False)
 
+    vm_hugepages_nr_percentage = forms.ChoiceField(
+        label=_("Application Huge Pages 1G/2M Setting Type"),
+        required=False,
+        choices=APP_HP_SETTING_CHOICES,
+        help_text="Take Application Hugepages as a Percentage or Integer.",
+        widget=forms.ThemableSelectWidget(
+            attrs={
+                'class': 'switchable',
+                'data-slug': 'vm_hugepages_nr_percentage'
+            }
+        )
+    )
+
     vm_hugepages_nr_2M = forms.CharField(
-        label=_("# of Application 2M Hugepages Node 0"),
-        required=False)
+        label=_("% of Application 2M Hugepages Node 0"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 2M Hugepages Node 0',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 2M Hugepages Node 0'}))
 
     vm_hugepages_nr_1G = forms.CharField(
         label=_("# of Application 1G Hugepages Node 0"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 1G Hugepages Node 0',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 1G Hugepages Node 0'}))
 
     vswitch_hugepages_reqd = forms.CharField(
         label=_("# of vSwitch 1G Hugepages Node 0"),
@@ -62,16 +135,35 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'data-slug': 'vswitch_hugepages_size_mib'}))
 
     platform_memory_two = forms.CharField(
-        label=_("Platform Memory for Node 1"),
+        label=_("#(MiB) of Platform Memory for Node 1"),
         required=False)
 
     vm_hugepages_nr_2M_two = forms.CharField(
         label=_("# of Application 2M Hugepages Node 1"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 2M Hugepages Node 1',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 2M Hugepages Node 1'
+            }
+        )
+    )
 
     vm_hugepages_nr_1G_two = forms.CharField(
         label=_("# of Application 1G Hugepages Node 1"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 1G Hugepages Node 1',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 1G Hugepages Node 1'}))
 
     vswitch_hugepages_reqd_two = forms.CharField(
         label=_("# of vSwitch 1G Hugepages Node 1"),
@@ -87,16 +179,32 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'data-slug': 'vswitch_hugepages_size_mib'}))
 
     platform_memory_three = forms.CharField(
-        label=_("Platform Memory for Node 2"),
+        label=_("#(MiB) of Platform Memory for Node 2"),
         required=False)
 
     vm_hugepages_nr_2M_three = forms.CharField(
         label=_("# of Application 2M Hugepages Node 2"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 2M Hugepages Node 2',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 2M Hugepages Node 2'}))
 
     vm_hugepages_nr_1G_three = forms.CharField(
         label=_("# of Application 1G Hugepages Node 2"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 1G Hugepages Node 2',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 1G Hugepages Node 2'}))
 
     vswitch_hugepages_reqd_three = forms.CharField(
         label=_("# of vSwitch 1G Hugepages Node 2"),
@@ -112,16 +220,32 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'data-slug': 'vswitch_hugepages_size_mib'}))
 
     platform_memory_four = forms.CharField(
-        label=_("Platform Memory for Node 3"),
+        label=_("#(MiB) of Platform Memory for Node 3"),
         required=False)
 
     vm_hugepages_nr_2M_four = forms.CharField(
         label=_("# of Application 2M Hugepages Node 3"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 2M Hugepages Node 3',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 2M Hugepages Node 3'}))
 
     vm_hugepages_nr_1G_four = forms.CharField(
         label=_("# of Application 1G Hugepages Node 3"),
-        required=False)
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'vm_hugepages_nr_percentage',
+                'data-vm_hugepages_nr_percentage-percent':
+                    '% of Application 1G Hugepages Node 3',
+                'data-vm_hugepages_nr_percentage-integer':
+                    '# of Application 1G Hugepages Node 3'}))
 
     vswitch_hugepages_reqd_four = forms.CharField(
         label=_("# of vSwitch 1G Hugepages Node 3"),
@@ -152,7 +276,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'vm_hugepages_nr_1G': self.fields['vm_hugepages_nr_1G'],
                 'vswitch_hugepages_size_mib':
                     self.fields['vswitch_hugepages_size_mib'],
-                'vswitch_hugepages_reqd': self.fields['vswitch_hugepages_reqd']
+                'vswitch_hugepages_reqd':
+                    self.fields['vswitch_hugepages_reqd'],
+                'memtotal_mib': self.fields['memtotal_mib']
             },
             {
                 'platform_memory': self.fields['platform_memory_two'],
@@ -161,7 +287,8 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'vswitch_hugepages_size_mib':
                     self.fields['vswitch_hugepages_size_mib_two'],
                 'vswitch_hugepages_reqd':
-                    self.fields['vswitch_hugepages_reqd_two']
+                    self.fields['vswitch_hugepages_reqd_two'],
+                'memtotal_mib': self.fields['memtotal_mib_two']
             },
             {
                 'platform_memory': self.fields['platform_memory_three'],
@@ -170,7 +297,8 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'vswitch_hugepages_size_mib':
                     self.fields['vswitch_hugepages_size_mib_three'],
                 'vswitch_hugepages_reqd':
-                    self.fields['vswitch_hugepages_reqd_three']
+                    self.fields['vswitch_hugepages_reqd_three'],
+                'memtotal_mib': self.fields['memtotal_mib_three']
             },
             {
                 'platform_memory': self.fields['platform_memory_four'],
@@ -179,7 +307,8 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'vswitch_hugepages_size_mib':
                     self.fields['vswitch_hugepages_size_mib_four'],
                 'vswitch_hugepages_reqd':
-                    self.fields['vswitch_hugepages_reqd_four']
+                    self.fields['vswitch_hugepages_reqd_four'],
+                'memtotal_mib': self.fields['memtotal_mib_four']
             }
         ]
 
@@ -196,15 +325,31 @@ class UpdateMemory(forms.SelfHandlingForm):
 
                     platform_field.initial = str(m.platform_reserved_mib)
 
+                    field_set['memtotal_mib'].initial = m.memtotal_mib
+
+                    vm_hugepages_nr_percentage_field = \
+                        self.fields['vm_hugepages_nr_percentage']
+
+                    if(m.vm_pending_as_percentage == "True"):
+                        vm_hugepages_nr_percentage_field.initial = "percent"
+                    else:
+                        vm_hugepages_nr_percentage_field.initial = "integer"
+
                     vm_2M_field = field_set['vm_hugepages_nr_2M']
                     vm_2M_field.help_text = \
                         'Maximum 2M pages: ' + \
                         str(m.vm_hugepages_possible_2M)
 
-                    if m.vm_hugepages_nr_2M_pending:
+                    if m.vm_hugepages_nr_2M_pending or \
+                            m.vm_hugepages_nr_2M_pending == 0:
                         vm_2M_field.initial = str(m.vm_hugepages_nr_2M_pending)
                     elif m.vm_hugepages_nr_2M:
-                        vm_2M_field.initial = str(m.vm_hugepages_nr_2M)
+                        if(m.vm_pending_as_percentage == "True"):
+                            vm_2M_field.initial = str(
+                                round(m.vm_hugepages_nr_2M *
+                                      100 / m.vm_hugepages_possible_2M))
+                        else:
+                            vm_2M_field.initial = str(m.vm_hugepages_nr_2M)
                     else:
                         vm_2M_field.initial = '0'
 
@@ -218,10 +363,16 @@ class UpdateMemory(forms.SelfHandlingForm):
 
                     vm_1G_field.help_text = help_msg
 
-                    if m.vm_hugepages_nr_1G_pending:
+                    if m.vm_hugepages_nr_1G_pending or \
+                            m.vm_hugepages_nr_1G_pending == 0:
                         vm_1G_field.initial = str(m.vm_hugepages_nr_1G_pending)
                     elif m.vm_hugepages_nr_1G:
-                        vm_1G_field.initial = str(m.vm_hugepages_nr_1G)
+                        if(m.vm_pending_as_percentage == "True"):
+                            vm_1G_field.initial = \
+                                str(int(m.vm_hugepages_nr_1G
+                                    * 100 / m.vm_hugepages_possible_1G))
+                        else:
+                            vm_1G_field.initial = str(m.vm_hugepages_nr_1G)
                     elif vm_1g_supported:
                         vm_1G_field.initial = '0'
                     else:
@@ -440,6 +591,10 @@ class UpdateMemory(forms.SelfHandlingForm):
 
                 if node_found:
                     new_data = {}
+                    new_data["vm_pending_as_percentage"] = (
+                        "True" if
+                        str(data["vm_hugepages_nr_percentage"]) == "percent"
+                        else "False")
                     if nd in plat_mem:
                         new_data['platform_reserved_mib'] = plat_mem[nd]
                     if nd in pages_2M:

@@ -15,6 +15,182 @@
 <div class="right">
   <h3>{% trans "Description" %}:</h3>
   <p>{% trans "From here you can update the platform reserved memory and the number of application hugepages per numa node." %}</p>
+  <div id="pie_container"></div>
+  <div id="pie_container_two"></div>
+  <div id="pie_container_three"></div>
+  <div id="pie_container_four"></div>
+  <script>
+
+    var nodes = [
+      {"call": "", "data": [], "max": null},
+      {"call": "_two", "data": [], "max": null},
+      {"call": "_three", "data": [], "max": null},
+      {"call": "_four", "data": [], "max": null}
+    ];
+
+    var pie;
+    var svg;
+
+    var width = 300;
+    var height = 300;
+    var margin = 30;
+    var radius = Math.min(width, height) / 2 - margin;
+
+    var color = ["#7363EB", "#3521CE", "#241494", "#4F3FBE"];
+    var colorGray = "#919191";
+
+    $("select[name='vm_hugepages_nr_percentage']").on("change", function(){
+      addData();
+      drawChart();
+    });
+
+    $("input[type='text']").bind("input", function(){
+      addData();
+      drawChart();
+    });
+
+
+    function addData(){
+      var percent = $("select[name='vm_hugepages_nr_percentage']").attr("value") == "percent";
+
+      nodes.forEach(function(node){
+        node.data = []
+        var vswitch_size = $("select[name='vswitch_hugepages_size_mib" + node.call + "']").attr("value");
+
+        if(percent)
+          node.max = 100;
+        else
+          node.max = $("input[name='memtotal_mib" + node.call + "']").attr("value");
+
+        if($("input[name='vm_hugepages_nr_2M" + node.call + "']").attr("type") != "hidden"){
+          node.data.push({"name": "Application 2M Hugepages", "desc": "vm_hugepages_nr_2M" + node.call, "value": $("input[name='vm_hugepages_nr_2M" + node.call + "']").attr("value") * (percent ? 1 : $("input[name='size_mib_2M']").attr("value")), "unit": percent ? "%": "MB"});
+          if(!$("input[name='vm_hugepages_nr_1G" + node.call + "']").attr("disabled"))
+            node.data.push({"name": "Application 1G Hugepages", "desc": "vm_hugepages_nr_1G" + node.call, "value": $("input[name='vm_hugepages_nr_1G" + node.call + "']").attr("value") * (percent ? 1 : $("input[name='size_mib_1G']").attr("value")), "unit": percent ? "%": "MB"});
+          if($("input[name='vswitch_hugepages_reqd" + node.call + "']").attr("type") != "hidden")
+            node.data.push({"name": "vSwitch Hugepages", "desc": "vswitch_hugepages_reqd" + node.call, "value": Math.round($("input[name='vswitch_hugepages_reqd" + node.call + "']").attr("value") * vswitch_size * (percent ? 100/ $('input[name="memtotal_mib' + node.call + '"]').attr("value") : 1) * 100)/100, "unit": percent ? "%": "MB"});
+        }
+      });
+    }
+
+    function drawChart(){
+      var percent = $("select[name='vm_hugepages_nr_percentage']").attr("value") == "percent";
+
+      nodes.forEach(function(node){
+        if(!node.svg)
+          return;
+
+        node.svg.html("");
+
+        var data = node.data;
+
+        var total = 0;
+        data.forEach(function(d){
+          total += d.value;
+        });
+        if(node.max - total > 0)
+          data.push({"value": Math.round((node.max-total)*100)/100, "color": colorGray, "name": "Remaining Space", "desc": "Space left to be allocated", "unit": percent ? "%" : "MB"});
+
+        var arc = d3.svg.arc().innerRadius(0).outerRadius(radius);
+
+        arcs = node.svg.selectAll("arc")
+          .data(pie(data))
+          .enter()
+          .append("g")
+          .attr("class", "arc");
+
+        arcs.append("path")
+          .attr("fill", function(d, i){
+              if(d.data.color == undefined)
+                  return color[i%color.length];
+              return d.data.color;
+          })
+          .attr("d", arc)
+          .attr("stroke", "#FFF")
+          .attr("stroke-width", "2")
+          .attr("style", "transition: 0.3s")
+          .on("mouseenter", function(d){
+              $(this).css("transform", "scale(1.1)");
+              $("#pieChartTextbox .mem_name").html(d.data.name);
+              $("#pieChartTextbox .mem_desc").html(d.data.desc);
+              $("#pieChartTextbox .mem_amount").html(d.data.value + d.data.unit);
+              $("#pieChartTextbox").css("opacity", "1");
+          })
+          .on("mouseleave", function(){
+              $(this).css("transform", "scale(1)");
+              $("#pieChartTextbox").css("opacity", "0");
+          })
+          .on("mousemove", function(){
+              $("#pieChartTextbox").css("top", d3.event.clientY - 25).css("left", d3.event.clientX + 20);
+          });
+      });
+    }
+
+    $(document).ready(function(){
+      pie = d3.layout.pie()
+        .value(function(d){
+            return d.value;
+        })
+        .startAngle(function(){return 0;})
+        .endAngle(function(){return 2*Math.PI;}).sort(function(){});
+
+      nodes.forEach(function(node, index){
+        if($("input[name='vm_hugepages_nr_2M" + node.call + "']").attr("type") == "hidden"){
+          return;
+        }
+
+        node.svg = d3.select("#pie_container" + node.call)
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .append("g")
+          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+        d3.select("#pie_container" + node.call + " svg")
+            .append("circle")
+            .attr("cx", width / 2)
+            .attr("cy", height / 2)
+            .attr("r", radius / 2)
+            .attr("fill", "#FFF");
+
+        var text = d3.select("#pie_container" + node.call + " svg")
+          .append("text")
+          .attr("font-size", 26)
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .attr("x", width / 2)
+          .attr("y", height / 2)
+          .attr("dy", "0");
+
+        text.append("tspan")
+          .attr("x", width / 2)
+          .attr("dy", "-12")
+          .attr("alignment-baseline", "middle")
+          .attr("text-anchor", "middle")
+          .html("Node");
+
+        text.append("tspan")
+          .attr("dy", "24")
+          .attr("x", width / 2)
+          .attr("alignment-baseline", "middle")
+          .attr("text-anchor", "middle")
+          .html(index);
+      });
+
+      $(document.createElement("div"))
+          .attr("id", "pieChartTextbox")
+          .attr("class", "text-box")
+          .attr("style", "opacity: 0; position: fixed; z-index: 1500; padding: 10px;transition:0.3s; transition-property: opacity ;pointer-events: none;top: 0px; left:0px; background-color: rgba(0, 0, 0, 0.5); border: solid 2px #FFF; border-radius: 10px;min-width: 150px;")
+          .append('<p style="color: white; margin-bottom: 0px;" class="mem_name"></p>')
+          .append('<p style="color: white; margin-bottom: 5px; font-style: italic; white-space: pre-wrap;" class="mem_desc"></p>')
+          .append('<p style="color: white; margin-bottom: 5px;" class="mem_amount"></p>')
+          .appendTo("body");
+
+      addData();
+      drawChart();
+    });
+
+  </script>
 </div>
 {% endblock %}
 
