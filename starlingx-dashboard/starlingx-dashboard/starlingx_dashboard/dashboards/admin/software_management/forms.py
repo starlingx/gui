@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016 Wind River Systems, Inc.
+# Copyright (c) 2016-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -72,10 +72,6 @@ class CreatePatchStrategyForm(forms.SelfHandlingForm):
     CONTROLLER_APPLY_TYPES = (
         ('serial', _("Serial")),
         ('ignore', _("Ignore")),
-    )
-
-    AIO_APPLY_TYPES = (
-        ('serial', _("Serial")),
     )
 
     GENERIC_APPLY_TYPES = (
@@ -156,7 +152,6 @@ class CreatePatchStrategyForm(forms.SelfHandlingForm):
         system_type = stx_api.sysinv.get_system_type(request)
         if system_type == stx_api.sysinv.SYSTEM_TYPE_AIO:
             del self.fields['controller_apply_type']
-            self.fields['worker_apply_type'].choices = self.AIO_APPLY_TYPES
 
         if stx_api.sysinv.is_system_mode_simplex(request):
             self.fields['default_instance_action'].choices = \
