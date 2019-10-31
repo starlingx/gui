@@ -142,148 +142,44 @@ except Exception:
     pass
 
 
-LOGGING = {
-    'version': 1,
-    # When set to True this will disable all logging except
-    # for loggers specified in this configuration dictionary. Note that
-    # if nothing is specified here and disable_existing_loggers is True,
-    # django.db.backends will still log unless it is disabled explicitly.
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': '%(levelno)s %(levelname)s %(message)s',
-        },
-        'standard': {
-            'format': '%(levelno)s %(asctime)s [%(levelname)s] '
-                      '%(name)s: %(message)s',
-        },
-        'verbose': {
-            'format': '%(levelno)s %(levelname)s %(asctime)s %(module)s '
-                      '%(process)d %(thread)d %(message)s',
-        },
-        'operation': {
-            # The format of "%(message)s" is defined by
-            # OPERATION_LOG_OPTIONS['format']
-            'format': '%(asctime)s %(message)s',
-        },
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
-        },
-        'console': {
-            # Set the level to "DEBUG" for verbose output logging.
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-        },
-        'syslog': {
-            # Set the level to "DEBUG" for verbose output logging.
-            'level': 'INFO',
-            'formatter': 'standard',
-            'class': 'logging.handlers.SysLogHandler',
-            'facility': 'local7',
-            'address': '/dev/log',
-        },
-        'operation': {
-            'level': 'INFO',
-            'formatter': 'operation',
-            'class': 'logging.handlers.SysLogHandler',
-            'facility': 'local7',
-            'address': '/dev/log',
-        },
-    },
-    'loggers': {
-        # Logging from django.db.backends is VERY verbose, send to null
-        # by default.
-        'django.db.backends': {
-            'handlers': ['null'],
-            'propagate': False,
-        },
-        'requests': {
-            'handlers': ['null'],
-            'propagate': False,
-        },
-        'horizon': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'horizon.operation_log': {
-            'handlers': ['syslog'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        'openstack_dashboard': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'starlingx_dashboard': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'novaclient': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'cinderclient': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'keystoneclient': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'glanceclient': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'neutronclient': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'heatclient': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'swiftclient': {
-            'handlers': ['null'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'openstack_auth': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'nose.plugins.manager': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'django': {
-            'handlers': ['syslog'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'iso8601': {
-            'handlers': ['null'],
-            'propagate': False,
-        },
-        'scss': {
-            'handlers': ['null'],
-            'propagate': False,
-        },
-    },
+# Override LOGGING settings
+LOGGING['formatters']['standard'] = {  # noqa
+    'format':
+        '%(levelno)s %(asctime)s [%(levelname)s] %(name)s: %(message)s'
 }
+
+LOGGING['formatters']['operation'] = {  # noqa
+    # The format of "%(message)s" is defined by
+    # OPERATION_LOG_OPTIONS['format']
+    'format': '%(asctime)s %(message)s',
+}
+
+# Overwrite the console handler to send to syslog
+LOGGING['handlers']['console'] = {  # noqa
+    'level': 'DEBUG' if DEBUG else 'INFO',  # noqa
+    'formatter': 'standard',
+    'class': 'logging.handlers.SysLogHandler',
+    'facility': 'local7',
+    'address': '/dev/log',
+}
+
+# Overwrite the operation handler to send to syslog
+LOGGING['handlers']['operation'] = {  # noqa
+    'level': 'INFO',
+    'formatter': 'operation',
+    'class': 'logging.handlers.SysLogHandler',
+    'facility': 'local7',
+    'address': '/dev/log',
+}
+
+LOGGING['loggers'].update({  # noqa
+    'starlingx_dashboard': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+        'propagate': False,
+    }
+})
+
 
 # Session overrides
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
