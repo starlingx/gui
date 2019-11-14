@@ -12,7 +12,7 @@ python-neutronclient>=5.1.0 # Apache-2.0
 fmclient>=1.0
 cgcs-patch>=1.0
 distributedcloud-client>=1.0.0
-cgtsclient1.0
+cgtsclient>=1.0
 sysinv>=1.0
 nfv-client>=1.0.0
 sm-client>=1.0.0
