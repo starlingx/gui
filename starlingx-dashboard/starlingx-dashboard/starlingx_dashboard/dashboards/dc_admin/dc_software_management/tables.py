@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Wind River Systems, Inc.
+# Copyright (c) 2018-2019 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -28,6 +28,7 @@ class UploadPatch(AdminTables.UploadPatch):
 
 
 class PatchesTable(AdminTables.PatchesTable):
+    index_url = 'horizon:dc_admin:dc_software_management:index'
     patch_id = tables.Column('patch_id',
                              link="horizon:dc_admin:dc_software_management:"
                                   "dc_patchdetail",

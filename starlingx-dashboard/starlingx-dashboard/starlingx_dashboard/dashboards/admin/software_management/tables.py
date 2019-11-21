@@ -60,7 +60,7 @@ class ApplyPatch(tables.BatchAction):
         except Exception as ex:
             messages.error(request, str(ex))
 
-        url = reverse('horizon:admin:software_management:index')
+        url = reverse(table.index_url)
         return shortcuts.redirect(url)
 
 
@@ -103,7 +103,7 @@ class RemovePatch(tables.BatchAction):
         except Exception as ex:
             messages.error(request, str(ex))
 
-        url = reverse('horizon:admin:software_management:index')
+        url = reverse(table.index_url)
         return shortcuts.redirect(url)
 
 
@@ -140,7 +140,7 @@ class DeletePatch(tables.BatchAction):
         except Exception as ex:
             messages.error(request, str(ex))
 
-        url = reverse('horizon:admin:software_management:index')
+        url = reverse(table.index_url)
         return shortcuts.redirect(url)
 
 
@@ -166,6 +166,7 @@ class PatchFilterAction(tables.FilterAction):
 
 
 class PatchesTable(tables.DataTable):
+    index_url = 'horizon:admin:software_management:index'
     PATCH_STATE_CHOICES = (
         (None, True),
         ("", True),
