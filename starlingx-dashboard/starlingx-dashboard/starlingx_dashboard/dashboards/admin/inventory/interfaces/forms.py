@@ -143,13 +143,21 @@ class AddInterface(forms.SelfHandlingForm):
     INTERFACE_CLASS_CHOICES = (
         ('none', _("none")),
         ('platform', _("platform")),
-        ('data', _("data"))
+        ('data', _("data")),
+        ('pci-sriov', _("pci-sriov"))
     )
 
     INTERFACE_TYPE_CHOICES = (
         (None, _("<Select interface type>")),
         ('ae', _("aggregated ethernet")),
         ('vlan', _("vlan")),
+        ('vf', _("vf")),
+    )
+
+    SRIOV_VF_DRIVER_CHOICES = (
+        (None, _("<Select driver type>")),
+        ('netdevice', _("netdevice")),
+        ('vfio', _("vfio")),
     )
 
     AE_MODE_CHOICES = (
@@ -258,6 +266,30 @@ class AddInterface(forms.SelfHandlingForm):
                 'data-switch-on': 'interface_type',
                 'data-slug': 'vlanid',
                 'data-interface_type-vlan': 'Vlan ID'}))
+
+    sriov_numvfs = forms.IntegerField(
+        label=_("Virtual Functions"),
+        required=False,
+        min_value=0,
+        help_text=_("Virtual Functions for pci-sriov."),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'ifclass',
+                'data-slug': 'num_vfs',
+                'data-ifclass-pci-sriov': 'Num VFs'}))
+
+    sriov_vf_driver = forms.ChoiceField(
+        label=_("Virtual Function Driver"),
+        choices=SRIOV_VF_DRIVER_CHOICES,
+        required=False,
+        help_text=_("Virtual function driver to explicitly bind to."),
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'ifclass',
+                'data-slug': 'sriov_vf_driver',
+                'data-ifclass-pci-sriov': 'VF Driver'}))
 
     uses = forms.MultipleChoiceField(
         label=_("Interface(s)"),
@@ -382,8 +414,6 @@ class AddInterface(forms.SelfHandlingForm):
             current_interface = sysinv.host_interface_get(
                 self.request, this_interface_id)
         else:
-            self.fields['datanetworks_sriov'].widget = \
-                forms.widgets.HiddenInput()
             self.fields['datanetworks_pci'].widget = \
                 forms.widgets.HiddenInput()
 
@@ -432,9 +462,9 @@ class AddInterface(forms.SelfHandlingForm):
                     initial_datanet_name.append(str(dn.name))
 
         self.fields['datanetworks_data'].choices = datanet_filtered
+        self.fields['datanetworks_sriov'].choices = datanet_filtered
         if (type(self) is UpdateInterface):
             self.fields['datanetworks_pci'].choices = datanet_choices
-            self.fields['datanetworks_sriov'].choices = datanet_choices
             # set initial selection for UpdateInterface
             self.fields['datanetworks_data'].initial = initial_datanet_name
             self.fields['datanetworks_pci'].initial = initial_datanet_name
@@ -545,8 +575,13 @@ class AddInterface(forms.SelfHandlingForm):
                 data['uses'] = uses
                 del data['ports']
 
-            if not data['datanetworks']:
-                del data['datanetworks']
+            datanetwork_uuids = []
+            if data['datanetworks']:
+                datanetworks_list = sysinv.data_network_list(self.request)
+                for n in data['datanetworks'].split(","):
+                    for dn in datanetworks_list:
+                        if dn.name == n:
+                            datanetwork_uuids.append(dn.uuid)
 
             if not data['vlan_id'] or data['iftype'] != 'vlan':
                 del data['vlan_id']
@@ -562,7 +597,6 @@ class AddInterface(forms.SelfHandlingForm):
                     network_ids.append(str(network.id))
                     network_uuids.append(network.uuid)
                     network_types.append(network.type)
-                del data['networks']
 
             if any(network_type in ['mgmt', 'cluster-host', 'oam']
                    for network_type in network_types):
@@ -576,6 +610,18 @@ class AddInterface(forms.SelfHandlingForm):
             elif data['aemode'] == 'active_standby':
                 del data['txhashpolicy']
 
+            if 'sriov_numvfs' in data:
+                data['sriov_numvfs'] = str(data['sriov_numvfs'])
+
+            if 'sriov_vf_driver' in data:
+                data['sriov_vf_driver'] = str(data['sriov_vf_driver'])
+
+            if data['ifclass'] != 'pci-sriov':
+                del data['sriov_numvfs']
+                del data['sriov_vf_driver']
+
+            del data['datanetworks']
+            del data['networks']
             interface = sysinv.host_interface_create(request, **data)
 
             ifnet_data = {}
@@ -583,6 +629,11 @@ class AddInterface(forms.SelfHandlingForm):
                 ifnet_data['interface_uuid'] = interface.uuid
                 ifnet_data['network_uuid'] = n
                 sysinv.interface_network_assign(request, **ifnet_data)
+
+            for n in datanetwork_uuids:
+                ifnet_data['interface_uuid'] = interface.uuid
+                ifnet_data['datanetwork_uuid'] = n
+                sysinv.interface_datanetwork_assign(request, **ifnet_data)
 
             msg = _('Interface "%s" was successfully'
                     ' created.') % data['ifname']
@@ -616,27 +667,10 @@ class UpdateInterface(AddInterface):
         ('ethernet', _("ethernet")),
         ('ae', _("aggregated ethernet")),
         ('vlan', _("vlan")),
-    )
-
-    SRIOV_VF_DRIVER_CHOICES = (
-        (None, _("<Select driver type>")),
-        ('netdevice', _("netdevice")),
-        ('vfio', _("vfio")),
+        ('vf', _("vf")),
     )
 
     id = forms.CharField(widget=forms.widgets.HiddenInput)
-
-    sriov_numvfs = forms.IntegerField(
-        label=_("Virtual Functions"),
-        required=False,
-        min_value=0,
-        help_text=_("Virtual Functions for pci-sriov."),
-        widget=forms.TextInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'ifclass',
-                'data-slug': 'num_vfs',
-                'data-ifclass-pci-sriov': 'Num VFs'}))
 
     sriov_totalvfs = forms.IntegerField(
         label=_("Maximum Virtual Functions"),
@@ -652,18 +686,6 @@ class UpdateInterface(AddInterface):
         label=_("Interface Type"),
         choices=INTERFACE_TYPE_CHOICES,
         widget=forms.HiddenInput)
-
-    sriov_vf_driver = forms.ChoiceField(
-        label=_("Virtual Function Driver"),
-        choices=SRIOV_VF_DRIVER_CHOICES,
-        required=False,
-        help_text=_("Virtual function driver to explicitly bind to."),
-        widget=forms.Select(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'ifclass',
-                'data-slug': 'sriov_vf_driver',
-                'data-ifclass-pci-sriov': 'VF Driver'}))
 
     def __init__(self, *args, **kwargs):
         super(UpdateInterface, self).__init__(*args, **kwargs)
@@ -751,6 +773,8 @@ class UpdateInterface(AddInterface):
                             'pci-passthrough']
         elif iftype_val == 'ae':
             choices_list = ['none', 'platform', 'data']
+        elif iftype_val == 'vf':
+            choices_list = ['none', 'data']
         else:
             choices_list = ['platform', 'data']
 
@@ -895,7 +919,8 @@ class UpdateInterface(AddInterface):
                     self.request, host_uuid)
                 current_interface = sysinv.host_interface_get(
                     self.request, interface_id)
-                if data['iftype'] != 'ae' or data['iftype'] != 'vlan':
+                if (data['iftype'] != 'ae' or data['iftype'] != 'vlan' or
+                        data['iftype' != 'vf']):
                     for p in avail_port_list:
                         if p.interface_uuid == current_interface.uuid:
                             data['ifname'] = p.get_port_display_name()
@@ -914,10 +939,10 @@ class UpdateInterface(AddInterface):
                     ('pci-sriov' in ifclass and data['sriov_numvfs']):
                 current_interface = sysinv.host_interface_get(
                     self.request, interface_id)
-                if current_interface.iftype != 'ethernet':
-                    # Only ethernet interfaces can be pci-sriov
+                if current_interface.iftype not in ['ethernet', 'vf']:
+                    # Only ethernet and VF interfaces can be pci-sriov
                     msg = _('pci-passthrough or pci-sriov can only'
-                            ' be set on ethernet interfaces')
+                            ' be set on ethernet or VF interfaces')
                     messages.error(request, msg)
                     LOG.error(msg)
                     # Redirect to failure pg
