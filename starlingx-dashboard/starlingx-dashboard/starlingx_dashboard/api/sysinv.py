@@ -21,7 +21,6 @@ import math
 
 from cgtsclient.v1 import client as cgts_client
 from cgtsclient.v1 import icpu as icpu_utils
-
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -42,10 +41,6 @@ PERSONALITY_UNKNOWN = 'unknown'
 
 SUBFUNCTIONS_WORKER = 'worker'
 SUBFUNCTIONS_LOWLATENCY = 'lowlatency'
-
-BM_TYPE_NULL = ''
-BM_TYPE_NONE = 'none'
-BM_TYPE_GENERIC = 'bmc'
 
 RECORDTYPE_INSTALL = 'install'
 RECORDTYPE_INSTALL_ANSWER = 'install_answers'
@@ -107,6 +102,12 @@ CLOCK_SYNCHRONIZATION_CHOICES = (
     (constants.NTP, _("ntp")),
     (constants.PTP, _("ptp")),
 )
+
+# Host Board Management Constants
+HOST_BM_TYPE_DEPROVISIONED = "none"
+HOST_BM_TYPE_IPMI = "ipmi"
+HOST_BM_TYPE_REDFISH = "redfish"
+HOST_BM_TYPE_DYNAMIC = "dynamic"
 
 LOG = logging.getLogger(__name__)
 
@@ -1009,11 +1010,6 @@ class Host(base.APIResourceWrapper):
     @property
     def bm_type(self):
         bm_type = self._bm_type
-        if bm_type and not bm_type.lower().startswith(BM_TYPE_NONE):
-            bm_type = BM_TYPE_GENERIC
-        else:
-            bm_type = BM_TYPE_NULL
-
         return bm_type
 
     @property

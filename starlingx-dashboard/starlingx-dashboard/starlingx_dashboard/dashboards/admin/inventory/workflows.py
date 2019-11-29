@@ -51,8 +51,10 @@ PERSONALITY_CHOICE_CONTROLLER = (
 )
 
 BM_TYPES_CHOICES = (
-    (stx_api.sysinv.BM_TYPE_NULL, _('No Board Management')),
-    (stx_api.sysinv.BM_TYPE_GENERIC, _("Board Management Controller")),
+    (sysinv.HOST_BM_TYPE_DEPROVISIONED, _('No Board Management')),
+    (sysinv.HOST_BM_TYPE_DYNAMIC, _("Dynamic (learn)")),
+    (sysinv.HOST_BM_TYPE_IPMI, _("IPMI")),
+    (sysinv.HOST_BM_TYPE_REDFISH, _("Redfish")),
 )
 
 
@@ -589,8 +591,12 @@ class BoardManagementAction(workflows.Action):
         widget=forms.TextInput(attrs={
             'class': 'switched',
             'data-switch-on': 'bm_type',
-            'data-bm_type-' +
-            stx_api.sysinv.BM_TYPE_GENERIC: FIELD_LABEL_BM_IP}))
+            'data-bm_type-' + sysinv.HOST_BM_TYPE_DYNAMIC:
+                FIELD_LABEL_BM_IP,
+            'data-bm_type-' + sysinv.HOST_BM_TYPE_IPMI:
+                FIELD_LABEL_BM_IP,
+            'data-bm_type-' + sysinv.HOST_BM_TYPE_REDFISH:
+                FIELD_LABEL_BM_IP}))
 
     bm_username = forms.CharField(
         label=FIELD_LABEL_BM_USERNAME,
@@ -599,8 +605,12 @@ class BoardManagementAction(workflows.Action):
             'autocomplete': 'off',
             'class': 'switched',
             'data-switch-on': 'bm_type',
-            'data-bm_type-' +
-            stx_api.sysinv.BM_TYPE_GENERIC: FIELD_LABEL_BM_USERNAME}))
+            'data-bm_type-' + sysinv.HOST_BM_TYPE_DYNAMIC:
+                FIELD_LABEL_BM_USERNAME,
+            'data-bm_type-' + sysinv.HOST_BM_TYPE_IPMI:
+                FIELD_LABEL_BM_USERNAME,
+            'data-bm_type-' + sysinv.HOST_BM_TYPE_REDFISH:
+                FIELD_LABEL_BM_USERNAME}))
 
     bm_password = forms.RegexField(
         label=FIELD_LABEL_BM_PASSWORD,
@@ -610,8 +620,12 @@ class BoardManagementAction(workflows.Action):
                 'autocomplete': 'off',
                 'class': 'switched',
                 'data-switch-on': 'bm_type',
-                'data-bm_type-' +
-                stx_api.sysinv.BM_TYPE_GENERIC: FIELD_LABEL_BM_PASSWORD}),
+                'data-bm_type-' + sysinv.HOST_BM_TYPE_DYNAMIC:
+                    FIELD_LABEL_BM_PASSWORD,
+                'data-bm_type-' + sysinv.HOST_BM_TYPE_IPMI:
+                    FIELD_LABEL_BM_PASSWORD,
+                'data-bm_type-' + sysinv.HOST_BM_TYPE_REDFISH:
+                    FIELD_LABEL_BM_PASSWORD}),
         regex=validators.password_validator(),
         required=False,
         error_messages={'invalid': validators.password_validator_msg()})
@@ -624,8 +638,11 @@ class BoardManagementAction(workflows.Action):
                 'autocomplete': 'off',
                 'class': 'switched',
                 'data-switch-on': 'bm_type',
-                'data-bm_type-' +
-                stx_api.sysinv.BM_TYPE_GENERIC:
+                'data-bm_type-' + sysinv.HOST_BM_TYPE_DYNAMIC:
+                    FIELD_LABEL_BM_CONFIRM_PASSWORD,
+                'data-bm_type-' + sysinv.HOST_BM_TYPE_IPMI:
+                    FIELD_LABEL_BM_CONFIRM_PASSWORD,
+                'data-bm_type-' + sysinv.HOST_BM_TYPE_REDFISH:
                     FIELD_LABEL_BM_CONFIRM_PASSWORD}),
         required=False)
 
