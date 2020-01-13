@@ -9,10 +9,10 @@ Packager: Wind River <info@windriver.com>
 URL: unknown
 Source0: %{name}-%{version}.tar.gz
 
-BuildRequires:  python-setuptools
-BuildRequires:  python-pbr
-BuildRequires:  python2-pip
-BuildRequires:  python2-wheel
+BuildRequires:  python3-setuptools
+BuildRequires:  python3-pbr
+BuildRequires:  python3-pip
+BuildRequires:  python3-wheel
 Requires:       openstack-dashboard
 
 BuildArch:      noarch
@@ -32,12 +32,12 @@ starlingx specific horizon plugins
 
 %build
 export PBR_VERSION=%{version}
-%py2_build
-%py2_build_wheel
+%py3_build
+%py3_build_wheel
 
 %install
 export PBR_VERSION=%{version}
-%py2_install
+%py3_install
 mkdir -p $RPM_BUILD_ROOT/wheels
 install -m 644 dist/*.whl $RPM_BUILD_ROOT/wheels/
 
@@ -55,9 +55,9 @@ install -p -D -m 755 %{py_pkg_name}/local/local_settings.d/* %{buildroot}%{local
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%{python2_sitelib}/%{py_pkg_name}
+%{python3_sitelib}/%{py_pkg_name}
 
-%{python2_sitelib}/%{py_pkg_name}-%{version}*.egg-info
+%{python3_sitelib}/%{py_pkg_name}-%{version}*.egg-info
 
 %{enabled_dir}
 %{stx_themes_dir}
