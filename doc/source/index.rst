@@ -1,6 +1,6 @@
-===========================
-StarlingX GUI Documentation
-===========================
+=====================
+StarlingX GUI Project
+=====================
 
 The starlingx/gui project provides Horizon plugins for new StarlingX services.
 
@@ -11,7 +11,7 @@ Release notes
 .. toctree::
    :maxdepth: 1
 
-   Release notes <https://docs.starlingx.io/releasenotes/stx-gui>
+   Release notes <https://docs.starlingx.io/releasenotes/gui>
 
 -----
 Links
