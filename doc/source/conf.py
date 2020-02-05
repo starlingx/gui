@@ -23,7 +23,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'stx-gui'
+project = u'StarlingX GUI'
 copyright = '2018, StarlingX'
 author = 'StarlingX'
 

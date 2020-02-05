@@ -1,6 +1,6 @@
-=====================
-stx-gui Release Notes
-=====================
+===========================
+StarlingX GUI Release Notes
+===========================
 
 .. toctree::
    :maxdepth: 2
