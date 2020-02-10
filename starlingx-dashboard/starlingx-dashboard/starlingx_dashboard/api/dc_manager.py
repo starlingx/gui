@@ -50,7 +50,7 @@ def alarm_summary_list(request):
 class Subcloud(base.APIResourceWrapper):
     _attrs = ['subcloud_id', 'name', 'description', 'location',
               'software_version', 'management_subnet', 'management_state',
-              'availability_status', 'management_start_ip',
+              'availability_status', 'deploy_status', 'management_start_ip',
               'management_end_ip', 'management_gateway_ip',
               'systemcontroller_gateway_ip', 'created_at', 'updated_at',
               'sync_status', 'endpoint_sync_status', ]
