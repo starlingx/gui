@@ -28,6 +28,7 @@
       <th class="rsp-p1" st-sort="status" translate>Alarm Status</th>
       <th class="rsp-p1" st-sort="sync_status" translate>Sync Status</th>
       <th class="rsp-p2" st-sort="location" translate>Location</th>
+      <th class="actions_column" translate>Switch to Subcloud Region</th>
       <th class="actions_column" translate>Actions</th>
     </tr>
   </thead>
@@ -74,11 +75,11 @@
       <td class="action-col">
 
         <action-list uib-dropdown dropdown="true" class="dropdown btn-group">
-
           <button type="button" class="split-button btn btn-default"
             ng-click="table.goToAlarmDetails(cloud)">
             Alarm & Event Details
           </button>
+
           <button class="split-caret dropdown-toggle btn btn-default"  uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
             <span class="fa fa-caret-down"></span>
             <span class="sr-only" translate>Toggle Dropdown</span>
@@ -91,19 +92,30 @@
                 Hosts Detail
               </a>
             </li>
+          </ul>
+        </action-list>
+      </td>
 
-            <li ng-if="cloud.management_state==='unmanaged'">
-              <a  role="menuitem" href="#" ng-click="table.manage(cloud)">
-               Manage Subcloud
-              </a>
-            </li>
+      <td class="action-col">
+        <action-list uib-dropdown dropdown="true" class="dropdown btn-group">
 
-            <li ng-if="cloud.management_state==='managed'">
-              <a  role="menuitem" href="#" ng-click="table.unmanageSubcloud(cloud)">
-               Unmanage Subcloud
-              </a>
-            </li>
+          <button
+            type="button" ng-if="cloud.management_state==='unmanaged'"
+            class="split-button btn btn-default" ng-click="table.manage(cloud)"  >
+            Manage Subcloud
+          </button>
+          <button
+            type="button" ng-if="cloud.management_state==='managed'"
+            class="split-button btn btn-default" ng-click="table.unmanageSubcloud(cloud)" >
+            Unmanage Subcloud
+          </button>
 
+          <button class="split-caret dropdown-toggle btn btn-default"  uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
+            <span class="fa fa-caret-down"></span>
+            <span class="sr-only" translate>Toggle Dropdown</span>
+          </button>
+
+          <ul role="menu" class="dropdown-menu dropdown-menu-right">
             <li>
               <a role="menuitem" href="#" ng-click="table.editSubcloud(cloud)">
                Edit Subcloud
@@ -117,7 +129,6 @@
             </li>
 
           </ul>
-
         </action-list>
       </td>
     </tr>

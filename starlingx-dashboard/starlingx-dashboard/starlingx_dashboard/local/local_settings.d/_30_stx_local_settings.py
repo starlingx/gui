@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 Wind River Systems, Inc.
+# Copyright (c) 2019-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -7,6 +7,8 @@
 import os
 
 from openstack_dashboard.settings import HORIZON_CONFIG
+from openstack_dashboard.settings import ROOT_PATH
+from openstack_dashboard.settings import TEMPLATES
 from starlingx_dashboard import configss
 from tsconfig.tsconfig import distributed_cloud_role
 
@@ -108,6 +110,10 @@ AVAILABLE_THEMES = [
 ]
 DEFAULT_THEME = 'starlingx'
 
+SELECTABLE_THEMES = [
+    ('starlingx', 'StarlingX', 'themes/starlingx'),
+]
+
 for root, _dirs, files in os.walk('/opt/branding/applied'):
     if 'manifest.py' in files:
         with open(os.path.join(root, 'manifest.py')) as f:
@@ -121,6 +127,16 @@ for root, _dirs, files in os.walk('/opt/branding/applied'):
             ('custom', 'Custom', '/opt/branding/applied'),
         ]
         DEFAULT_THEME = 'custom'
+
+        SELECTABLE_THEMES = [
+            ('custom', 'Custom', '/opt/branding/applied'),
+        ]
+
+
+# Add StarlingX templates location to override openstack ones
+ADD_TEMPLATE_DIRS = [os.path.join(ROOT_PATH, 'starlingx_templates')]
+TEMPLATES[0]['DIRS'] = ADD_TEMPLATE_DIRS + TEMPLATES[0]['DIRS']
+
 
 STATIC_ROOT = "/www/pages/static"
 COMPRESS_OFFLINE = True
