@@ -1,4 +1,4 @@
-# Copyright 2015-2019 Wind River Systems, Inc
+# Copyright 2015-2020 Wind River Systems, Inc
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -107,6 +107,7 @@ class AddressTable(tables.DataTable):
         verbose_name = _("Address List")
         table_actions = (CreateAddress, DeleteAddress)
         row_actions = (DeleteAddress,)
+        hidden_title = False
 
     def get_interface(self):
         if not hasattr(self, "_interface"):

@@ -1,4 +1,4 @@
-# Copyright 2015 Wind River Systems, Inc
+# Copyright 2015-2020 Wind River Systems, Inc
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -87,6 +87,21 @@ def get_network_column(route):
     return network + '/' + str(prefix)
 
 
+class RouteFilterAction(tables.FilterAction):
+    def filter(self, table, routes, filter_string):
+        """Naive case-insensitive search."""
+        q = filter_string.lower()
+
+        def comp(route):
+            if (q in route.network or
+               q in route.gateway or
+               q in route.metric):
+                return True
+            return False
+
+        return list(filter(comp, routes))
+
+
 class RouteTable(tables.DataTable):
     network = tables.Column(get_network_column,
                             verbose_name=_("Network"))
@@ -107,8 +122,9 @@ class RouteTable(tables.DataTable):
     class Meta(object):
         name = "routes"
         verbose_name = _("Route List")
-        table_actions = (CreateRoute, DeleteRoute)
+        table_actions = (CreateRoute, DeleteRoute, RouteFilterAction)
         row_actions = (DeleteRoute,)
+        hidden_title = False
 
     def get_interface(self):
         if not hasattr(self, "_interface"):
