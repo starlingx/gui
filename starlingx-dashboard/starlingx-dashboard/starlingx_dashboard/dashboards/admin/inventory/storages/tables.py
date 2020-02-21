@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -262,6 +262,8 @@ class DisksTable(tables.DataTable):
                    'rpm', 'serial_id', 'model_num')
         multi_select = False
         table_actions = ()
+        hidden_title = False
+        footer = False
 
 
 class EditStor(tables.LinkAction):
@@ -362,6 +364,8 @@ class StorageVolumesTable(tables.DataTable):
         multi_select = False
         row_actions = (DeleteStor, EditStor,)
         table_actions = (CreateStorageVolume, CreateDiskProfile,)
+        hidden_title = False
+        footer = False
 
 
 class AddLocalVolumeGroup(tables.LinkAction):
@@ -493,6 +497,8 @@ class LocalVolumeGroupsTable(tables.DataTable):
         multi_select = False
         row_actions = (RemoveLocalVolumeGroup,)
         table_actions = (AddLocalVolumeGroup, CreateDiskProfile)
+        hidden_title = False
+        footer = False
 
 
 class AddPhysicalVolume(tables.LinkAction):
@@ -614,6 +620,8 @@ class PhysicalVolumesTable(tables.DataTable):
         multi_select = False
         table_actions = (AddPhysicalVolume,)
         row_actions = (RemovePhysicalVolume,)
+        hidden_title = False
+        footer = False
 
 
 class PartitionsTable(tables.DataTable):
@@ -648,3 +656,5 @@ class PartitionsTable(tables.DataTable):
         multi_select = False
         row_actions = (EditPartition, DeletePartition,)
         table_actions = (CreatePartition,)
+        hidden_title = False
+        footer = False
