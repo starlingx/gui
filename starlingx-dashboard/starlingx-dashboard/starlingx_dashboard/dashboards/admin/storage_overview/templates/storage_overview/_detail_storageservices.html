@@ -5,7 +5,7 @@
       <div id="storageservice">
           {% if cluster %}
               <div id="health" class="info detail">
-                <dl>
+                <dl class="dl-horizontal-wide">
                   <dt>{% trans "Storage Cluster UUID " %}</dt>
                   <dd>{{ cluster.fsid }}</dd>
                   <dt>{% trans "Storage Cluster Health Status" %}</dt>
@@ -17,7 +17,7 @@
 
               {% if storage %}
                 <div id="storage" class="info detail">
-                    <dl>
+                    <dl class="dl-horizontal-wide">
                         <dt>{% trans "Storage Usage" %}</dt>
                         <dd>{{ storage.used }} {{" MiB used, "}} 
                             {{ storage.available }} {{" GiB available, "}} 
