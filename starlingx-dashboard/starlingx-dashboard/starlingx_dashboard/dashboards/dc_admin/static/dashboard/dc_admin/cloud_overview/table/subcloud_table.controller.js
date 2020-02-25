@@ -136,6 +136,11 @@
           { label: gettext('disabled'), key: 'disabled' },
           { label: gettext('OK'), key: 'OK' },
         ]
+      },
+      {
+        label: gettext('Subcloud ID'),
+        name: 'subcloud_id',
+        singleton: true
       }
     ];
 
