@@ -436,14 +436,14 @@ class RemoveLocalVolumeGroup(tables.DeleteAction):
 
     def allowed(self, request, lvg=None):
         host = self.table.kwargs['host']
-        cinder_backend = sysinv.get_cinder_backend(request)
+        storage_backend = sysinv.get_storage_backend(request)
 
         if lvg.lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
             return ((host._administrative == 'locked') or
                     (('worker' in host._subfunctions) and
                      (host.worker_config_required is True)))
         elif lvg.lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
-            return (sysinv.CINDER_BACKEND_LVM not in cinder_backend and
+            return (sysinv.STORAGE_BACKEND_LVM not in storage_backend and
                     sysinv.LVG_ADD in lvg.vg_state)
 
         return False
@@ -561,14 +561,14 @@ class RemovePhysicalVolume(tables.DeleteAction):
 
     def allowed(self, request, pv=None):
         host = self.table.kwargs['host']
-        cinder_backend = sysinv.get_cinder_backend(request)
+        storage_backend = sysinv.get_storage_backend(request)
 
         if pv.lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
             return ((host._administrative == 'locked') or
                     (('worker' in host._subfunctions) and
                      (host.worker_config_required is True)))
         elif pv.lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
-            return (sysinv.CINDER_BACKEND_LVM not in cinder_backend and
+            return (sysinv.STORAGE_BACKEND_LVM not in storage_backend and
                     sysinv.PV_ADD in pv.pv_state)
 
         return False

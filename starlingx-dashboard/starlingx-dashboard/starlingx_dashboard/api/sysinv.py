@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 
 from __future__ import absolute_import
@@ -59,9 +59,9 @@ SENSORS_AC_RESET = "reset"
 SENSORS_AC_POWERCYCLE = "power-cycle"
 SENSORS_AC_POWEROFF = "poweroff"
 
-# Cinder backend values
-CINDER_BACKEND_LVM = "lvm"
-CINDER_BACKEND_CEPH = "ceph"
+# Storage backend values
+STORAGE_BACKEND_LVM = "lvm"
+STORAGE_BACKEND_CEPH = "ceph"
 
 # Local Volume Group Values
 LVG_NOVA_LOCAL = "nova-local"
@@ -1842,16 +1842,16 @@ def storage_usage_list(request):
     return ulist
 
 
-def get_cinder_backend(request):
+def get_storage_backend(request):
     storage_list = storage_backend_list(request)
-    cinder_backends = []
+    storage_backends = []
 
     if storage_list:
         for storage in storage_list:
             if hasattr(storage, 'backend'):
-                cinder_backends.append(storage.backend)
+                storage_backends.append(storage.backend)
 
-    return cinder_backends
+    return storage_backends
 
 
 def host_filesystems_list(request, host_id):
@@ -2669,6 +2669,9 @@ def get_system_type(request):
 
 def get_ceph_storage_model(request):
     cluster = cluster_get(request, constants.CLUSTER_CEPH_DEFAULT_NAME)
+    backends = get_storage_backend(request)
+    if STORAGE_BACKEND_CEPH not in backends:
+        return None
     return cluster.deployment_model
 
 
