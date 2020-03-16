@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -50,6 +50,7 @@ def _get_network_choices(networks):
     PLATFORM_NETWORK_TYPES = ['pxeboot',
                               'mgmt',
                               'cluster-host',
+                              'storage',
                               'oam']
     choices = []
     for n in networks:
@@ -598,7 +599,7 @@ class AddInterface(forms.SelfHandlingForm):
                     network_uuids.append(network.uuid)
                     network_types.append(network.type)
 
-            if any(network_type in ['mgmt', 'cluster-host', 'oam']
+            if any(network_type in ['mgmt', 'cluster-host', 'oam', 'storage']
                    for network_type in network_types):
                 del data['imtu']
             else:
