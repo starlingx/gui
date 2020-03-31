@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -502,7 +502,6 @@ class StorageTab(tabs.TableTab):
                               _('Unable to retrieve inventory details.'),
                               redirect=redirect)
 
-        context['cinder_backend'] = stx_api.sysinv.get_cinder_backend(request)
         context['is_host_with_storage'] =  \
             stx_api.sysinv.is_host_with_storage(request, host.uuid)
 

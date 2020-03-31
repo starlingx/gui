@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2017-2018 Wind River Systems, Inc.
+# Copyright (c) 2017-2020 Wind River Systems, Inc.
 #
 
 import logging
@@ -50,7 +50,7 @@ def alarm_summary_list(request):
 class Subcloud(base.APIResourceWrapper):
     _attrs = ['subcloud_id', 'name', 'description', 'location',
               'software_version', 'management_subnet', 'management_state',
-              'availability_status', 'management_start_ip',
+              'availability_status', 'deploy_status', 'management_start_ip',
               'management_end_ip', 'management_gateway_ip',
               'systemcontroller_gateway_ip', 'created_at', 'updated_at',
               'sync_status', 'endpoint_sync_status', ]
@@ -129,6 +129,12 @@ def step_list(request):
     response = dcmanagerclient(request).strategy_step_manager.\
         list_strategy_steps()
     return [Step(step) for step in response]
+
+
+def step_detail(request, cloud_name):
+    response = dcmanagerclient(request).strategy_step_manager. \
+        strategy_step_detail(cloud_name)
+    return Step(response[0])
 
 
 class Config(base.APIResourceWrapper):

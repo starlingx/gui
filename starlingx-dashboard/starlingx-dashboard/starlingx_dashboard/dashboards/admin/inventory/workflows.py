@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -184,8 +184,8 @@ class AddHostInfoAction(workflows.Action):
         super(AddHostInfoAction, self).__init__(request, *arg, **kwargs)
 
         # pesonality cannot be storage if ceph is not configured
-        cinder_backend = stx_api.sysinv.get_cinder_backend(request)
-        if stx_api.sysinv.CINDER_BACKEND_CEPH not in cinder_backend:
+        storage_backend = stx_api.sysinv.get_storage_backend(request)
+        if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
             self.fields['personality'].choices = \
                 PERSONALITY_CHOICES_WITHOUT_STORAGE
 
@@ -284,8 +284,8 @@ class UpdateHostInfoAction(workflows.Action):
         super(UpdateHostInfoAction, self).__init__(request, *args, **kwargs)
 
         # pesonality cannot be storage if ceph is not configured
-        cinder_backend = stx_api.sysinv.get_cinder_backend(request)
-        if stx_api.sysinv.CINDER_BACKEND_CEPH not in cinder_backend:
+        storage_backend = stx_api.sysinv.get_storage_backend(request)
+        if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
             self.fields['personality'].choices = \
                 PERSONALITY_CHOICES_WITHOUT_STORAGE
 
@@ -648,8 +648,8 @@ class BoardManagementAction(workflows.Action):
 
     def clean(self):
         cleaned_data = super(BoardManagementAction, self).clean()
-
-        if cleaned_data.get('bm_type'):
+        if cleaned_data.get('bm_type') != \
+                sysinv_const.HOST_BM_TYPE_DEPROVISIONED:
             if 'bm_ip' not in cleaned_data or not cleaned_data['bm_ip']:
                 raise forms.ValidationError(
                     _('Board management IP address is required.'))

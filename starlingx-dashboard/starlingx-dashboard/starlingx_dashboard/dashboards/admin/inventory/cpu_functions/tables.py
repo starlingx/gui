@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2014 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -82,3 +82,5 @@ class CpuFunctionsTable(tables.DataTable):
         multi_select = False
         table_actions = (CreateCpuProfile, EditCpuFunctions,)
         row_actions = ()
+        hidden_title = False
+        footer = False

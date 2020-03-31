@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -223,8 +223,8 @@ class iStoragePoolsTab(tabs.TableTab):
     def allowed(self, request):
         """Only display the Tab if we have a ceph based setup"""
         try:
-            cinder_backend = stx_api.sysinv.get_cinder_backend(request)
-            if stx_api.sysinv.CINDER_BACKEND_CEPH in cinder_backend:
+            storage_backend = stx_api.sysinv.get_storage_backend(request)
+            if stx_api.sysinv.STORAGE_BACKEND_CEPH in storage_backend:
                 return True
         except Exception:
             pass

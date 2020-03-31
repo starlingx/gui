@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2019 Wind River Systems, Inc.
+ * Copyright (c) 2017-2020 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -75,6 +75,80 @@
     // Messages
     ctrl.endpointErrorMsg = gettext("This subcloud's endpoints are not yet accessible by horizon.  Please log out and log back in to access this subcloud.");
 
+    ctrl.filterFacets = [
+      {
+        label: gettext('Name'),
+        name: 'name',
+        singleton: true
+      },
+      {
+        label: gettext('Management State'),
+        name: 'is_managed',
+        singleton: true,
+        options: [
+          { label: gettext('unmanaged'), key: 'false' },
+          { label: gettext('managed'), key: 'true' }
+        ]
+      },
+      {
+        label: gettext('Availability Status'),
+        name: 'availability_status',
+        singleton: true,
+        options: [
+          { label: gettext('online'), key: 'online' },
+          { label: gettext('offline'), key: 'offline' }
+        ]
+      },
+      {
+        label: gettext('Deploy Status'),
+        name: 'deploy_status',
+        singleton: true,
+        options: [
+          { label: gettext('not-deployed'), key: 'not-deployed' },
+          { label: gettext('pre-install'), key: 'pre-install' },
+          { label: gettext('pre-install-failed'), key: 'pre-install-failed' },
+          { label: gettext('installing'), key: 'installing' },
+          { label: gettext('install-failed'), key: 'install-failed' },
+          { label: gettext('bootstrapping'), key: 'bootstrapping' },
+          { label: gettext('bootstrap-failed'), key: 'bootstrap-failed' },
+          { label: gettext('deploying'), key: 'deploying' },
+          { label: gettext('deploy-failed'), key: 'deploy-failed' },
+          { label: gettext('complete'), key: 'complete' }
+        ]
+      },
+      {
+        label: gettext('Sync Status'),
+        name: 'sync_status',
+        singleton: true,
+        options: [
+          { label: gettext('unknown'), key: 'unknown' },
+          { label: gettext('in-sync'), key: 'in-sync' },
+          { label: gettext('out-of-sync'), key: 'out-of-sync' },
+        ]
+      },
+      {
+        label: gettext('Alarm Status'),
+        name: 'status',
+        singleton: true,
+        options: [
+          { label: gettext('critical'), key: 'critical' },
+          { label: gettext('degraded'), key: 'degraded' },
+          { label: gettext('disabled'), key: 'disabled' },
+          { label: gettext('OK'), key: 'OK' },
+        ]
+      },
+      {
+        label: gettext('Subcloud ID'),
+        name: 'subcloud_id',
+        singleton: true
+      }
+    ];
+
+    ctrl.getManagementState = {
+      false: gettext('unmanaged'),
+      true: gettext('managed')
+    };
+
     getData();
     startRefresh();
 
@@ -91,7 +165,21 @@
     }
 
     function getSubCloudsSuccess(response) {
+      response.items.map(modifyItem);
       ctrl.subClouds = response.items;
+
+      // Because "managed" is a substring of "unmanaged", a search for the
+      // word "managed" will return both managed and unmanaged items. To
+      // go around this issue we map management_state to new boolean
+      // attribute is_managed.
+      function modifyItem(item) {
+         if (item.management_state == 'managed') {
+            item.is_managed = true;
+          }
+          else {
+            item.is_managed = false;
+          }
+       }
     }
 
     function getSummariesSuccess(response) {

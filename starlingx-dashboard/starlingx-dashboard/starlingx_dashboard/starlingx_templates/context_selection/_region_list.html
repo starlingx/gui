@@ -1,0 +1,49 @@
+{% load i18n %}
+{% load settings %}
+{% is_dc_mode as dc_mode %}
+
+<ul class="dropdown-menu">
+
+  <!-- Special case for dealing with Distributed Cloud. -->
+  {% if dc_mode %}
+    <li class="dropdown-header">{% trans "Central Cloud Regions:" %}</li>
+      <li>
+        <a href="/auth/switch_services_region/RegionOne/?next=/admin/" target="_self">
+          {% trans "RegionOne" %}
+          {% if region_name == "RegionOne" %}
+          <span class="fa fa-check"></span>
+          {% endif %}
+        </a>
+      </li>
+      <li>
+        <a href="/auth/switch_services_region/SystemController/?next=/dc_admin/" target="_self">
+          {% trans "SystemController" %}
+          {% if region_name == "SystemController" %}
+          <span class="fa fa-check"></span>
+          {% endif %}
+        </a>
+      </li>
+      <li class="dropdown-header">{% trans "Subcloud Regions:" %}</li>
+      <li>
+        <a href="/auth/switch_services_region/SystemController/?next=/dc_admin/" target="_self">
+          {% trans "Switch to Subclouds" %}
+        </a>
+      </li>
+
+  {% else %}
+    <li class="dropdown-header">{% trans "Regions:" %}</li>
+    {% for region in regions %}
+      <li>
+        <a href="{% url 'switch_services_region' region %}{% if page_url %}?next={{ page_url }}{% endif %}"
+           target="_self">
+          <span class="region-name dropdown-title">{{ region }}</span>
+          {% if region == region_name %}
+          <span class="fa fa-check"></span>
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+
+  {% endif %}
+
+</ul>

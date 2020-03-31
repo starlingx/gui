@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -270,8 +270,6 @@ class DeleteStrategy(tables.Action):
     icon = 'trash'
     action_type = 'danger'
     verbose_name = _("Delete Strategy")
-    confirm_message = "You have selected Delete Strategy. " \
-                      "Please confirm your selection"
 
     def allowed(self, request, datum):
         try:
@@ -641,7 +639,7 @@ class UpdateUpgradeStageRow(UpdateStageRow):
 
 
 class StagesTable(tables.DataTable):
-
+    row_class = UpdateStageRow
     phase = tables.Column(get_phase_name, verbose_name=_('Phase'))
     stage_name = tables.Column('stage_name')
     entities = tables.Column(get_entities, verbose_name=_('Hosts'))

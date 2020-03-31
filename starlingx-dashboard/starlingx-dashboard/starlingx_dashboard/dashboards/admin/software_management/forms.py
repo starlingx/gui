@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2019 Wind River Systems, Inc.
+# Copyright (c) 2016-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -145,8 +145,8 @@ class CreatePatchStrategyForm(forms.SelfHandlingForm):
     def __init__(self, request, *args, **kwargs):
         super(CreatePatchStrategyForm, self).__init__(request, *args, **kwargs)
 
-        cinder_backend = stx_api.sysinv.get_cinder_backend(request)
-        if stx_api.sysinv.CINDER_BACKEND_CEPH not in cinder_backend:
+        storage_backend = stx_api.sysinv.get_storage_backend(request)
+        if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
             del self.fields['storage_apply_type']
 
         system_type = stx_api.sysinv.get_system_type(request)
@@ -233,8 +233,8 @@ class CreateUpgradeStrategyForm(forms.SelfHandlingForm):
     def __init__(self, request, *args, **kwargs):
         super(CreateUpgradeStrategyForm, self).__init__(request, *args,
                                                         **kwargs)
-        cinder_backend = stx_api.sysinv.get_cinder_backend(request)
-        if stx_api.sysinv.CINDER_BACKEND_CEPH not in cinder_backend:
+        storage_backend = stx_api.sysinv.get_storage_backend(request)
+        if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
             del self.fields['storage_apply_type']
 
     def clean(self):

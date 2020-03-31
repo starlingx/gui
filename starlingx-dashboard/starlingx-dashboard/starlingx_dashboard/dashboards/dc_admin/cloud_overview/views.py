@@ -1,12 +1,13 @@
 #
-# Copyright (c) 2017 Wind River Systems, Inc.
+# Copyright (c) 2017-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 
-from django.views import generic
+from horizon import views
 
 
-class IndexView(generic.TemplateView):
+class IndexView(views.HorizonTemplateView):
     template_name = 'dc_admin/cloud_overview/index.html'
+    page_title = 'Cloud Overview'

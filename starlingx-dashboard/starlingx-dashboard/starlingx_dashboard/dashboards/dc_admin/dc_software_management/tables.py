@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2019 Wind River Systems, Inc.
+# Copyright (c) 2018-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -7,6 +7,7 @@
 import logging
 
 from django.core.urlresolvers import reverse  # noqa
+from django import shortcuts
 from django.template.defaultfilters import safe
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
@@ -85,8 +86,6 @@ class DeleteCloudPatchStrategy(tables.Action):
     icon = 'trash'
     action_type = 'danger'
     verbose_name = _("Delete Strategy")
-    confirm_message = "You have selected Delete Strategy. " \
-                      "Please confirm your selection"
 
     def allowed(self, request, datum):
         try:
@@ -117,6 +116,9 @@ class DeleteCloudPatchStrategy(tables.Action):
         except Exception as ex:
             LOG.exception(ex)
             messages.error(request, str(ex))
+
+        url = reverse('horizon:dc_admin:dc_software_management:index')
+        return shortcuts.redirect(url)
 
 
 class ApplyCloudPatchStrategy(tables.Action):
@@ -153,6 +155,9 @@ class ApplyCloudPatchStrategy(tables.Action):
         except Exception as ex:
             LOG.exception(ex)
             messages.error(request, str(ex))
+
+        url = reverse('horizon:dc_admin:dc_software_management:index')
+        return shortcuts.redirect(url)
 
 
 class AbortCloudPatchStrategy(tables.Action):
@@ -193,6 +198,9 @@ class AbortCloudPatchStrategy(tables.Action):
             LOG.exception(ex)
             messages.error(request, str(ex))
 
+        url = reverse('horizon:dc_admin:dc_software_management:index')
+        return shortcuts.redirect(url)
+
 
 STEP_STATE_CHOICES = (
     (None, True),
@@ -223,6 +231,14 @@ def get_state(step):
     return state
 
 
+class UpdateStepRow(tables.Row):
+    ajax = True
+
+    def get_data(self, request, cloud_name):
+        step = api.dc_manager.step_detail(request, cloud_name)
+        return step
+
+
 class CloudPatchStepsTable(tables.DataTable):
     cloud = tables.Column('cloud', verbose_name=_('Cloud'))
     stage = tables.Column('stage', verbose_name=_('Stage'))
@@ -246,6 +262,7 @@ class CloudPatchStepsTable(tables.DataTable):
         name = "cloudpatchsteps"
         multi_select = False
         status_columns = ['state', ]
+        row_class = UpdateStepRow
         table_actions = (CreateCloudPatchStrategy, ApplyCloudPatchStrategy,
                          AbortCloudPatchStrategy, DeleteCloudPatchStrategy)
         verbose_name = _("Steps")
@@ -298,6 +315,9 @@ class DeleteCloudPatchConfig(tables.DeleteAction):
                 {'cloud': config, }
             redirect = reverse('horizon:dc_admin:dc_software_management:index')
             exceptions.handle(request, msg, redirect=redirect)
+
+        url = reverse('horizon:dc_admin:dc_software_management:index')
+        return shortcuts.redirect(url)
 
 
 class CloudPatchConfigTable(tables.DataTable):
