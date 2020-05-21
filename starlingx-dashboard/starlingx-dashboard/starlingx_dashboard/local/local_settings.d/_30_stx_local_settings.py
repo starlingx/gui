@@ -73,7 +73,7 @@ if distributed_cloud_role and distributed_cloud_role in ['systemcontroller',
 HORIZON_CONFIG["user_home"] = \
     "starlingx_dashboard.utils.settings.get_user_home"
 
-OPENSTACK_ENDPOINT_TYPE = "internalURL"
+OPENSTACK_ENDPOINT_TYPE = "adminURL"
 
 # Override Django tempory file upload directory
 # Directory in which upload streamed files will be temporarily saved. A value

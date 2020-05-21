@@ -117,7 +117,7 @@ def cgtsclient(request):
     cacert = getattr(settings, 'OPENSTACK_SSL_CACERT', None)
 
     # FIXME this returns the wrong URL
-    endpoint = base.url_for(request, 'platform', 'adminURL')
+    endpoint = base.url_for(request, 'platform')
     version = 1
 
     LOG.debug('cgtsclient connection created using token "%s" and url "%s"',
@@ -127,8 +127,7 @@ def cgtsclient(request):
 
     return cgts_client.Client(version=version,
                               endpoint=endpoint,
-                              auth_url=base.url_for(request, 'identity',
-                                                    'adminURL'),
+                              auth_url=base.url_for(request, 'identity'),
                               token=request.user.token.id,  # os_auth_token
                               username=request.user.username,
                               password=request.user.token.id,

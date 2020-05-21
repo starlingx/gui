@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -677,10 +677,10 @@ class UpdateiStorage(forms.SelfHandlingForm):
         help_text=_("Docker Distribution storage space in gibibytes."),
         min_value=0)
 
-    patch_vault = forms.IntegerField(
-        label=_("Patch-Vault Storage (GiB)"),
+    dc_vault = forms.IntegerField(
+        label=_("DC-Vault Storage (GiB)"),
         required=False,
-        help_text=_("Platform Patch-Vault storage space in gibibytes."),
+        help_text=_("Platform DC-Vault storage space in gibibytes."),
         min_value=0)
 
     ceph_mon = forms.IntegerField(
@@ -696,8 +696,8 @@ class UpdateiStorage(forms.SelfHandlingForm):
         super(UpdateiStorage, self).__init__(request, *args, **kwargs)
         if not kwargs['initial'].get('ceph_mon'):
             del self.fields['ceph_mon']
-        if not kwargs['initial'].get('patch_vault'):
-            del self.fields['patch_vault']
+        if not kwargs['initial'].get('dc_vault'):
+            del self.fields['dc_vault']
 
     def clean(self):
         cleaned_data = super(UpdateiStorage, self).clean()

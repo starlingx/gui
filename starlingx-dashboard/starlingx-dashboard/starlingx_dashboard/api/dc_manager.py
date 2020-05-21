@@ -30,7 +30,7 @@ DEFAULT_CONFIG_NAME = "all clouds default"
 
 @memoized
 def dcmanagerclient(request):
-    endpoint = base.url_for(request, 'dcmanager', 'adminURL')
+    endpoint = base.url_for(request, 'dcmanager')
     c = client.Client(project_id=request.user.project_id,
                       user_id=request.user.id,
                       auth_token=request.user.token.id,
