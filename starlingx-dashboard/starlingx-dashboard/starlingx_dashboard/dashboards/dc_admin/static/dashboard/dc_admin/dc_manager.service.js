@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Wind River Systems, Inc.
+ * Copyright (c) 2017-2020 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -43,9 +43,17 @@
 
     function getSummaries() {
       return apiService.get('/api/dc_manager/alarm_summaries/')
-        .error(function () {
+        .error(function (error) {
+
           toastService.clearErrors();
-          toastService.add('error', gettext('Unable to retrieve the subcloud alarm summaries.'));
+
+          // We do this check to prevent the user from seeing a popup with this
+          // error when they are about to switch from the SystemController's
+          // region to a subcloud. The error can be raised when there are still
+          // SystemController's pending requests in the queue.
+          if (error != "Invalid service catalog: dcmanager") {
+            toastService.add('error', gettext('Unable to retrieve the subcloud alarm summaries.'));
+          }
         });
     }
 
@@ -119,9 +127,16 @@
 
     function getSubClouds() {
       return apiService.get('/api/dc_manager/subclouds/')
-        .error(function () {
+        .error(function (error) {
           toastService.clearErrors();
-          toastService.add('error', gettext('Unable to retrieve the subclouds.'));
+
+          // We do this check to prevent the user from seeing a popup with this
+          // error when they are about to switch from the SystemController's
+          // region to a subcloud. The error can be raised when there are still
+          // SystemController's pending requests in the queue.
+          if (error != "Invalid service catalog: dcmanager") {
+            toastService.add('error', gettext('Unable to retrieve the subclouds.'));
+          }
         });
     }
 
