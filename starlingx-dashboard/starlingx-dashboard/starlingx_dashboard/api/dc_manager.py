@@ -90,8 +90,8 @@ class Strategy(base.APIResourceWrapper):
 
 def get_strategy(request):
     try:
-        response = dcmanagerclient(request).sw_update_manager.\
-            patch_strategy_detail()
+        response = dcmanagerclient(request).sw_patch_manager.\
+            update_sw_strategy_detail()
     except APIException as e:
         if e.error_code == 404:
             return None
@@ -103,21 +103,22 @@ def get_strategy(request):
 
 
 def strategy_create(request, data):
-    response = dcmanagerclient(request).sw_update_manager.\
-        create_patch_strategy(**data)
+    response = dcmanagerclient(request).sw_patch_manager.\
+        create_sw_update_strategy(**data)
     return Strategy(response)
 
 
 def strategy_apply(request):
-    return dcmanagerclient(request).sw_update_manager.apply_patch_strategy()
+    return dcmanagerclient(request).sw_patch_manager.apply_sw_update_strategy()
 
 
 def strategy_abort(request):
-    return dcmanagerclient(request).sw_update_manager.abort_patch_strategy()
+    return dcmanagerclient(request).sw_patch_manager.abort_sw_update_strategy()
 
 
 def strategy_delete(request):
-    return dcmanagerclient(request).sw_update_manager.delete_patch_strategy()
+    return dcmanagerclient(request).sw_patch_manager.\
+        delete_sw_update_strategy()
 
 
 class Step(base.APIResourceWrapper):
