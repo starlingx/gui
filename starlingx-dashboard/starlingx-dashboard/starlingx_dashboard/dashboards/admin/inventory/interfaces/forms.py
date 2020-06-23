@@ -76,7 +76,6 @@ class CheckboxSelectMultiple(forms.widgets.CheckboxSelectMultiple):
                                                               attrs, renderer)
         else:
             hi = forms.HiddenInput(self.attrs)
-            hi.is_hidden = False  # ensure text is rendered
             return mark_safe(self.empty_value + hi.render(name, None, attrs))
 
 
