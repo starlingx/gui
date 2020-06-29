@@ -41,14 +41,9 @@
     function confirm_pv_device() {
         lvg = lvg_dropdown.options[lvg_dropdown.selectedIndex].text;
         if (lvg.indexOf("cgts-vg") !== -1) {
-            var str = "This operation is irreversible. Are you sure you want to add the selected device to cgts-vg?";
-            var confirm = window.confirm(str);
-            if (confirm != true) {
-                return false;
-            }
+          return confirm('This operation is irreversible. Are you sure you want to add the selected device to cgts-vg?');
         }
-
-        document.getElementById('add_physicalvolume_form').submit();
+        return "";
     }
 
     /* Obtain the stor function dropdown. */

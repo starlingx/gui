@@ -966,8 +966,8 @@ class Host(base.APIResourceWrapper):
                                        self._subfunction_avail)
 
     @property
-    def worker_config_required(self):
-        return self.config_status == 'Worker config required'
+    def config_required(self):
+        return self.config_status == 'config required'
 
     @property
     def location(self):

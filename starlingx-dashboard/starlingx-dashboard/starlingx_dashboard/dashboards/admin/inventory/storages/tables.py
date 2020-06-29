@@ -386,8 +386,7 @@ class AddLocalVolumeGroup(tables.LinkAction):
         self.classes = classes
 
         if not host._administrative == 'locked':
-            if 'worker' in host._subfunctions and \
-               host.worker_config_required is False:
+            if host.config_required is False:
                 if "disabled" not in self.classes:
                     self.classes = [c for c in self.classes] + ['disabled']
                     self.verbose_name = string_concat(self.verbose_name, ' ',
@@ -401,11 +400,8 @@ class AddLocalVolumeGroup(tables.LinkAction):
                         if lvg.vg_state in current_lvg_states]
         compatible_lvgs = []
 
-        if host._personality == 'controller':
-            compatible_lvgs += [sysinv.LVG_CINDER_VOLUMES]
-
         if 'worker' in host._subfunctions:
-            compatible_lvgs += [sysinv.LVG_NOVA_LOCAL]
+            compatible_lvgs += [sysinv.LVG_NOVA_LOCAL, sysinv.LVG_CGTS_VG]
 
         allowed_lvgs = set(compatible_lvgs) - set(current_lvgs)
         if not any(allowed_lvgs):
@@ -440,8 +436,7 @@ class RemoveLocalVolumeGroup(tables.DeleteAction):
 
         if lvg.lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
             return ((host._administrative == 'locked') or
-                    (('worker' in host._subfunctions) and
-                     (host.worker_config_required is True)))
+                    (host.config_required is True))
         elif lvg.lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
             return (sysinv.STORAGE_BACKEND_LVM not in storage_backend and
                     sysinv.LVG_ADD in lvg.vg_state)
@@ -518,26 +513,18 @@ class AddPhysicalVolume(tables.LinkAction):
         classes = [c for c in self.classes if c != "disabled"]
         self.classes = classes
 
-        # cgts-vg, cinder-volumes: Allow adding to any controller
+        # Allow adding to any controller
         if host._personality == sysinv.PERSONALITY_CONTROLLER:
             return True
 
-        # nova-local: Allow adding to any locked host with a worker
-        # subfunction. On an AIO, the previous check superceeds this.
+        # Allow adding to any locked host
         if host._administrative != 'locked':
             if 'worker' in host._subfunctions and \
-               host.worker_config_required is False:
+               host.config_required is False:
                 if "disabled" not in self.classes:
                     self.classes = [c for c in self.classes] + ['disabled']
                     self.verbose_name = string_concat(self.verbose_name, ' ',
                                                       _("(Node Unlocked)"))
-        elif "nova-local" not in [
-                lvg.lvm_vg_name for lvg in
-                sysinv.host_lvg_list(request, host.uuid)]:
-            if "disabled" not in self.classes:
-                self.classes = [c for c in self.classes] + ['disabled']
-                self.verbose_name = string_concat(self.verbose_name, ' ',
-                                                  _("(No nova-local LVG)"))
 
         return True  # The action should always be displayed
 
@@ -565,8 +552,7 @@ class RemovePhysicalVolume(tables.DeleteAction):
 
         if pv.lvm_vg_name == sysinv.LVG_NOVA_LOCAL:
             return ((host._administrative == 'locked') or
-                    (('worker' in host._subfunctions) and
-                     (host.worker_config_required is True)))
+                    (host.config_required is True))
         elif pv.lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
             return (sysinv.STORAGE_BACKEND_LVM not in storage_backend and
                     sysinv.PV_ADD in pv.pv_state)
