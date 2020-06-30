@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -47,7 +47,7 @@ class AddView(workflows.WorkflowView):
                 'personality': "",
                 'subfunctions': "",
                 'mgmt_mac': "",
-                'bm_type': stx_api.sysinv.BM_TYPE_NULL,
+                'bm_type': "",
                 'bm_ip': "",
                 'bm_username': ""}
 
