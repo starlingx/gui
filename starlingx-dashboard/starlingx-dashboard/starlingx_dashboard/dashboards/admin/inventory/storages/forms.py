@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2020 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -404,12 +404,10 @@ class AddLocalVolumeGroup(forms.SelfHandlingForm):
                         if lvg.vg_state in current_lvg_states]
 
         compatible_lvgs = []
-        if host.personality.lower().startswith(
-                stx_api.sysinv.PERSONALITY_CONTROLLER):
-            compatible_lvgs += [stx_api.sysinv.LVG_CINDER_VOLUMES]
 
         if stx_api.sysinv.SUBFUNCTIONS_WORKER in subfunctions:
-            compatible_lvgs += [stx_api.sysinv.LVG_NOVA_LOCAL]
+            compatible_lvgs += [stx_api.sysinv.LVG_NOVA_LOCAL,
+                                stx_api.sysinv.LVG_CGTS_VG]
 
         allowed_lvgs = set(compatible_lvgs) - set(current_lvgs)
 
@@ -539,11 +537,11 @@ class AddPhysicalVolume(forms.SelfHandlingForm):
         compatible_lvgs = []
         if host.personality.lower().startswith(
                 stx_api.sysinv.PERSONALITY_CONTROLLER):
-            compatible_lvgs += [stx_api.sysinv.LVG_CGTS_VG,
-                                stx_api.sysinv.LVG_CINDER_VOLUMES]
+            compatible_lvgs += [stx_api.sysinv.LVG_CGTS_VG]
 
         if stx_api.sysinv.SUBFUNCTIONS_WORKER in subfunctions:
-            compatible_lvgs += [stx_api.sysinv.LVG_NOVA_LOCAL]
+            compatible_lvgs += [stx_api.sysinv.LVG_NOVA_LOCAL,
+                                stx_api.sysinv.LVG_CGTS_VG]
 
         avail_disk_list = stx_api.sysinv.host_disk_list(self.request,
                                                         host_uuid)
@@ -551,21 +549,15 @@ class AddPhysicalVolume(forms.SelfHandlingForm):
         partitions = stx_api.sysinv.host_disk_partition_list(self.request,
                                                              host_uuid)
         ipv_list = stx_api.sysinv.host_pv_list(self.request, host_uuid)
+
         disk_tuple_list = []
         partitions_tuple_list = []
         ilvg_tuple_list = []
-
-        pv_cinder_volumes = next(
-            (pv for pv in ipv_list
-             if pv.lvm_vg_name == stx_api.sysinv.LVG_CINDER_VOLUMES), None)
 
         for lvg in ilvg_list:
             if (lvg.lvm_vg_name in compatible_lvgs and
                     lvg.vg_state in [stx_api.sysinv.LVG_ADD,
                                      stx_api.sysinv.LVG_PROV]):
-                if (lvg.lvm_vg_name == stx_api.sysinv.LVG_CINDER_VOLUMES and
-                        pv_cinder_volumes):
-                    continue
                 ilvg_tuple_list.append((lvg.uuid, lvg.lvm_vg_name))
 
         for disk in avail_disk_list:
@@ -663,16 +655,16 @@ class AddPhysicalVolume(forms.SelfHandlingForm):
             messages.success(request, msg)
             return stor
         except exc.ClientException as ce:
-            msg = _('Failed to create physical volume.')
+            msg = _('Failed to create physical volume. ')
 
             # Allow REST API error message to appear on UI
             w_msg = str(ce)
-            if ('Warning:' in w_msg):
+            if 'Warning:' in w_msg:
                 LOG.info(ce)
-                messages.warning(request, w_msg.split(':', 1)[-1])
+                messages.warning(request, msg + (w_msg.split(':', 1)[-1]))
             else:
                 LOG.error(ce)
-                messages.error(request, w_msg)
+                messages.error(request, msg + w_msg)
 
             # Redirect to host details pg
             redirect = reverse(self.failure_url, args=[host_id])
