@@ -68,7 +68,7 @@ def subcloud_create(request, data):
 
 def subcloud_update(request, subcloud_id, changes):
     response = dcmanagerclient(request).subcloud_manager.update_subcloud(
-        subcloud_id, **changes.get('updated'))
+        subcloud_id, data=changes.get('updated'))
     # Updating returns a list of subclouds for some reason
     return [Subcloud(subcloud) for subcloud in response]
 
