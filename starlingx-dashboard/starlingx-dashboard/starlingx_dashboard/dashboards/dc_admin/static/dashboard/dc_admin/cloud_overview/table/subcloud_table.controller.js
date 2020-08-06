@@ -378,6 +378,11 @@
             gettext('The subcloud must be in the managed state before you can access detailed views.'));
         return;
       }
+      if (cloud.availability_status != 'online') {
+        toast.add('error',
+            gettext('The subcloud must be online before you can access detailed views.'));
+        return;
+      }
 
       keystone.getCurrentUserSession().success(function(session){
         session.available_services_regions.indexOf(cloud.name)
@@ -398,6 +403,11 @@
       if (cloud.management_state != 'managed') {
         toast.add('error',
             gettext('The subcloud must be in the managed management state before you can access detailed views.'));
+        return;
+      }
+      if (cloud.availability_status != 'online') {
+        toast.add('error',
+            gettext('The subcloud must be online before you can access detailed views.'));
         return;
       }
 

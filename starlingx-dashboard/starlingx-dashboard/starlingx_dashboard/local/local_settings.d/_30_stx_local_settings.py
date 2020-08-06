@@ -69,6 +69,10 @@ DC_MODE = False
 if distributed_cloud_role and distributed_cloud_role in ['systemcontroller',
                                                          'subcloud']:
     DC_MODE = True
+    DEFAULT_SERVICE_REGIONS = {
+        '*': 'SystemController',
+    }
+
 
 HORIZON_CONFIG["user_home"] = \
     "starlingx_dashboard.utils.settings.get_user_home"
