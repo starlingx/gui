@@ -141,6 +141,7 @@ for root, _dirs, files in os.walk('/opt/branding/applied'):
 ADD_TEMPLATE_DIRS = [os.path.join(ROOT_PATH, 'starlingx_templates')]
 TEMPLATES[0]['DIRS'] = ADD_TEMPLATE_DIRS + TEMPLATES[0]['DIRS']
 
+OPENRC_CUSTOM_TEMPLATE = 'starlingx-openrc.sh.template'
 
 STATIC_ROOT = "/www/pages/static"
 COMPRESS_OFFLINE = True
