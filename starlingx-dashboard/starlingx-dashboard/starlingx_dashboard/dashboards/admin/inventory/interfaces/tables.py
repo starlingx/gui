@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -40,8 +40,7 @@ class DeleteInterface(tables.DeleteAction):
 
     def allowed(self, request, interface=None):
         host = self.table.kwargs['host']
-        return (host._administrative == 'locked' and
-                interface.iftype != 'ethernet')
+        return (host._administrative == 'locked' and interface.uses)
 
     def delete(self, request, interface_id):
         host_id = self.table.kwargs['host_id']

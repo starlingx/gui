@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -152,6 +152,7 @@ class AddInterface(forms.SelfHandlingForm):
         ('ae', _("aggregated ethernet")),
         ('vlan', _("vlan")),
         ('vf', _("vf")),
+        ('ethernet', _("ethernet")),
     )
 
     SRIOV_VF_DRIVER_CHOICES = (
