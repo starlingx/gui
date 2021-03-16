@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -281,6 +281,7 @@ class UpdateView(forms.ModalFormView):
                 'iftype': interface.iftype,
                 'aemode': interface.aemode,
                 'txhashpolicy': interface.txhashpolicy,
+                'primary_reselect': interface.primary_reselect,
                 # 'ports': interface.ports,
                 # 'uses': interface.uses,
                 'ifclass': interface.ifclass,

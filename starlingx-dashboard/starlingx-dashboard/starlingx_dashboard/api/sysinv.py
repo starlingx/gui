@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 
 from __future__ import absolute_import
@@ -2004,7 +2004,7 @@ class Interface(base.APIResourceWrapper):
     """Wrapper for Inventory Interfaces"""
 
     _attrs = ['id', 'uuid', 'ifname', 'ifclass', 'iftype', 'imtu', 'imac',
-              'aemode', 'txhashpolicy', 'vlan_id',
+              'aemode', 'txhashpolicy', 'primary_reselect', 'vlan_id',
               'uses', 'used_by', 'ihost_uuid',
               'ipv4_mode', 'ipv6_mode', 'ipv4_pool', 'ipv6_pool',
               'sriov_numvfs', 'sriov_vf_driver']

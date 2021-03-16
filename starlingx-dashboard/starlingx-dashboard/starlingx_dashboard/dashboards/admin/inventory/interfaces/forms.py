@@ -173,6 +173,12 @@ class AddInterface(forms.SelfHandlingForm):
         ('layer2', _("layer2")),
     )
 
+    AE_PRIMARY_RESELECT_CHOICES = (
+        ('always', _("always")),
+        ('better', _("better")),
+        ('failure', _("failure")),
+    )
+
     IPV4_MODE_CHOICES = (
         ('disabled', _("Disabled")),
         ('static', _("Static")),
@@ -251,6 +257,16 @@ class AddInterface(forms.SelfHandlingForm):
                 'data-switch-on': 'ae_mode',
                 'data-ae_mode-balanced': 'Aggregated Ethernet - Tx Policy',
                 'data-ae_mode-802.3ad': 'Aggregated Ethernet - Tx Policy'}))
+
+    primary_reselect = forms.ChoiceField(
+        label=_("Aggregated Ethernet - Primary Reselect"),
+        required=False,
+        choices=AE_PRIMARY_RESELECT_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'ae_mode',
+                'data-ae_mode-active_standby': 'Primary Reselect'}))
 
     vlan_id = forms.IntegerField(
         label=_("Vlan ID"),
@@ -608,8 +624,11 @@ class AddInterface(forms.SelfHandlingForm):
             if data['iftype'] != 'ae':
                 del data['txhashpolicy']
                 del data['aemode']
+                del data['primary_reselect']
             elif data['aemode'] == 'active_standby':
                 del data['txhashpolicy']
+            elif data['aemode'] != 'active_standby':
+                del data['primary_reselect']
 
             if 'sriov_numvfs' in data:
                 data['sriov_numvfs'] = str(data['sriov_numvfs'])
@@ -912,8 +931,11 @@ class UpdateInterface(AddInterface):
             if data['iftype'] != 'ae':
                 del data['txhashpolicy']
                 del data['aemode']
+                del data['primary_reselect']
             elif data['aemode'] == 'active_standby':
                 del data['txhashpolicy']
+            elif data['aemode'] != 'active_standby':
+                del data['primary_reselect']
 
             if not data['ifclass'] or data['ifclass'] == 'none':
                 avail_port_list = sysinv.host_port_list(
