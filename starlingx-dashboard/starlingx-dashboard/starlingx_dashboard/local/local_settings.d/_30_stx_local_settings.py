@@ -78,6 +78,7 @@ HORIZON_CONFIG["user_home"] = \
     "starlingx_dashboard.utils.settings.get_user_home"
 
 OPENSTACK_ENDPOINT_TYPE = "adminURL"
+SECONDARY_ENDPOINT_TYPE = "adminURL"
 
 # Override Django tempory file upload directory
 # Directory in which upload streamed files will be temporarily saved. A value
