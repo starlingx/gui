@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -125,6 +125,7 @@ class EditStorageVolume(forms.SelfHandlingForm):
 
             if journal:
                 data['journal_location'] = journal
+                data['journal_size_mib'] = int(data['journal_size_gib']) * 1024
             else:
                 data['journal_location'] = None
                 data['journal_size_mib'] = \
