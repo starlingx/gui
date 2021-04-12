@@ -53,11 +53,20 @@
         <span ng-show="cloud.availability_status==='offline'" class="fa fa-circle status-danger"></span>
         {$ cloud.availability_status $}</td>
       <td class="rsp-p1">
-        <span ng-show="cloud.deploy_status==='pre-install-failed' || cloud.deploy_status==='install-failed' || cloud.deploy_status==='bootstrap-failed' || cloud.deploy_status==='deploy-failed'"
+        <span ng-show="cloud.deploy_status==='pre-install-failed' || cloud.deploy_status==='install-failed'
+                    || cloud.deploy_status==='bootstrap-failed' || cloud.deploy_status==='deploy-failed'
+                    || cloud.deploy_status==='deploy-prep-failed' || cloud.deploy_status==='data-migration-failed'
+                    || cloud.deploy_status==='restore-prep-failed' || cloud.deploy_status==='restore-failed'"
               class="fa fa-circle status-danger"></span>
-        <span ng-show="cloud.deploy_status==='not-deployed' || cloud.deploy_status==='pre-install' || cloud.deploy_status==='installing' || cloud.deploy_status==='bootstrapping' || cloud.deploy_status==='deploying'"
+        <span ng-show="cloud.deploy_status==='not-deployed' || cloud.deploy_status==='pre-install'
+                    || cloud.deploy_status==='installing' || cloud.deploy_status==='bootstrapping'
+                    || cloud.deploy_status==='deploying' || cloud.deploy_status==='pre-deploy'
+                    || cloud.deploy_status==='migrating-data' || cloud.deploy_status==='pre-restore'
+                    || cloud.deploy_status==='restoring'"
               class="fa fa-circle status-warning"></span>
-        <span ng-show="cloud.deploy_status=='complete'" class="fa fa-circle status-success"></span>
+        <span ng-show="cloud.deploy_status=='complete'  || cloud.deploy_status==='installed'
+                    || cloud.deploy_status==='migrated'"
+              class="fa fa-circle status-success"></span>
         {$ cloud.deploy_status $}
       </td>
       <td class="rsp-p1">
