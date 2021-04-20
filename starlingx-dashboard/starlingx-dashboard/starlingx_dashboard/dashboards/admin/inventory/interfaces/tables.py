@@ -15,6 +15,7 @@ from horizon import exceptions
 from horizon import tables
 
 from starlingx_dashboard import api as stx_api
+import sysinv.common.constants as sysinv_const
 
 LOG = logging.getLogger(__name__)
 
@@ -109,7 +110,13 @@ class EditInterface(tables.LinkAction):
 
     def allowed(self, request, datum):
         host = self.table.kwargs['host']
-        return host._administrative == 'locked'
+        intf = datum
+        if (stx_api.sysinv.is_system_mode_simplex(request)
+                and intf.iftype == sysinv_const.INTERFACE_TYPE_ETHERNET
+                and intf.ifclass != sysinv_const.INTERFACE_CLASS_PCI_SRIOV):
+            return True
+        else:
+            return host._administrative == 'locked'
 
 
 def get_attributes(interface):
