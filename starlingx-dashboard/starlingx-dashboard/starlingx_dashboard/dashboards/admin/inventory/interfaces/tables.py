@@ -41,7 +41,12 @@ class DeleteInterface(tables.DeleteAction):
 
     def allowed(self, request, interface=None):
         host = self.table.kwargs['host']
-        return (host._administrative == 'locked' and interface.uses)
+        if interface.uses:
+            if (stx_api.sysinv.is_system_mode_simplex(request)
+                    and interface.iftype == sysinv_const.INTERFACE_TYPE_VF):
+                return True
+            else:
+                return host._administrative == 'locked'
 
     def delete(self, request, interface_id):
         host_id = self.table.kwargs['host_id']
@@ -83,13 +88,20 @@ class CreateInterface(tables.LinkAction):
     def allowed(self, request, datum):
         host = self.table.kwargs['host']
 
-        if host._administrative != 'locked':
+        is_aio_sx = stx_api.sysinv.is_system_mode_simplex(request)
+        if (host._administrative != 'locked' and not is_aio_sx):
             return False
 
         count = 0
+        sriov_count = 0
         for i in host.interfaces:
             if i.ifclass:
                 count = count + 1
+                if i.ifclass == sysinv_const.INTERFACE_CLASS_PCI_SRIOV:
+                    sriov_count += 1
+
+        if is_aio_sx and host._administrative != 'locked' and sriov_count == 0:
+            return False
 
         if host.subfunctions and 'worker' not in host.subfunctions and \
                 count >= len(INTERFACE_CLASS_TYPES):
