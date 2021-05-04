@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -14,7 +14,6 @@ import sysinv.common.constants as sysinv_const
 from cgtsclient.common import constants
 from cgtsclient import exc
 
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _  # noqa
 from django.views.decorators.debug import sensitive_variables  # noqa
 
@@ -196,13 +195,6 @@ class AddHostInfoAction(workflows.Action):
             self.fields['personality'].choices = \
                 PERSONALITY_CHOICES_WITHOUT_STORAGE
 
-        # Remove worker personality if in DC mode and region
-        if getattr(self.request.user, 'services_region', None) == 'RegionOne' \
-                and getattr(settings, 'DC_MODE', False):
-            self.fields['personality'].choices = \
-                [choice for choice in self.fields['personality'].choices
-                 if choice[0] != stx_api.sysinv.PERSONALITY_WORKER]
-
     def clean(self):
         cleaned_data = super(AddHostInfoAction, self).clean()
         return cleaned_data
@@ -296,13 +288,6 @@ class UpdateHostInfoAction(workflows.Action):
         if self.system_type == constants.TS_AIO:
             self.fields['personality'].choices = \
                 PERSONALITY_CHOICES_WITHOUT_STORAGE
-
-        # Remove worker personality if in DC mode and region
-        if getattr(self.request.user, 'services_region', None) == 'RegionOne' \
-                and getattr(settings, 'DC_MODE', False):
-            self.fields['personality'].choices = \
-                [choice for choice in self.fields['personality'].choices
-                 if choice[0] != stx_api.sysinv.PERSONALITY_WORKER]
 
         # hostname cannot be modified once it is set
         if self.initial['hostname']:
