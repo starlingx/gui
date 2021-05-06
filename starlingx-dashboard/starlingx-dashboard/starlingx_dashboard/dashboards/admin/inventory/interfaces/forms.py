@@ -991,14 +991,8 @@ class UpdateInterface(AddInterface):
             current_interface = sysinv.host_interface_get(
                 self.request, interface_id)
             ifnet_data['interface_uuid'] = current_interface.uuid
-            if data['networks_to_add']:
-                for n in data['networks_to_add']:
-                    ifnet_data['network_uuid'] = n
-                    sysinv.interface_network_assign(request, **ifnet_data)
-            elif data['datanetworks_to_add']:
-                for n in data['datanetworks_to_add']:
-                    ifnet_data['datanetwork_uuid'] = n
-                    sysinv.interface_datanetwork_assign(request, **ifnet_data)
+            networks_to_add = data['networks_to_add']
+            datanetworks_to_add = data['datanetworks_to_add']
 
             del data['networks']
             del data['networks_to_add']
@@ -1006,9 +1000,18 @@ class UpdateInterface(AddInterface):
             del data['datanetworks']
             del data['datanetworks_to_add']
             del data['interface_datanetworks_to_remove']
+
             interface = sysinv.host_interface_update(request,
                                                      interface_id,
                                                      **data)
+            if networks_to_add:
+                for n in networks_to_add:
+                    ifnet_data['network_uuid'] = n
+                    sysinv.interface_network_assign(request, **ifnet_data)
+            elif datanetworks_to_add:
+                for n in datanetworks_to_add:
+                    ifnet_data['datanetwork_uuid'] = n
+                    sysinv.interface_datanetwork_assign(request, **ifnet_data)
 
             msg = _('Interface "%s" was'
                     ' successfully updated.') % data['ifname']
