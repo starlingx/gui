@@ -138,7 +138,8 @@ def get_attributes(interface):
         if interface.aemode in ['balanced', '802.3ad']:
             attr_str = "%s, AE_XMIT_HASH_POLICY=%s" % (
                 attr_str, interface.txhashpolicy)
-        elif interface.aemode == 'active_standby':
+        elif (interface.aemode == 'active_standby' and
+                interface.primary_reselect):
             attr_str = "%s, primary_reselect=%s" % (
                 attr_str, interface.primary_reselect)
     if interface.ifclass and interface.ifclass == 'data':
