@@ -40,6 +40,9 @@
                     {% if interfaces.aemode == 'balanced' %}
                         {{" | "}} {{ interfaces.txhashpolicy }}
                     {% endif %}
+                    {% if interfaces.aemode == 'active_standby' %}
+                        {{" | "}} {{ interfaces.primary_reselect }}
+                    {% endif %}
                 {% endif %}
                 {{" | MTU="}} {{ interfaces.imtu }}
             </li>

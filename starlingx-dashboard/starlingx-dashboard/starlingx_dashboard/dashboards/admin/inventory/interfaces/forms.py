@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -76,7 +76,6 @@ class CheckboxSelectMultiple(forms.widgets.CheckboxSelectMultiple):
                                                               attrs, renderer)
         else:
             hi = forms.HiddenInput(self.attrs)
-            hi.is_hidden = False  # ensure text is rendered
             return mark_safe(self.empty_value + hi.render(name, None, attrs))
 
 
@@ -153,6 +152,7 @@ class AddInterface(forms.SelfHandlingForm):
         ('ae', _("aggregated ethernet")),
         ('vlan', _("vlan")),
         ('vf', _("vf")),
+        ('ethernet', _("ethernet")),
     )
 
     SRIOV_VF_DRIVER_CHOICES = (
@@ -171,6 +171,12 @@ class AddInterface(forms.SelfHandlingForm):
         ('layer3+4', _("layer3+4")),
         ('layer2+3', _("layer2+3")),
         ('layer2', _("layer2")),
+    )
+
+    AE_PRIMARY_RESELECT_CHOICES = (
+        ('always', _("always")),
+        ('better', _("better")),
+        ('failure', _("failure")),
     )
 
     IPV4_MODE_CHOICES = (
@@ -251,6 +257,16 @@ class AddInterface(forms.SelfHandlingForm):
                 'data-switch-on': 'ae_mode',
                 'data-ae_mode-balanced': 'Aggregated Ethernet - Tx Policy',
                 'data-ae_mode-802.3ad': 'Aggregated Ethernet - Tx Policy'}))
+
+    primary_reselect = forms.ChoiceField(
+        label=_("Aggregated Ethernet - Primary Reselect"),
+        required=False,
+        choices=AE_PRIMARY_RESELECT_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'ae_mode',
+                'data-ae_mode-active_standby': 'Primary Reselect'}))
 
     vlan_id = forms.IntegerField(
         label=_("Vlan ID"),
@@ -452,15 +468,15 @@ class AddInterface(forms.SelfHandlingForm):
             nt_choices = self.fields['ifclass'].choices
             self.fields['ifclass'].choices = [i for i in nt_choices if
                                               i[0] != 'data']
-        else:
-            datanets = sysinv.data_network_list(self.request)
-            for dn in datanets:
-                label = "{} (mtu={})".format(dn.name, dn.mtu)
-                datanet = (str(dn.name), label)
-                datanet_choices.append(datanet)
-                if dn.name not in used_datanets:
-                    datanet_filtered.append(datanet)
-                    initial_datanet_name.append(str(dn.name))
+
+        datanets = sysinv.data_network_list(self.request)
+        for dn in datanets:
+            label = "{} (mtu={})".format(dn.name, dn.mtu)
+            datanet = (str(dn.name), label)
+            datanet_choices.append(datanet)
+            if dn.name not in used_datanets:
+                datanet_filtered.append(datanet)
+                initial_datanet_name.append(str(dn.name))
 
         self.fields['datanetworks_data'].choices = datanet_filtered
         self.fields['datanetworks_sriov'].choices = datanet_filtered
@@ -608,8 +624,11 @@ class AddInterface(forms.SelfHandlingForm):
             if data['iftype'] != 'ae':
                 del data['txhashpolicy']
                 del data['aemode']
+                del data['primary_reselect']
             elif data['aemode'] == 'active_standby':
                 del data['txhashpolicy']
+            elif data['aemode'] != 'active_standby':
+                del data['primary_reselect']
 
             if 'sriov_numvfs' in data:
                 data['sriov_numvfs'] = str(data['sriov_numvfs'])
@@ -912,8 +931,11 @@ class UpdateInterface(AddInterface):
             if data['iftype'] != 'ae':
                 del data['txhashpolicy']
                 del data['aemode']
+                del data['primary_reselect']
             elif data['aemode'] == 'active_standby':
                 del data['txhashpolicy']
+            elif data['aemode'] != 'active_standby':
+                del data['primary_reselect']
 
             if not data['ifclass'] or data['ifclass'] == 'none':
                 avail_port_list = sysinv.host_port_list(
@@ -969,14 +991,8 @@ class UpdateInterface(AddInterface):
             current_interface = sysinv.host_interface_get(
                 self.request, interface_id)
             ifnet_data['interface_uuid'] = current_interface.uuid
-            if data['networks_to_add']:
-                for n in data['networks_to_add']:
-                    ifnet_data['network_uuid'] = n
-                    sysinv.interface_network_assign(request, **ifnet_data)
-            elif data['datanetworks_to_add']:
-                for n in data['datanetworks_to_add']:
-                    ifnet_data['datanetwork_uuid'] = n
-                    sysinv.interface_datanetwork_assign(request, **ifnet_data)
+            networks_to_add = data['networks_to_add']
+            datanetworks_to_add = data['datanetworks_to_add']
 
             del data['networks']
             del data['networks_to_add']
@@ -984,9 +1000,18 @@ class UpdateInterface(AddInterface):
             del data['datanetworks']
             del data['datanetworks_to_add']
             del data['interface_datanetworks_to_remove']
+
             interface = sysinv.host_interface_update(request,
                                                      interface_id,
                                                      **data)
+            if networks_to_add:
+                for n in networks_to_add:
+                    ifnet_data['network_uuid'] = n
+                    sysinv.interface_network_assign(request, **ifnet_data)
+            elif datanetworks_to_add:
+                for n in datanetworks_to_add:
+                    ifnet_data['datanetwork_uuid'] = n
+                    sysinv.interface_datanetwork_assign(request, **ifnet_data)
 
             msg = _('Interface "%s" was'
                     ' successfully updated.') % data['ifname']

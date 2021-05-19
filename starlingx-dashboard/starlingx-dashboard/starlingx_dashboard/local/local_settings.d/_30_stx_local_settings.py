@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019-2020 Wind River Systems, Inc.
+# Copyright (c) 2019-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -69,11 +69,16 @@ DC_MODE = False
 if distributed_cloud_role and distributed_cloud_role in ['systemcontroller',
                                                          'subcloud']:
     DC_MODE = True
+    DEFAULT_SERVICE_REGIONS = {
+        '*': 'SystemController',
+    }
+
 
 HORIZON_CONFIG["user_home"] = \
     "starlingx_dashboard.utils.settings.get_user_home"
 
 OPENSTACK_ENDPOINT_TYPE = "adminURL"
+SECONDARY_ENDPOINT_TYPE = "adminURL"
 
 # Override Django tempory file upload directory
 # Directory in which upload streamed files will be temporarily saved. A value
@@ -137,12 +142,15 @@ for root, _dirs, files in os.walk('/opt/branding/applied'):
 ADD_TEMPLATE_DIRS = [os.path.join(ROOT_PATH, 'starlingx_templates')]
 TEMPLATES[0]['DIRS'] = ADD_TEMPLATE_DIRS + TEMPLATES[0]['DIRS']
 
+OPENRC_CUSTOM_TEMPLATE = 'starlingx-openrc.sh.template'
 
 STATIC_ROOT = "/www/pages/static"
 COMPRESS_OFFLINE = True
 
 # Secure site configuration
 SESSION_COOKIE_HTTPONLY = True
+ENFORCE_PASSWORD_CHECK = True
+HORIZON_CONFIG["disable_password_reveal"] = True
 
 # Size of thread batch
 THREAD_BATCH_SIZE = 100

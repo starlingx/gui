@@ -7,22 +7,24 @@
 # be installed in a specific order.
 #
 # Hacking should appear first in case something else depends on pep8
-hacking!=0.13.0,<0.14,>=0.12.0 # Apache-2.0
+hacking>=1.1.0,<=2.0.0 # Apache-2.0
 coverage>=3.6 # Apache-2.0
 django-nose>=1.4.4 # BSD
 mock>=2.0 # BSD
-mox3>=0.7.0 # Apache-2.0
 nodeenv>=0.9.4 # BSD License  # BSD
 nose # LGPL
 nose-exclude # LGPL
 nosehtmloutput>=0.0.3 # Apache-2.0
 nosexcover # BSD
 openstack.nose-plugin>=0.7 # Apache-2.0
-oslosphinx!=3.4.0,>=2.5.0 # Apache-2.0
 requests>=2.10.0 # Apache-2.0
 selenium>=2.50.1 # Apache-2.0
-sphinx!=1.3b1,<1.3,>=1.2.1 # BSD
 testtools>=1.4.0 # MIT
 # This also needs xvfb library installed on your OS
 xvfbwrapper>=0.1.3 #license: MIT
 pyOpenSSL>=0.14
+bandit;python_version>="3.0"
+isort<5;python_version>="3.0"
+pylint<2.1.0;python_version<"3.0" # GPLv2
+pylint<2.4.0;python_version>="3.0" # GPLv2
+Django
