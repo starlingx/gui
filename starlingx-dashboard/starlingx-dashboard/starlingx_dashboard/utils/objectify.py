@@ -54,7 +54,7 @@ def objectify(func):
             # Create that simple generic object.
             ret_obj = Object()
             # Assign the attributes given the dictionary keys.
-            for key, val in value.iteritems():
+            for key, val in value.items():
                 ret_obj[key] = val
                 setattr(ret_obj, key, val)
             return ret_obj
