@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -347,7 +347,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                         if(m.vm_pending_as_percentage == "True"):
                             vm_2M_field.initial = str(
                                 round(m.vm_hugepages_nr_2M *
-                                      100 / m.vm_hugepages_possible_2M))
+                                      100 // m.vm_hugepages_possible_2M))
                         else:
                             vm_2M_field.initial = str(m.vm_hugepages_nr_2M)
                     else:
@@ -370,7 +370,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                         if(m.vm_pending_as_percentage == "True"):
                             vm_1G_field.initial = \
                                 str(int(m.vm_hugepages_nr_1G
-                                    * 100 / m.vm_hugepages_possible_1G))
+                                    * 100 // m.vm_hugepages_possible_1G))
                         else:
                             vm_1G_field.initial = str(m.vm_hugepages_nr_1G)
                     elif vm_1g_supported:
