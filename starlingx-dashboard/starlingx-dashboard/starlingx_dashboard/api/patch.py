@@ -139,7 +139,7 @@ def get_patches(request):
         return patches
 
     if info:
-        for p in info['pd'].iteritems():
+        for p in info['pd'].items():
             patch = Patch()
 
             for a in patch._attrs:
