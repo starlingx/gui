@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
@@ -60,11 +60,11 @@ class Storage(base.APIDictWrapper):
 
 
 def _Bytes_to_MiB(value_B):
-    return (value_B / (1024 * 1024))
+    return (value_B // (1024 * 1024))
 
 
 def _Bytes_to_GiB(value_B):
-    return (value_B / (1024 * 1024 * 1024))
+    return (value_B // (1024 * 1024 * 1024))
 
 
 def cluster_get():
@@ -122,14 +122,14 @@ def storage_get():
         'write_op_per_sec' in stats) else 0
     if reads_per_sec:
         io = {
-            'reads_per_sec': reads_per_sec / 1024,
+            'reads_per_sec': reads_per_sec // 1024,
             'read_operations_per_sec': read_operations_per_sec,
-            'writes_per_sec': writes_per_sec / 1024,
+            'writes_per_sec': writes_per_sec // 1024,
             'write_operations_per_sec': write_operations_per_sec
         }
     else:
         io = {
-            'writes_per_sec': writes_per_sec / 1024,
+            'writes_per_sec': writes_per_sec // 1024,
             'write_operations_per_sec': write_operations_per_sec
         }
 

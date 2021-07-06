@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -66,7 +66,7 @@ class UpdateCpuFunctionsView(forms.ModalFormView):
     def get_physical_core_count(self, host, cpufunc, socket):
         value = cpufunc.socket_cores_number.get(socket, 0)
         if host.hyperthreading.lower() == "yes":
-            value = value / 2
+            value = value // 2
         return value
 
     def get_initial(self):
