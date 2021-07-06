@@ -6,9 +6,9 @@
 
 import logging
 
-from django.core.urlresolvers import reverse  # noqa
 from django import shortcuts
 from django.template.defaultfilters import safe
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 

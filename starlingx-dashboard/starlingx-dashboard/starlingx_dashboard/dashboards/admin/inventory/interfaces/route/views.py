@@ -15,7 +15,7 @@
 
 import logging
 
-from django.core.urlresolvers import reverse  # noqa
+from django.urls import reverse  # noqa
 
 from horizon import forms
 

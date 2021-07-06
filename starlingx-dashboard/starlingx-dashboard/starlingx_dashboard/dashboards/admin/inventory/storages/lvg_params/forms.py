@@ -5,7 +5,7 @@
 
 import logging
 
-from django.core.urlresolvers import reverse  # noqa
+from django.urls import reverse  # noqa
 from django.core import validators  # noqa
 from django.utils.translation import ugettext_lazy as _  # noqa
 

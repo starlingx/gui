@@ -8,7 +8,7 @@
 
 import logging
 
-import cpu_functions.utils as icpu_utils
+from .cpu_functions import utils as icpu_utils
 import sysinv.common.constants as sysinv_const
 
 from cgtsclient.common import constants

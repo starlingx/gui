@@ -13,3 +13,5 @@ urlpatterns = [
     url(r'lvg/',
         include(lvg_params_urls, namespace='lvg'))
 ]
+
+app_name = "lvg"
