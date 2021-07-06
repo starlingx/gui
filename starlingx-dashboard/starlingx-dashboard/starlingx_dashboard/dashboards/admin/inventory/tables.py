@@ -8,10 +8,10 @@
 import cgcs_patch.constants as patch_constants
 import logging
 
-from django.core.urlresolvers import reverse  # noqa
 from django import shortcuts
 from django import template
 from django.template.defaultfilters import safe  # noqa
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 

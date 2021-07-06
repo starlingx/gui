@@ -26,3 +26,5 @@ RANGES = r'^(?P<providernet_range_id>[^/]+)/%s$'
 urlpatterns = [
     url(RANGES % 'detail', views.DetailView.as_view(),
         name='detail')]
+
+app_name = 'detail'

@@ -7,7 +7,7 @@
 from collections import OrderedDict
 import logging
 
-from django.core.urlresolvers import reverse_lazy  # noqa
+from django.urls import reverse_lazy  # noqa
 from django.utils.translation import ugettext_lazy as _  # noqa
 
 from horizon import exceptions

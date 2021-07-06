@@ -8,8 +8,8 @@
 import logging
 
 from cgtsclient import exc
-from django.core.urlresolvers import reverse  # noqa
 from django import shortcuts
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import exceptions

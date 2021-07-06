@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-from django.core.urlresolvers import reverse  # noqa
 from django.template import defaultfilters as filters
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _  # noqa
 
 from horizon import tables
