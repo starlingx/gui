@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2016 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -17,7 +17,7 @@ class Inventory(horizon.Panel):
     name = _("Host Inventory")
     slug = 'inventory'
     # permissions = ('openstack.roles.admin',)
-    permissions = ('openstack.services.platform',)
+    permissions = ('openstack.services.platform', 'openstack.roles.admin')
 
     def allowed(self, context):
         if context['request'].user.services_region == 'SystemController':
