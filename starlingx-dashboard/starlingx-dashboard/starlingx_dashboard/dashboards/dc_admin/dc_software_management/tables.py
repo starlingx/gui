@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2020 Wind River Systems, Inc.
+# Copyright (c) 2018-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -345,4 +345,82 @@ class CloudPatchConfigTable(tables.DataTable):
         table_actions = (CreateCloudPatchConfig,)
         row_actions = (EditCloudPatchConfig, DeleteCloudPatchConfig,)
         verbose_name = _("Cloud Patching Configurations")
+        hidden_title = False
+
+
+# Subcloud Group Management
+class EditSubcloudGroup(tables.LinkAction):
+    name = "editsubcloudgroup"
+    url = "horizon:dc_admin:dc_software_management:editsubcloudgroup"
+    verbose_name = _("Edit Subcloud Group")
+    classes = ("ajax-modal",)
+
+
+class DeleteSubcloudGroup(tables.DeleteAction):
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            "Delete SubCloud Group",
+            "Delete SubCloud Groups",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            "Deleted SubCloud Group",
+            "Deleted SubCloud Groups",
+            count
+        )
+
+    def allowed(self, request, group=None):
+        if group and group.name == api.dc_manager.DEFAULT_GROUP_NAME:
+            return False
+        return True
+
+    def delete(self, request, group):
+        try:
+            api.dc_manager.subcloud_group_delete(request, group)
+        except Exception:
+            msg = _('Failed to delete group %(name)') % \
+                {'name': group, }
+            redirect = reverse('horizon:dc_admin:dc_software_management:index')
+            exceptions.handle(request, msg, redirect=redirect)
+
+        url = reverse('horizon:dc_admin:dc_software_management:index')
+        return shortcuts.redirect(url)
+
+
+class CreateSubcloudGroup(tables.LinkAction):
+    name = "createsubcloudgroup"
+    url = "horizon:dc_admin:dc_software_management:createsubcloudgroup"
+    verbose_name = _("Add Subcloud Group")
+    classes = ("ajax-modal", "btn-create")
+    icon = "plus"
+
+
+class SubcloudGroupManagamentTable(tables.DataTable):
+    name = tables.Column('name', verbose_name=_('Name'))
+    description = tables.Column('description', verbose_name=_('Description'))
+    update_apply_type = tables.Column(
+        'update_apply_type', verbose_name=_('Update Apply Type'))
+    max_parallel_subclouds = tables.Column(
+        'max_parallel_subclouds', verbose_name=_('Max parallel subclouds'))
+    created_at = tables.Column(
+        'created_at', verbose_name=_('Created at'))
+    updated_at = tables.Column(
+        'updated_at', verbose_name=_('Updated at'))
+
+    def get_object_id(self, obj):
+        return "%s" % obj.name
+
+    def get_object_display(self, obj):
+        return obj.name
+
+    class Meta(object):
+        name = "subcloudgroupmgmt"
+        multi_select = False
+        table_actions = (CreateSubcloudGroup,)
+        row_actions = (EditSubcloudGroup, DeleteSubcloudGroup,)
+        verbose_name = _("Subcloud Group Management")
         hidden_title = False

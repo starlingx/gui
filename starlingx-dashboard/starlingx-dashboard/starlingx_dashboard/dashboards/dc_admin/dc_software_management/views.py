@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Wind River Systems, Inc.
+# Copyright (c) 2018-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -20,6 +20,10 @@ from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
     import CreateCloudPatchConfigForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
     import CreateCloudPatchStrategyForm
+from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
+    import CreateSubcloudGroupForm
+from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
+    import UpdateSubcloudGroupForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
     import UploadPatchForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.tabs \
@@ -92,3 +96,43 @@ class EditCloudPatchConfigView(forms.ModalFormView):
                 'max_parallel_workers': config.max_parallel_workers,
                 'default_instance_action': config.default_instance_action,
                 'alarm_restriction_type': config.alarm_restriction_type}
+
+
+class CreateSubcloudGroupView(forms.ModalFormView):
+    form_class = CreateSubcloudGroupForm
+    template_name = 'dc_admin/dc_software_management/' \
+                    'create_subcloud_group.html'
+    success_url = reverse_lazy("horizon:dc_admin:dc_software_management:index")
+
+
+class EditSubcloudGroupView(forms.ModalFormView):
+    form_class = UpdateSubcloudGroupForm
+    template_name = 'dc_admin/dc_software_management/' \
+                    'edit_subcloud_group.html'
+    success_url = reverse_lazy("horizon:dc_admin:dc_software_management:index")
+
+    def get_context_data(self, **kwargs):
+        context = super(EditSubcloudGroupView, self).get_context_data(
+            **kwargs)
+        context['subcloud_group'] = self.kwargs['subcloud_group']
+        return context
+
+    def _get_object(self, *args, **kwargs):
+        if not hasattr(self, "_object"):
+            subcloud_group = self.kwargs['subcloud_group']
+            try:
+                self._object = api.dc_manager.subcloud_group_get(
+                    self.request, subcloud_group)
+            except Exception:
+                redirect = self.success_url
+                msg = _('Unable to retrieve subcloud group details.')
+                exceptions.handle(self.request, msg, redirect=redirect)
+        return self._object
+
+    def get_initial(self):
+        group = self._get_object()
+        return {'name': group.name,
+                'description': group.description,
+                'group_id': group.group_id,
+                'update_apply_type': group.update_apply_type,
+                'max_parallel_subclouds': group.max_parallel_subclouds}

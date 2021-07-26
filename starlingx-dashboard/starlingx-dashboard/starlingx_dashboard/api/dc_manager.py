@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2017-2020 Wind River Systems, Inc.
+# Copyright (c) 2017-2021 Wind River Systems, Inc.
 #
 
 import logging
@@ -26,6 +26,7 @@ LOG = logging.getLogger(__name__)
 
 
 DEFAULT_CONFIG_NAME = "all clouds default"
+DEFAULT_GROUP_NAME = "Default"
 
 
 @memoized
@@ -81,6 +82,43 @@ def subcloud_delete(request, subcloud_id):
 def subcloud_generate_config(request, subcloud_id, data):
     return dcmanagerclient(request).subcloud_manager.generate_config_subcloud(
         subcloud_id, **data)
+
+
+# SubCloud Groups functions
+class SubcloudGroup(base.APIResourceWrapper):
+    _attrs = ['group_id', 'name', 'description', 'update_apply_type',
+              'max_parallel_subclouds', 'created_at', 'updated_at', ]
+
+
+def subcloud_group_create(request, **kwargs):
+    response = dcmanagerclient(request).subcloud_group_manager.\
+        add_subcloud_group(**kwargs)
+    return [SubcloudGroup(subcloud_group) for subcloud_group in response]
+
+
+def list_subcloud_groups(request):
+    subcloud_groups = dcmanagerclient(request).subcloud_group_manager.\
+        list_subcloud_groups()
+    return [SubcloudGroup(subcloud_g) for subcloud_g in subcloud_groups]
+
+
+def subcloud_group_get(request, subcloud_group_id):
+    response = dcmanagerclient(request).subcloud_group_manager.\
+        subcloud_group_detail(subcloud_group_id)
+    if response and len(response):
+        return SubcloudGroup(response[0])
+
+
+def subcloud_group_delete(request, subcloud_group_id):
+    return dcmanagerclient(request).subcloud_group_manager.\
+        delete_subcloud_group(subcloud_group_id)
+
+
+def subcloud_group_update(request, subcloud_group_id, **kwargs):
+    response = dcmanagerclient(request).subcloud_group_manager.\
+        update_subcloud_group(subcloud_group_id, **kwargs)
+    # Updating returns a list of subclouds groups for some reason
+    return [SubcloudGroup(subcloud_group) for subcloud_group in response]
 
 
 class Strategy(base.APIResourceWrapper):

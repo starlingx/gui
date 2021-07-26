@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Wind River Systems, Inc.
+# Copyright (c) 2018-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -22,6 +22,7 @@ class PatchesTab(tabs.TableTab):
     name = _("Patches")
     slug = "patches"
     template_name = ("dc_admin/dc_software_management/_patches.html")
+    preload = False
 
     def get_dc_patches_data(self):
         request = self.request
@@ -41,6 +42,7 @@ class CloudPatchOrchestrationTab(tabs.TableTab):
     slug = "cloud_patch_orchestration"
     template_name = ("dc_admin/dc_software_management/"
                      "_cloud_patch_orchestration.html")
+    preload = False
 
     def get_context_data(self, request):
         context = super(CloudPatchOrchestrationTab, self).\
@@ -74,6 +76,7 @@ class CloudPatchConfigTab(tabs.TableTab):
     slug = "cloud_patch_config"
     template_name = ("dc_admin/dc_software_management/"
                      "_cloud_patch_config.html")
+    preload = False
 
     def get_cloudpatchconfig_data(self):
         request = self.request
@@ -87,7 +90,27 @@ class CloudPatchConfigTab(tabs.TableTab):
         return steps
 
 
+class SubcloudGroupTab(tabs.TableTab):
+    table_classes = (tables.SubcloudGroupManagamentTable,)
+    name = _("Subcloud Group Management")
+    slug = "subcloud_group_managment"
+    template_name =\
+        ("dc_admin/dc_software_management/_subcloud_group_mgmt.html")
+    preload = False
+
+    def get_subcloudgroupmgmt_data(self):
+        request = self.request
+        groups = []
+        try:
+            groups = api.dc_manager.list_subcloud_groups(request)
+        except Exception:
+            exceptions.handle(self.request,
+                              _('Unable to retrieve subcloud group list.'))
+        return groups
+
+
 class DCSoftwareManagementTabs(tabs.TabGroup):
     slug = "dc_software_management_tabs"
-    tabs = (PatchesTab, CloudPatchOrchestrationTab, CloudPatchConfigTab)
+    tabs = (PatchesTab, CloudPatchOrchestrationTab,
+            CloudPatchConfigTab, SubcloudGroupTab)
     sticky = True

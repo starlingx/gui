@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Wind River Systems, Inc.
+# Copyright (c) 2018-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -181,5 +181,126 @@ class CreateCloudPatchConfigForm(forms.SelfHandlingForm):
             redirect = reverse(self.failure_url)
             exceptions.handle(request,
                               "Cloud Patching Configuration creation failed",
+                              redirect=redirect)
+        return True
+
+
+class CreateSubcloudGroupForm(forms.SelfHandlingForm):
+    failure_url = 'horizon:dc_admin:dc_software_management:index'
+
+    name = forms.CharField(max_length=255,
+                           label=_("Name"),
+                           required=True)
+    description = forms.CharField(max_length=255,
+                                  label=_("Description"),
+                                  required=False)
+    SUBCLOUD_APPLY_TYPES = (
+        ('parallel', _("Parallel")),
+        ('serial', _("Serial")),
+    )
+
+    update_apply_type = forms.ChoiceField(
+        label=_("Update Apply Type"),
+        required=True,
+        choices=SUBCLOUD_APPLY_TYPES,
+        widget=forms.Select())
+
+    max_parallel_subclouds = forms.IntegerField(
+        label=_("Maximum Parallel Subclouds"),
+        initial=2,
+        min_value=2,
+        max_value=100,
+        required=True,
+        error_messages={'invalid': _('Maximum Parallel Subclouds must be '
+                                     'between 2 and 100.')},
+        widget=forms.TextInput())
+
+    def handle(self, request, data):
+        try:
+            if not data['description']:
+                data['description'] = "No description provided"
+
+            response = api.dc_manager.subcloud_group_create(request, **data)
+            if not response:
+                messages.error(request, "Subcloud Group "
+                                        "creation failed")
+            else:
+                msg = (_('Subcloud Group %s was successfully created.') %
+                       data['name'])
+                LOG.debug(msg)
+                messages.success(request, msg)
+        except exc.APIException as e:
+            LOG.error(e.error_message)
+            messages.error(request, e.error_message)
+
+            redirect = reverse(self.failure_url)
+            exceptions.handle(request, e.error_message, redirect=redirect)
+        except Exception:
+            redirect = reverse(self.failure_url)
+            exceptions.handle(request,
+                              "Subcloud Group creation failed",
+                              redirect=redirect)
+        return True
+
+
+class UpdateSubcloudGroupForm(forms.SelfHandlingForm):
+    failure_url = 'horizon:dc_admin:dc_software_management:index'
+    group_id = forms.CharField(label=_("ID"),
+                               required=False,
+                               widget=forms.TextInput(
+                               attrs={'readonly': 'readonly'}))
+    name = forms.CharField(max_length=255,
+                           label=_("Name"),
+                           required=True)
+    description = forms.CharField(max_length=255,
+                                  label=_("Description"),
+                                  required=False)
+    SUBCLOUD_APPLY_TYPES = (
+        ('parallel', _("Parallel")),
+        ('serial', _("Serial")),
+    )
+
+    update_apply_type = forms.ChoiceField(
+        label=_("Update Apply Type"),
+        required=True,
+        choices=SUBCLOUD_APPLY_TYPES,
+        widget=forms.Select())
+
+    max_parallel_subclouds = forms.IntegerField(
+        label=_("Maximum Parallel Subclouds"),
+        min_value=2,
+        max_value=100,
+        required=True,
+        error_messages={'invalid': _('Maximum Parallel Subclouds must be '
+                                     'between 2 and 100.')},
+        widget=forms.TextInput())
+
+    def handle(self, request, data):
+        try:
+            group_name = data['name']
+            if group_name == api.dc_manager.DEFAULT_GROUP_NAME:
+                del data['name']
+
+            response = api.dc_manager.subcloud_group_update(
+                request, data['group_id'], **data)
+            if not response:
+                messages.error(request, "Subcloud Group "
+                                        "update failed")
+            else:
+                msg = (_('Subcloud Group %s was successfully updated.') %
+                       group_name)
+                LOG.debug(msg)
+                messages.success(request, msg)
+            return response
+        except exc.APIException as e:
+            LOG.error(e.error_message)
+            messages.error(request, e.error_message)
+
+            redirect = reverse(self.failure_url)
+            exceptions.handle(request, e.error_message, redirect=redirect)
+        except Exception:
+            redirect = reverse(self.failure_url)
+            exceptions.handle(request,
+                              "Subcloud Group update failed",
                               redirect=redirect)
         return True
