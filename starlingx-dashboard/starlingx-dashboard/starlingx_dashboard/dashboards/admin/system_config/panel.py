@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2014 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -15,7 +15,7 @@ from openstack_dashboard.dashboards.admin import dashboard
 class SystemConfig(horizon.Panel):
     name = _("System Configuration")
     slug = "system_config"
-    permissions = ('openstack.services.platform',)
+    permissions = ('openstack.services.platform', 'openstack.roles.admin')
 
     def allowed(self, context):
         if not base.is_service_enabled(context['request'], 'platform'):

@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2019 Wind River Systems, Inc.
+#  Copyright (c) 2019-2021 Wind River Systems, Inc.
 #
 #  SPDX-License-Identifier: Apache-2.0
 #
@@ -20,6 +20,8 @@ def get_user_home(user):
                 dashboard = horizon.get_dashboard('dc_admin')
             except base.NotRegistered:
                 pass
+    else:
+        dashboard = horizon.get_dashboard('project').get_panel("api_access")
 
     if getattr(user, 'services_region', None) == 'RegionOne' and dc_mode:
         try:

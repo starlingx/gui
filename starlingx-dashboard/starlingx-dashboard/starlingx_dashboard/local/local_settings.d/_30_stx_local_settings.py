@@ -20,6 +20,8 @@ WEBROOT = '/'
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 ALLOWED_HOSTS = ["*"]
 HORIZON_CONFIG["password_autocomplete"] = "off"
+HORIZON_CONFIG["customization_module"] = \
+    "openstack_dashboard.overrides.permissions"
 
 # The OPENSTACK_HEAT_STACK settings can be used to disable password
 # field required while launching the stack.
