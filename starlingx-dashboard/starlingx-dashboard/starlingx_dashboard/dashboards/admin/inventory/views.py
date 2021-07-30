@@ -8,9 +8,9 @@
 
 import logging
 
-import cpu_functions.utils as icpu_utils
-from django.core.urlresolvers import reverse
-from django.core.urlresolvers import reverse_lazy
+from .cpu_functions import utils as icpu_utils
+from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import exceptions

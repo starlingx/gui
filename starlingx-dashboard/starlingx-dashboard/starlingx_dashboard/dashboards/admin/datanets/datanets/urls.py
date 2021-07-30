@@ -47,3 +47,5 @@ urlpatterns += [
         range_views.UpdateView.as_view(), name='editrange'),
     url(r'^ranges/',
         include(range_urls, namespace='ranges'))]
+
+app_name = "ranges"

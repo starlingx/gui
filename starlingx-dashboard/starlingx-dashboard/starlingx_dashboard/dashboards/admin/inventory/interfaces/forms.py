@@ -6,16 +6,14 @@
 
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-
+import collections
 import logging
-
-from compiler.ast import flatten
 import netaddr
 
 from cgtsclient import exc
 from django.conf import settings
-from django.core.urlresolvers import reverse  # noqa
 from django import shortcuts
+from django.urls import reverse  # noqa
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
@@ -26,6 +24,17 @@ from horizon import messages
 from starlingx_dashboard.api import sysinv
 
 LOG = logging.getLogger(__name__)
+
+
+def flatten(iterable):
+    result = []
+    for elem in iterable:
+        if isinstance(iterable, collections.Iterable) \
+                and not isinstance(elem, str):
+            result.extend(flatten(elem))
+        else:
+            result.append(elem)
+    return result
 
 
 def _get_ipv4_pool_choices(pools):
