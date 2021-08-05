@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2017 Wind River Systems, Inc.
+# Copyright (c) 2017-2021 Wind River Systems, Inc.
 #
 
 import logging
@@ -83,6 +83,18 @@ class SubClouds(generic.View):
         application/json object.
         """
         dc_manager.subcloud_create(request, request.DATA)
+
+
+@urls.register
+class SubCloudGroups(generic.View):
+    """API for Distributed Cloud Subcloud Groups"""
+    url_regex = r'dc_manager/subcloud-groups/$'
+
+    @rest_utils.ajax()
+    def get(self, request):
+        """Get a list of subcloud groups"""
+        result = dc_manager.list_subcloud_groups(request)
+        return {'items': [scg.to_dict() for scg in result]}
 
 
 @urls.register

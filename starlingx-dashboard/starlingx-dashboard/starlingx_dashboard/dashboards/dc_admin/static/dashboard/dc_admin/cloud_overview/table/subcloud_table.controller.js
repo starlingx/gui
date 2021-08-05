@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2020 Wind River Systems, Inc.
+ * Copyright (c) 2017-2021 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -53,6 +53,8 @@
 
     var ctrl = this;
     ctrl.subClouds = [];
+    ctrl.subCloudGroups = [];
+    ctrl.GroupsNames = [];
     ctrl.isubClouds = [];
     ctrl.subCloudSummaries = [];
 
@@ -141,6 +143,11 @@
         label: gettext('Subcloud ID'),
         name: 'subcloud_id',
         singleton: true
+      },
+      {
+        label: gettext('Subcloud Group Name'),
+        name: 'group_name',
+        singleton: true
       }
     ];
 
@@ -157,6 +164,7 @@
     function getData() {
       // Fetch subcloud data to populate the table
       $q.all([
+        dc_manager.getSubCloudGroups().success(getSubCloudGroupsSuccess),
         dc_manager.getSubClouds().success(getSubCloudsSuccess),
         dc_manager.getSummaries().success(getSummariesSuccess)
       ]).then(function(){
@@ -173,6 +181,8 @@
       // go around this issue we map management_state to new boolean
       // attribute is_managed.
       function modifyItem(item) {
+        var group = ctrl.subCloudGroups.find(element => element.group_id === item.group_id)
+        item.group_name = group.name
          if (item.management_state == 'managed') {
             item.is_managed = true;
           }
@@ -180,6 +190,14 @@
             item.is_managed = false;
           }
        }
+    }
+
+    function getSubCloudGroupsSuccess(response) {
+      ctrl.subCloudGroups = response.items;
+      response.items.map(addNames);
+      function addNames(item){
+        if (ctrl.GroupsNames.indexOf(item.name) === -1) ctrl.GroupsNames.push(item.name);
+      }
     }
 
     function getSummariesSuccess(response) {
@@ -344,6 +362,10 @@
         "location": {
           type: "string",
           title: "Location"},
+        "group_id": {
+          type: "string",
+          title: "Group Name",
+          enum: ctrl.GroupsNames},
       }
     };
 
@@ -352,6 +374,7 @@
         "name": cloud.name,
         "description": cloud.description,
         "location": cloud.location,
+        "group_id": cloud.group_name,
         };
 
       var config = {

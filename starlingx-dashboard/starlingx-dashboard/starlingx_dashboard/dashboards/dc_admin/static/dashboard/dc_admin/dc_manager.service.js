@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2020 Wind River Systems, Inc.
+ * Copyright (c) 2017-2021 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -26,7 +26,8 @@
       editSubcloud: editSubcloud,
       getSubClouds: getSubClouds,
       deleteSubcloud: deleteSubcloud,
-      generateConfig: generateConfig
+      generateConfig: generateConfig,
+      getSubCloudGroups: getSubCloudGroups
     };
 
     var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
@@ -184,6 +185,18 @@
         toastService.add('error', gettext(msg));
       });
       return response;
+    }
+
+
+    ///////////////
+    // SubCloud Groups //
+    ///////////////
+
+    function getSubCloudGroups() {
+      return apiService.get('/api/dc_manager/subcloud-groups/')
+        .error(function (error) {
+          toastService.clearErrors();
+        });
     }
 
   }
