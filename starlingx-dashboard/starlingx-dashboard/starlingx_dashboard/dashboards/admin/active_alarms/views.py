@@ -10,7 +10,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-#  Copyright (c) 2013-2019 Wind River Systems, Inc.
+#  Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 #  SPDX-License-Identifier: Apache-2.0
 #
@@ -39,8 +39,7 @@ class BannerView(views.HorizonTemplateView):
         if not self.request.is_ajax():
             raise exceptions.NotFound()
 
-        if (not self.request.user.is_authenticated or
-                not self.request.user.is_superuser):
+        if not self.request.user.is_authenticated:
             context["alarmbanner"] = False
         elif 'dc_admin' in self.request.META.get('HTTP_REFERER'):
             summaries = self.get_subcloud_data()
@@ -56,10 +55,10 @@ class BannerView(views.HorizonTemplateView):
                 [s for s in summaries if s.status == 'critical'])
             context["disabled"] = len(
                 [s for s in summaries if s.status == 'disabled'])
-        elif is_service_enabled(self.request, 'platform'):
+        elif (is_service_enabled(self.request, 'platform') or
+                self.request.user.is_authenticated):
             context["summary"] = self.get_data()
             context["alarmbanner"] = True
-
         return context
 
     def get_data(self):

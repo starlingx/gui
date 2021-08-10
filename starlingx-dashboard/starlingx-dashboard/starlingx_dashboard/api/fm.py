@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2019 Wind River Systems, Inc.
+# Copyright (c) 2018-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -63,8 +63,7 @@ def fmclient(request):
 class AlarmSummary(base.APIResourceWrapper):
     """Wrapper for Inventory Alarm Summaries"""
 
-    _attrs = ['system_uuid',
-              'warnings',
+    _attrs = ['warnings',
               'minor',
               'major',
               'critical',
