@@ -7,7 +7,7 @@
 import logging
 
 from cgtsclient import exc
-from django.core.urlresolvers import reverse  # noqa
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 

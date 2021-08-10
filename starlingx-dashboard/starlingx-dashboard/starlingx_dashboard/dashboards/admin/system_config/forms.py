@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 from cgtsclient import exc
 
-from django.core.urlresolvers import reverse  # noqa
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import exceptions

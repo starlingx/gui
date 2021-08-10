@@ -11,3 +11,5 @@ from starlingx_dashboard.dashboards.admin.inventory.storages.lvg_params \
 urlpatterns = [
     url(r'^(?P<key>[^/]+)/edit/$', views.EditView.as_view(),
         name='edit')]
+
+app_name = "edit"
