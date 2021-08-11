@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -9,6 +9,7 @@
 
 import logging
 
+from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
@@ -224,7 +225,22 @@ class CpuProfilesTab(tabs.TableTab):
         return cpuprofiles
 
     def allowed(self, request, datum=None):
-        return not stx_api.sysinv.is_system_mode_simplex(request)
+        # TypeError is being catched since in a DC environment
+        # with one subcloud controller, when an unlock action is executed
+        # and page refreshed the api function system_list,
+        # tries to iterate through the subcloud hosts.
+        # If the exception is caught, user is redirected to
+        # System controller and have visibility of the subcloud
+        # status.
+        try:
+            return not stx_api.sysinv.is_system_mode_simplex(request)
+        except TypeError:
+            if(getattr(settings, 'DC_MODE', False)):
+                failure_url = "/auth/switch_services_region/" \
+                              "SystemController/?next=/dc_admin/"
+                msg = (_('Subcloud is unavailable, '
+                         'redirected to SystemController region'))
+                exceptions.handle(request, msg, redirect=failure_url)
 
 
 class InterfaceProfilesTab(tabs.TableTab):
@@ -246,7 +262,22 @@ class InterfaceProfilesTab(tabs.TableTab):
         return interfaceprofiles
 
     def allowed(self, request, dataum=None):
-        return not stx_api.sysinv.is_system_mode_simplex(request)
+        # TypeError is being catched since in a DC environment
+        # with one subcloud controller, when an unlock action is executed
+        # and page refreshed the api function system_list,
+        # tries to iterate through the subcloud hosts.
+        # If the exception is caught, user is redirected to
+        # System controller and have visibility of the subcloud
+        # status.
+        try:
+            return not stx_api.sysinv.is_system_mode_simplex(request)
+        except TypeError:
+            if(getattr(settings, 'DC_MODE', False)):
+                failure_url = "/auth/switch_services_region/" \
+                              "SystemController/?next=/dc_admin/"
+                msg = (_('Subcloud is unavailable, '
+                         'redirected to SystemController region'))
+                exceptions.handle(request, msg, redirect=failure_url)
 
 
 class DiskProfilesTab(tabs.TableTab):
@@ -284,7 +315,22 @@ class DiskProfilesTab(tabs.TableTab):
         return diskprofiles
 
     def allowed(self, request, dataum=None):
-        return not stx_api.sysinv.is_system_mode_simplex(request)
+        # TypeError is being catched since in a DC environment
+        # with one subcloud controller, when an unlock action is executed
+        # and page refreshed the api function system_list,
+        # tries to iterate through the subcloud hosts.
+        # If the exception is caught, user is redirected to
+        # System controller and have visibility of the subcloud
+        # status.
+        try:
+            return not stx_api.sysinv.is_system_mode_simplex(request)
+        except TypeError:
+            if(getattr(settings, 'DC_MODE', False)):
+                failure_url = "/auth/switch_services_region/" \
+                              "SystemController/?next=/dc_admin/"
+                msg = (_('Subcloud is unavailable, '
+                         'redirected to SystemController region'))
+                exceptions.handle(request, msg, redirect=failure_url)
 
 
 class MemoryProfilesTab(tabs.TableTab):
@@ -305,7 +351,22 @@ class MemoryProfilesTab(tabs.TableTab):
         return memoryprofiles
 
     def allowed(self, request, dataum=None):
-        return not stx_api.sysinv.is_system_mode_simplex(request)
+        # TypeError is being catched since in a DC environment
+        # with one subcloud controller, when an unlock action is executed
+        # and page refreshed the api function system_list,
+        # tries to iterate through the subcloud hosts.
+        # If the exception is caught, user is redirected to
+        # System controller and have visibility of the subcloud
+        # status.
+        try:
+            return not stx_api.sysinv.is_system_mode_simplex(request)
+        except TypeError:
+            if(getattr(settings, 'DC_MODE', False)):
+                failure_url = "/auth/switch_services_region/" \
+                              "SystemController/?next=/dc_admin/"
+                msg = (_('Subcloud is unavailable, '
+                         'redirected to SystemController region'))
+                exceptions.handle(request, msg, redirect=failure_url)
 
 
 class DeviceUsageTab(tabs.TableTab):
