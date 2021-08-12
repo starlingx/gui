@@ -22,7 +22,6 @@ import horizon
 class Events(horizon.Panel):
     name = _("Events")
     slug = "events"
-    permissions = ('openstack.roles.admin',)
 
     def allowed(self, context):
         if context['request'].user.services_region == 'SystemController':
