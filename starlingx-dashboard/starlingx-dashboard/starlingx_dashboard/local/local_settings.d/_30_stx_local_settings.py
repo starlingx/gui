@@ -146,7 +146,7 @@ TEMPLATES[0]['DIRS'] = ADD_TEMPLATE_DIRS + TEMPLATES[0]['DIRS']
 
 OPENRC_CUSTOM_TEMPLATE = 'starlingx-openrc.sh.template'
 
-STATIC_ROOT = "/www/pages/static"
+STATIC_ROOT = "/var/www/pages/static"
 COMPRESS_OFFLINE = True
 
 # Secure site configuration
