@@ -19,7 +19,7 @@ from starlingx_dashboard.dashboards.admin.software_management.views import \
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
     import CreateCloudPatchConfigForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
-    import CreateCloudPatchStrategyForm
+    import CreateCloudStrategyForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
     import CreateSubcloudGroupForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
@@ -53,10 +53,10 @@ class DetailPatchView(AdminDetailPatchView):
     failure_url = 'horizon:dc_admin:dc_software_management:index'
 
 
-class CreateCloudPatchStrategyView(forms.ModalFormView):
-    form_class = CreateCloudPatchStrategyForm
+class CreateCloudStrategyView(forms.ModalFormView):
+    form_class = CreateCloudStrategyForm
     template_name = 'dc_admin/dc_software_management/' \
-                    'create_cloud_patch_strategy.html'
+                    'create_cloud_strategy.html'
     context_object_name = 'strategy'
     success_url = reverse_lazy("horizon:dc_admin:dc_software_management:index")
 

@@ -1,0 +1,37 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block form_action %}{% url 'horizon:dc_admin:dc_software_management:createcloudstrategy' %}{% endblock %}
+
+{% block modal-header %}{% trans "Create Strategy" %}{% endblock %}
+
+{% block modal-body %}
+<div class="left">
+    <fieldset>
+    {% include "horizon/common/_form_fields.html" %}
+    </fieldset>
+</div>
+<div class="right">
+    <h3>{% trans "Description:" %}</h3>
+    <p>
+        {% trans "Create a strategy to specify how the clouds should be orchestrated" %}
+    </p>
+    <p>
+        {% trans "<b>Patch:</b>: specify how the patches should be updated." %}
+    </p>
+    <p>
+        {% trans "<b>Upgrade:</b> specify how the software should be upgraded." %}
+    </p>
+    <p>
+        {% trans "<b>Kubernetes:</b> specify how Kubernetes should be upgraded." %}
+    </p>
+    <p>
+        {% trans "<b>Firmware:</b> specify how the firmware should be updated." %}
+    </p>
+</div>
+{% endblock %}
+
+{% block modal-footer %}
+  <a class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Create Strategy" %}" />
+{% endblock %}

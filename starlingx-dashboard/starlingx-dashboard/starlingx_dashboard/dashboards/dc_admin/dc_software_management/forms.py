@@ -26,7 +26,7 @@ class UploadPatchForm(AdminPatchForm):
     failure_url = 'horizon:dc_admin:dc_software_management:index'
 
 
-class CreateCloudPatchStrategyForm(forms.SelfHandlingForm):
+class CreateCloudStrategyForm(forms.SelfHandlingForm):
     failure_url = 'horizon:dc_admin:dc_software_management:index'
 
     SUBCLOUD_APPLY_TYPES = (
@@ -34,11 +34,84 @@ class CreateCloudPatchStrategyForm(forms.SelfHandlingForm):
         ('serial', _("Serial")),
     )
 
+    STRATEGY_TYPES = (
+        ('patch', _("Patch")),
+        ('upgrade', _("Upgrade")),
+        ('kubernetes', _("Kubernetes")),
+        ('firmware', _("Firmware")),
+    )
+
+    SUBCLOUD_TYPES = (
+        ('cloud_name', _("Subcloud")),
+        ('subcloud_group', _("Subcloud Group")),
+    )
+
+    type = forms.ChoiceField(
+        label=_("Strategy Type"),
+        required=True,
+        choices=STRATEGY_TYPES,
+        widget=forms.Select()
+    )
+
+    target = forms.ChoiceField(
+        label=_("Apply to"),
+        required=False,
+        choices=SUBCLOUD_TYPES,
+        widget=forms.Select(
+            attrs={
+                'class': 'switchable',
+                'data-slug': 'subcloud_types',
+                'initial': 'Subcloud'
+            }
+        )
+    )
+
+    cloud_name = forms.CharField(
+        label=_("Subcloud"),
+        required=False,
+        help_text=_("Select subcloud to apply strategy."),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'subcloud_types',
+                'data-subcloud_types-cloud_name': _("Subcloud")
+            }
+        )
+    )
+
+    subcloud_group = forms.CharField(
+        label=_("Subcloud Group"),
+        required=False,
+        help_text=_("Select subcloud group to apply strategy."),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'subcloud_types',
+                'data-subcloud_types-subcloud_group': _("Subcloud Group")
+            }
+        )
+    )
+
+    stop_on_failure = forms.BooleanField(
+        label=_("Stop on Failure"),
+        required=False,
+        initial=True,
+        help_text=_("Determines whether orchestration failure in a "
+                    "subcloud prevents application to subsequent subclouds")
+    )
+
     subcloud_apply_type = forms.ChoiceField(
         label=_("Subcloud Apply Type"),
         required=True,
         choices=SUBCLOUD_APPLY_TYPES,
-        widget=forms.Select())
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'subcloud_types',
+                'data-subcloud_types-cloud_name': _("Subcloud Apply Type")
+            }
+        )
+    )
 
     max_parallel_subclouds = forms.IntegerField(
         label=_("Maximum Parallel Subclouds"),
@@ -48,23 +121,51 @@ class CreateCloudPatchStrategyForm(forms.SelfHandlingForm):
         required=True,
         error_messages={'invalid': _('Maximum Parallel Subclouds must be '
                                      'between 2 and 100.')},
-        widget=forms.TextInput())
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'subcloud_types',
+                'data-subcloud_types-cloud_name':
+                _("Maximum Parallel Subclouds")
+            }
+        )
+    )
 
-    stop_on_failure = forms.BooleanField(
-        label=_("Stop on Failure"),
+    force = forms.BooleanField(
+        label=_("Force"),
+        initial=False,
         required=False,
-        initial=True,
-        help_text=_("Determines whether patch orchestration failure in a "
-                    "subcloud prevents application to subsequent subclouds"))
+        help_text=_('Offline subcloud is skipped unless '
+                    'force is set for Upgrade strategy'),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'subcloud_types',
+                'data-subcloud_types-cloud_name': _()
+            }
+        )
+    )
 
     def handle(self, request, data):
         try:
             # convert keys to use dashes
             for k in data.keys():
-                if '_' in k:
+                if 'subcloud_group' in k or 'cloud_name' in k:
+                    continue
+                elif '_' in k:
                     data[k.replace('_', '-')] = data[k]
                     del data[k]
 
+            if data['target'] == 'subcloud_group':
+                del data['cloud_name']
+                del data['force']
+                del data['max-parallel-subclouds']
+                del data['subcloud-apply-type']
+            else:
+                del data['subcloud_group']
+                data['force'] = str(data['force']).lower()
+
+            del data['target']
             data['stop-on-failure'] = str(data['stop-on-failure']).lower()
 
             response = api.dc_manager.strategy_create(request, data)

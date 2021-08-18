@@ -57,9 +57,9 @@ def get_cached_cloud_strategy(request, table):
     return table.kwargs['cloudpatchstrategy']
 
 
-class CreateCloudPatchStrategy(tables.LinkAction):
-    name = "createcloudpatchstrategy"
-    url = "horizon:dc_admin:dc_software_management:createcloudpatchstrategy"
+class CreateCloudStrategy(tables.LinkAction):
+    name = "createcloudstrategy"
+    url = "horizon:dc_admin:dc_software_management:createcloudstrategy"
     verbose_name = _("Create Strategy")
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
@@ -277,8 +277,9 @@ class CloudPatchStepsTable(tables.DataTable):
         multi_select = False
         status_columns = ['state', ]
         row_class = UpdateStepRow
+
         table_actions = (StepFilterAction,
-                         CreateCloudPatchStrategy, ApplyCloudPatchStrategy,
+                         CreateCloudStrategy, ApplyCloudPatchStrategy,
                          AbortCloudPatchStrategy, DeleteCloudPatchStrategy)
         verbose_name = _("Steps")
         hidden_title = False

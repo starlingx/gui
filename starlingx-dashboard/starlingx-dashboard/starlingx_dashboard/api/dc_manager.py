@@ -122,13 +122,14 @@ def subcloud_group_update(request, subcloud_group_id, **kwargs):
 
 
 class Strategy(base.APIResourceWrapper):
-    _attrs = ['subcloud_apply_type', 'max_parallel_subclouds',
-              'stop_on_failure', 'state', 'created_at', 'updated_at']
+    _attrs = ['strategy_type', 'subcloud_apply_type',
+              'max_parallel_subclouds', 'stop_on_failure', 'state',
+              'created_at', 'updated_at']
 
 
 def get_strategy(request):
     try:
-        response = dcmanagerclient(request).sw_patch_manager.\
+        response = dcmanagerclient(request).sw_strategy_manager.\
             update_sw_strategy_detail()
     except APIException as e:
         if e.error_code == 404:
@@ -141,21 +142,23 @@ def get_strategy(request):
 
 
 def strategy_create(request, data):
-    response = dcmanagerclient(request).sw_patch_manager.\
+    response = dcmanagerclient(request).sw_strategy_manager.\
         create_sw_update_strategy(**data)
     return Strategy(response)
 
 
 def strategy_apply(request):
-    return dcmanagerclient(request).sw_patch_manager.apply_sw_update_strategy()
+    return dcmanagerclient(request).sw_strategy_manager.\
+        apply_sw_update_strategy()
 
 
 def strategy_abort(request):
-    return dcmanagerclient(request).sw_patch_manager.abort_sw_update_strategy()
+    return dcmanagerclient(request).sw_strategy_manager.\
+        abort_sw_update_strategy()
 
 
 def strategy_delete(request):
-    return dcmanagerclient(request).sw_patch_manager.\
+    return dcmanagerclient(request).sw_strategy_manager.\
         delete_sw_update_strategy()
 
 

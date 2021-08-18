@@ -36,16 +36,16 @@ class PatchesTab(tabs.TableTab):
         return patches
 
 
-class CloudPatchOrchestrationTab(tabs.TableTab):
+class CloudOrchestrationTab(tabs.TableTab):
     table_classes = (tables.CloudPatchStepsTable,)
-    name = _("Cloud Patching Orchestration")
-    slug = "cloud_patch_orchestration"
+    name = _("Cloud Strategy Orchestration")
+    slug = "cloud_strategy_orchestration"
     template_name = ("dc_admin/dc_software_management/"
-                     "_cloud_patch_orchestration.html")
+                     "_cloud_strategy_orchestration.html")
     preload = False
 
     def get_context_data(self, request):
-        context = super(CloudPatchOrchestrationTab, self).\
+        context = super(CloudOrchestrationTab, self).\
             get_context_data(request)
 
         strategy = None
@@ -111,6 +111,6 @@ class SubcloudGroupTab(tabs.TableTab):
 
 class DCSoftwareManagementTabs(tabs.TabGroup):
     slug = "dc_software_management_tabs"
-    tabs = (PatchesTab, CloudPatchOrchestrationTab,
+    tabs = (PatchesTab, CloudOrchestrationTab,
             CloudPatchConfigTab, SubcloudGroupTab)
     sticky = True

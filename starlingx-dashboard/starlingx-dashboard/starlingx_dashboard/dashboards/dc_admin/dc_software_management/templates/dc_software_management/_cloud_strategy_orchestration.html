@@ -3,12 +3,14 @@
 {% block main %}
 
   <div class="info row-fluid detail">
-    <h3>{% trans "Cloud Patch Strategy" %}</h3>
+    <h3>{% trans "Cloud Strategy Orchestration" %}</h3>
     <hr class="header_rule">
-    <div id="cloud-patch-strategy-detail">
+    <div id="cloud-strategy-detail">
 
       {% if strategy %}
         <dl class="dl-horizontal-wide">
+          <dt>{% trans "Strategy Type" %}</dt>
+          <dd>{{ strategy.strategy_type }}</dd>
           <dt>{% trans "Subcloud Apply Type" %}</dt>
           <dd>{{ strategy.subcloud_apply_type }}</dd>
           <dt>{% trans "Max Parallel Subclouds" %}</dt>
