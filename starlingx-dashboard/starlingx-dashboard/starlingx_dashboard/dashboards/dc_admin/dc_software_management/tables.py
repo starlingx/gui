@@ -239,6 +239,20 @@ class UpdateStepRow(tables.Row):
         return step
 
 
+class StepFilterAction(tables.FilterAction):
+    def filter(self, table, steps, filter_string):
+        """Naive case-insensitive search."""
+        q = filter_string.lower().strip()
+
+        def comp(step):
+            if (q in step.state.lower() or
+               q in step.stage):
+                return True
+            return False
+
+        return list(filter(comp, steps))
+
+
 class CloudPatchStepsTable(tables.DataTable):
     cloud = tables.Column('cloud', verbose_name=_('Cloud'))
     stage = tables.Column('stage', verbose_name=_('Stage'))
@@ -263,7 +277,8 @@ class CloudPatchStepsTable(tables.DataTable):
         multi_select = False
         status_columns = ['state', ]
         row_class = UpdateStepRow
-        table_actions = (CreateCloudPatchStrategy, ApplyCloudPatchStrategy,
+        table_actions = (StepFilterAction,
+                         CreateCloudPatchStrategy, ApplyCloudPatchStrategy,
                          AbortCloudPatchStrategy, DeleteCloudPatchStrategy)
         verbose_name = _("Steps")
         hidden_title = False
