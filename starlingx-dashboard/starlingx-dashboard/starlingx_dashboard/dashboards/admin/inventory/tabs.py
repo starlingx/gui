@@ -9,6 +9,8 @@
 
 import logging
 
+from cgtsclient import exc
+
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -225,16 +227,16 @@ class CpuProfilesTab(tabs.TableTab):
         return cpuprofiles
 
     def allowed(self, request, datum=None):
-        # TypeError is being catched since in a DC environment
-        # with one subcloud controller, when an unlock action is executed
-        # and page refreshed the api function system_list,
+        # TypeError and CommunicationError are being catched since in
+        # a DC environment with one subcloud controller, when an unlock
+        # action is executed and page refreshed the api function system_list,
         # tries to iterate through the subcloud hosts.
         # If the exception is caught, user is redirected to
         # System controller and have visibility of the subcloud
         # status.
         try:
             return not stx_api.sysinv.is_system_mode_simplex(request)
-        except TypeError:
+        except (TypeError, exc.CommunicationError):
             if(getattr(settings, 'DC_MODE', False)):
                 failure_url = "/auth/switch_services_region/" \
                               "SystemController/?next=/dc_admin/"
@@ -262,16 +264,16 @@ class InterfaceProfilesTab(tabs.TableTab):
         return interfaceprofiles
 
     def allowed(self, request, dataum=None):
-        # TypeError is being catched since in a DC environment
-        # with one subcloud controller, when an unlock action is executed
-        # and page refreshed the api function system_list,
+        # TypeError and CommunicationError are being catched since in
+        # a DC environment with one subcloud controller, when an unlock
+        # action is executed and page refreshed the api function system_list,
         # tries to iterate through the subcloud hosts.
         # If the exception is caught, user is redirected to
         # System controller and have visibility of the subcloud
         # status.
         try:
             return not stx_api.sysinv.is_system_mode_simplex(request)
-        except TypeError:
+        except (TypeError, exc.CommunicationError):
             if(getattr(settings, 'DC_MODE', False)):
                 failure_url = "/auth/switch_services_region/" \
                               "SystemController/?next=/dc_admin/"
@@ -315,16 +317,16 @@ class DiskProfilesTab(tabs.TableTab):
         return diskprofiles
 
     def allowed(self, request, dataum=None):
-        # TypeError is being catched since in a DC environment
-        # with one subcloud controller, when an unlock action is executed
-        # and page refreshed the api function system_list,
+        # TypeError and CommunicationError are being catched since in
+        # a DC environment with one subcloud controller, when an unlock
+        # action is executed and page refreshed the api function system_list,
         # tries to iterate through the subcloud hosts.
         # If the exception is caught, user is redirected to
         # System controller and have visibility of the subcloud
         # status.
         try:
             return not stx_api.sysinv.is_system_mode_simplex(request)
-        except TypeError:
+        except (TypeError, exc.CommunicationError):
             if(getattr(settings, 'DC_MODE', False)):
                 failure_url = "/auth/switch_services_region/" \
                               "SystemController/?next=/dc_admin/"
@@ -351,16 +353,16 @@ class MemoryProfilesTab(tabs.TableTab):
         return memoryprofiles
 
     def allowed(self, request, dataum=None):
-        # TypeError is being catched since in a DC environment
-        # with one subcloud controller, when an unlock action is executed
-        # and page refreshed the api function system_list,
+        # TypeError and CommunicationError are being catched since in
+        # a DC environment with one subcloud controller, when an unlock
+        # action is executed and page refreshed the api function system_list,
         # tries to iterate through the subcloud hosts.
         # If the exception is caught, user is redirected to
         # System controller and have visibility of the subcloud
         # status.
         try:
             return not stx_api.sysinv.is_system_mode_simplex(request)
-        except TypeError:
+        except (TypeError, exc.CommunicationError):
             if(getattr(settings, 'DC_MODE', False)):
                 failure_url = "/auth/switch_services_region/" \
                               "SystemController/?next=/dc_admin/"
