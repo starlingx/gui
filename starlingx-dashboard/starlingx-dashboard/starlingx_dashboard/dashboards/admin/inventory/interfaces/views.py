@@ -23,8 +23,6 @@ from starlingx_dashboard.dashboards.admin.inventory.interfaces.address import \
 from starlingx_dashboard.dashboards.admin.inventory.interfaces.forms import \
     AddInterface
 from starlingx_dashboard.dashboards.admin.inventory.interfaces.forms import \
-    AddInterfaceProfile
-from starlingx_dashboard.dashboards.admin.inventory.interfaces.forms import \
     UpdateInterface
 from starlingx_dashboard.dashboards.admin.inventory.interfaces.route import \
     tables as route_tables
@@ -161,63 +159,6 @@ class AddInterfaceView(forms.ModalFormView):
             exceptions.handle(self.request,
                               _('Unable to retrieve SDN configuration.'))
         initial['sdn_enabled'] = sdn_enabled
-        return initial
-
-
-class AddInterfaceProfileView(forms.ModalFormView):
-    form_class = AddInterfaceProfile
-    template_name = 'admin/inventory/interfaces/createprofile.html'
-    success_url = 'horizon:admin:inventory:detail'
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def get_success_url(self):
-        return reverse(self.success_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_failure_url(self):
-        return reverse(self.failure_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_myhost_data(self):
-        if not hasattr(self, "_host"):
-            host_id = self.kwargs['host_id']
-            try:
-                host = stx_api.sysinv.host_get(self.request, host_id)
-
-                all_ports = stx_api.sysinv.host_port_list(self.request,
-                                                          host.uuid)
-                host.ports = [p for p in all_ports if p.interface_uuid]
-                for p in host.ports:
-                    p.namedisplay = p.get_port_display_name()
-
-                host.interfaces = stx_api.sysinv.host_interface_list(
-                    self.request, host.uuid)
-                for i in host.interfaces:
-                    i.ports = [p.get_port_display_name()
-                               for p in all_ports if
-                               p.interface_uuid and p.interface_uuid == i.uuid]
-                    i.ports = ", ".join(i.ports)
-                    i.uses = ", ".join(i.uses)
-
-            except Exception:
-                redirect = reverse('horizon:admin:inventory:index')
-                exceptions.handle(self.request,
-                                  _('Unable to retrieve details for '
-                                    'host "%s".') % host_id,
-                                  redirect=redirect)
-            self._host = host
-        return self._host
-
-    def get_context_data(self, **kwargs):
-        context = super(AddInterfaceProfileView, self).get_context_data(
-            **kwargs)
-        context['host_id'] = self.kwargs['host_id']
-        context['host'] = self.get_myhost_data()
-        return context
-
-    def get_initial(self):
-        initial = super(AddInterfaceProfileView, self).get_initial()
-        initial['host_id'] = self.kwargs['host_id']
         return initial
 
 

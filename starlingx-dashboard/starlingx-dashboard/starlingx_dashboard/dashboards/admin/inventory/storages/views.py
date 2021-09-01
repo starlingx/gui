@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2015, 2017 Wind River Systems, Inc.
+# Copyright (c) 2013-2015, 2017-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -18,8 +18,6 @@ from horizon.utils import memoized
 from horizon import views
 
 from starlingx_dashboard.api import sysinv
-from starlingx_dashboard.dashboards.admin.inventory.storages.forms import \
-    AddDiskProfile
 from starlingx_dashboard.dashboards.admin.inventory.storages.forms import \
     AddLocalVolumeGroup
 from starlingx_dashboard.dashboards.admin.inventory.storages.forms import \
@@ -110,105 +108,6 @@ class EditStorageVolumeView(forms.ModalFormView):
                 'host_uuid': stor.ihost_uuid,
                 'journal_location': stor.journal_location,
                 'journal_size_mib': stor.journal_size_mib}
-
-
-class AddDiskProfileView(forms.ModalFormView):
-    form_class = AddDiskProfile
-    template_name = 'admin/inventory/storages/creatediskprofile.html'
-    success_url = 'horizon:admin:inventory:detail'
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def get_success_url(self):
-        return reverse(self.success_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_failure_url(self):
-        return reverse(self.failure_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_myhost_data(self):
-        if not hasattr(self, "_host"):
-            host_id = self.kwargs['host_id']
-            try:
-                host = sysinv.host_get(self.request, host_id)
-
-                all_disks = sysinv.host_disk_list(self.request, host.uuid)
-                host.disks = [d for d in all_disks if
-                              (d.istor_uuid or d.ipv_uuid)]
-
-                host.partitions = sysinv.host_disk_partition_list(
-                    self.request, host.uuid)
-
-                host.stors = sysinv.host_stor_list(self.request, host.uuid)
-
-                all_lvgs = sysinv.host_lvg_list(self.request, host.uuid)
-                host.lvgs = [l for l in all_lvgs if
-                             l.lvm_vg_name == sysinv.LVG_NOVA_LOCAL]
-
-                all_pvs = sysinv.host_pv_list(self.request, host.uuid)
-                host.pvs = [p for p in all_pvs if
-                            p.lvm_vg_name == sysinv.LVG_NOVA_LOCAL]
-
-                journals = {}
-                count = 0
-                for s in host.stors:
-                    # count journals
-                    if s.function == 'journal':
-                        count += 1
-                        journals.update({s.uuid: count})
-
-                for s in host.stors:
-                    if s.function == 'journal' and count > 1:
-                        setattr(s, "count", journals[s.uuid])
-                    if s.function == 'osd':
-                        if s.journal_location != s.uuid:
-                            if count > 1:
-                                setattr(s, "count",
-                                        journals[s.journal_location])
-                        setattr(s, "tier_name", s.tier_name)
-
-                    s.disks = [d.device_path
-                               for d in all_disks if
-                               d.istor_uuid and d.istor_uuid == s.uuid]
-                    s.disks = ", ".join(s.disks)
-
-                for l in host.lvgs:
-                    l.lvm_type = l.capabilities.get(
-                        sysinv.LVG_CINDER_PARAM_LVM_TYPE)
-
-                    l.dev_paths = [p.disk_or_part_device_path
-                                   for p in all_pvs if
-                                   p.lvm_vg_name and
-                                   p.lvm_vg_name == sysinv.LVG_NOVA_LOCAL]
-                    l.dev_paths = ", ".join(l.dev_paths)
-
-            except Exception:
-                redirect = reverse('horizon:admin:inventory:index')
-                exceptions.handle(self.request,
-                                  _('Unable to retrieve details for '
-                                    'host "%s".') % host_id,
-                                  redirect=redirect)
-            self._host = host
-
-        return self._host
-
-    def get_context_data(self, **kwargs):
-        context = super(AddDiskProfileView, self).get_context_data(**kwargs)
-        context['host_id'] = self.kwargs['host_id']
-        context['host'] = self.get_myhost_data()
-        context['is_host_with_storage'] = sysinv.is_host_with_storage(
-            self.request, self.kwargs['host_id'])
-        return context
-
-    def get_initial(self):
-        initial = super(AddDiskProfileView, self).get_initial()
-        initial['host_id'] = self.kwargs['host_id']
-        try:
-            host = sysinv.host_get(self.request, initial['host_id'])
-        except Exception:
-            exceptions.handle(self.request, _('Unable to retrieve host.'))
-        initial['personality'] = host._personality
-        return initial
 
 
 class AddLocalVolumeGroupView(forms.ModalFormView):

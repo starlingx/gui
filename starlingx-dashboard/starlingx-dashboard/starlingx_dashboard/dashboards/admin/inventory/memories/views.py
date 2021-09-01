@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -15,8 +15,7 @@ from horizon import exceptions
 from horizon import forms
 
 from starlingx_dashboard import api as stx_api
-from starlingx_dashboard.dashboards.admin.inventory.memories.forms import \
-    AddMemoryProfile
+
 from starlingx_dashboard.dashboards.admin.inventory.memories.forms import \
     UpdateMemory
 
@@ -64,55 +63,3 @@ class UpdateMemoryView(forms.ModalFormView):
 
         return {'host': host,
                 'host_id': host.host_id, }
-
-
-class AddMemoryProfileView(forms.ModalFormView):
-    form_class = AddMemoryProfile
-    template_name = 'admin/inventory/memorys/createprofile.html'
-    success_url = 'horizon:admin:inventory:detail'
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def get_success_url(self):
-        return reverse(self.success_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_failure_url(self):
-        return reverse(self.failure_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_myhost_data(self):
-        if not hasattr(self, "_host"):
-            host_id = self.kwargs['host_id']
-            try:
-                host = stx_api.sysinv.host_get(self.request, host_id)
-                host.nodes = stx_api.sysinv.host_node_list(self.request,
-                                                           host.uuid)
-                host.memory = \
-                    stx_api.sysinv.host_memory_list(self.request, host.uuid)
-
-                numa_node_tuple_list = []
-                for m in host.memory:
-                    node = stx_api.sysinv.host_node_get(self.request,
-                                                        m.inode_uuid)
-                    numa_node_tuple_list.append((node.numa_node, m))
-
-                host.numa_nodes = numa_node_tuple_list
-            except Exception:
-                redirect = reverse('horizon:admin:inventory:index')
-                exceptions.handle(self.request,
-                                  _('Unable to retrieve details for '
-                                    'host "%s".') % host_id,
-                                  redirect=redirect)
-            self._host = host
-        return self._host
-
-    def get_context_data(self, **kwargs):
-        context = super(AddMemoryProfileView, self).get_context_data(**kwargs)
-        context['host_id'] = self.kwargs['host_id']
-        context['host'] = self.get_myhost_data()
-        return context
-
-    def get_initial(self):
-        initial = super(AddMemoryProfileView, self).get_initial()
-        initial['host_id'] = self.kwargs['host_id']
-        return initial

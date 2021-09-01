@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -11,8 +11,6 @@ from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
-
-from starlingx_dashboard import api as stx_api
 
 LOG = logging.getLogger(__name__)
 
@@ -32,24 +30,6 @@ class UpdateMemory(tables.LinkAction):
         return (host._administrative == 'locked' and
                 host.subfunctions and
                 'worker' in host.subfunctions)
-
-
-class CreateMemoryProfile(tables.LinkAction):
-    name = "createMemoryProfile"
-    verbose_name = _("Create Memory Profile")
-    url = "horizon:admin:inventory:addmemoryprofile"
-    classes = ("ajax-modal", "btn-create")
-
-    def get_link_url(self, datum=None):
-        host_id = self.table.kwargs['host_id']
-        return reverse(self.url, args=(host_id,))
-
-    def allowed(self, request, datum):
-        host = self.table.kwargs['host']
-        if host.subfunctions and 'storage' in host.subfunctions:
-            return False
-        return (host.invprovision == 'provisioned' and
-                not stx_api.sysinv.is_system_mode_simplex(request))
 
 
 def get_processor_memory(memory):
@@ -95,4 +75,4 @@ class MemorysTable(tables.DataTable):
         name = "memorys"
         verbose_name = _("Memory")
         multi_select = False
-        table_actions = (UpdateMemory, CreateMemoryProfile,)
+        table_actions = (UpdateMemory,)

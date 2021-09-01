@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -18,11 +18,7 @@ from horizon import forms
 
 from starlingx_dashboard.api import sysinv
 from starlingx_dashboard.dashboards.admin.inventory.cpu_functions.forms \
-    import AddCpuProfile
-from starlingx_dashboard.dashboards.admin.inventory.cpu_functions.forms \
     import UpdateCpuFunctions
-from starlingx_dashboard.dashboards.admin.inventory.cpu_functions \
-    import utils as cpufunctions_utils
 
 LOG = logging.getLogger(__name__)
 
@@ -92,47 +88,3 @@ class UpdateCpuFunctionsView(forms.ModalFormView):
         }
 
         return formatted_data
-
-
-class AddCpuProfileView(forms.ModalFormView):
-    form_class = AddCpuProfile
-    template_name = 'admin/inventory/cpu_functions/createprofile.html'
-    success_url = 'horizon:admin:inventory:detail'
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def get_success_url(self):
-        return reverse(self.success_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_failure_url(self):
-        return reverse(self.failure_url,
-                       args=(self.kwargs['host_id'],))
-
-    def get_myhost_data(self):
-        if not hasattr(self, "_host"):
-            host_id = self.kwargs['host_id']
-            try:
-                host = sysinv.host_get(self.request, host_id)
-                host.nodes = sysinv.host_node_list(self.request, host.uuid)
-                host.cpus = sysinv.host_cpu_list(self.request, host.uuid)
-                icpu_utils.restructure_host_cpu_data(host)
-            except Exception:
-                redirect = reverse('horizon:admin:inventory:index')
-                exceptions.handle(self.request,
-                                  _('Unable to retrieve details for '
-                                    'host "%s".') % host_id,
-                                  redirect=redirect)
-            self._host = host
-        return self._host
-
-    def get_context_data(self, **kwargs):
-        context = super(AddCpuProfileView, self).get_context_data(**kwargs)
-        context['host_id'] = self.kwargs['host_id']
-        context['host'] = self.get_myhost_data()
-        context['cpu_formats'] = cpufunctions_utils.CPU_TYPE_FORMATS
-        return context
-
-    def get_initial(self):
-        initial = super(AddCpuProfileView, self).get_initial()
-        initial['host_id'] = self.kwargs['host_id']
-        return initial

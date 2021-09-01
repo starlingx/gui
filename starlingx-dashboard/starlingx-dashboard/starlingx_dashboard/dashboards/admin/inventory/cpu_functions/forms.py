@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -142,45 +142,4 @@ class UpdateCpuFunctions(forms.SelfHandlingForm):
             msg = _('Failed to update CPU Assignments.')
             LOG.info(msg)
             redirect = reverse(self.failure_url, args=[host_id])
-            exceptions.handle(request, msg, redirect=redirect)
-
-
-class AddCpuProfile(forms.SelfHandlingForm):
-    host_id = forms.CharField(widget=forms.widgets.HiddenInput)
-    profilename = forms.CharField(label=_("Cpu Profile Name"),
-                                  required=True)
-
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def __init__(self, *args, **kwargs):
-        super(AddCpuProfile, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super(AddCpuProfile, self).clean()
-        # host_id = cleaned_data.get('host_id')
-        return cleaned_data
-
-    def handle(self, request, data):
-
-        cpuProfileName = data['profilename']
-        try:
-            cpuProfile = sysinv.host_cpuprofile_create(request, **data)
-            msg = _(
-                'Cpu Profile "%s" was successfully created.') % cpuProfileName
-            LOG.debug(msg)
-            messages.success(request, msg)
-            return cpuProfile
-        except exc.ClientException as ce:
-            # Display REST API error message on UI
-            messages.error(request, ce)
-            LOG.error(ce)
-
-            # Redirect to failure pg
-            redirect = reverse(self.failure_url, args=[data['host_id']])
-            return shortcuts.redirect(redirect)
-        except Exception:
-            msg = _('Failed to create cpu profile "%s".') % cpuProfileName
-            LOG.info(msg)
-            redirect = reverse(self.failure_url,
-                               args=[data['host_id']])
             exceptions.handle(request, msg, redirect=redirect)

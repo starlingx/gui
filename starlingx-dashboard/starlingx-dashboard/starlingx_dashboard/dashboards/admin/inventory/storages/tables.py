@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -53,20 +53,6 @@ class CreateStorageVolume(tables.LinkAction):
                                                   _("(Node Unlocked)"))
 
         return True
-
-
-class CreateDiskProfile(tables.LinkAction):
-    name = "creatediskprofile"
-    verbose_name = ("Create Storage Profile")
-    url = "horizon:admin:inventory:adddiskprofile"
-    classes = ("ajax-modal", "btn-create")
-
-    def get_link_url(self, datum=None):
-        host_id = self.table.kwargs['host_id']
-        return reverse(self.url, args=(host_id,))
-
-    def allowed(self, request, datum):
-        return not sysinv.is_system_mode_simplex(request)
 
 
 class CreatePartition(tables.LinkAction):
@@ -363,7 +349,7 @@ class StorageVolumesTable(tables.DataTable):
                    'journal_path', 'journal_size_mib', 'journal_location')
         multi_select = False
         row_actions = (DeleteStor, EditStor,)
-        table_actions = (CreateStorageVolume, CreateDiskProfile,)
+        table_actions = (CreateStorageVolume,)
         hidden_title = False
         footer = False
 
@@ -491,7 +477,7 @@ class LocalVolumeGroupsTable(tables.DataTable):
                    'pvs', 'lvs',)
         multi_select = False
         row_actions = (RemoveLocalVolumeGroup,)
-        table_actions = (AddLocalVolumeGroup, CreateDiskProfile)
+        table_actions = (AddLocalVolumeGroup,)
         hidden_title = False
         footer = False
 

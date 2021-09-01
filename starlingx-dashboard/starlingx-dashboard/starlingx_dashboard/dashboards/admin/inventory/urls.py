@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -55,15 +55,9 @@ urlpatterns = [
     url(r'^(?P<host_id>[^/]+)/editcpufunctions/$',
         cpu_functions_views.UpdateCpuFunctionsView.as_view(),
         name='editcpufunctions'),
-    url(r'^(?P<host_id>[^/]+)/addcpuprofile/$',
-        cpu_functions_views.AddCpuProfileView.as_view(),
-        name='addcpuprofile'),
     url(r'^(?P<host_id>[^/]+)/addinterface/$',
         interface_views.AddInterfaceView.as_view(),
         name='addinterface'),
-    url(r'^(?P<host_id>[^/]+)/addinterfaceprofile/$',
-        interface_views.AddInterfaceProfileView.as_view(),
-        name='addinterfaceprofile'),
     url(
         r'^(?P<host_id>[^/]+)/interfaces/(?P<interface_id>[^/]+)/update/$',
         interface_views.UpdateView.as_view(),
@@ -90,15 +84,9 @@ urlpatterns = [
     url(r'^(?P<host_id>[^/]+)/addstoragevolume/$',
         storage_views.AddStorageVolumeView.as_view(),
         name='addstoragevolume'),
-    url(r'^(?P<host_id>[^/]+)/adddiskprofile/$',
-        storage_views.AddDiskProfileView.as_view(),
-        name='adddiskprofile'),
     url(r'^(?P<host_id>[^/]+)/updatememory/$',
         memory_views.UpdateMemoryView.as_view(),
         name='updatememory'),
-    url(r'^(?P<host_id>[^/]+)/addmemoryprofile/$',
-        memory_views.AddMemoryProfileView.as_view(),
-        name='addmemoryprofile'),
 
     url(r'^(?P<host_id>[^/]+)/addlocalvolumegroup/$',
         storage_views.AddLocalVolumeGroupView.as_view(),

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -53,82 +53,6 @@ class CpuFunction(object):
         self.allocated_function = function
         self.socket_cores = {}
         self.socket_cores_number = {}
-
-
-class CpuProfile(object):
-    class CpuConfigure(object):
-        def __init__(self):
-            self.platform = 0
-            self.vswitch = 0
-            self.shared = 0
-            self.isolated = 0
-            self.vms = 0
-            self.numa_node = 0
-
-    # cpus is a list of icpu sorted by numa_node, core and thread
-    # if not sorted, provide nodes list so it can be sorted here
-    def __init__(self, cpus, nodes=None):
-        if nodes:
-            cpus = CpuProfile.sort_cpu_by_numa_node(cpus, nodes)
-
-        cores = []
-
-        self.number_of_cpu = 0
-        self.cores_per_cpu = 0
-        self.hyper_thread = False
-        self.processors = []
-        cur_processor = None
-
-        for cpu in cpus:
-            key = '{0}-{1}'.format(cpu.numa_node, cpu.core)
-            if key not in cores:
-                cores.append(key)
-            else:
-                self.hyper_thread = True
-                continue
-
-            if cur_processor is None \
-                    or cur_processor.numa_node != cpu.numa_node:
-                cur_processor = CpuProfile.CpuConfigure()
-                cur_processor.numa_node = cpu.numa_node
-                self.processors.append(cur_processor)
-
-            if cpu.allocated_function == PLATFORM_CPU_TYPE:
-                cur_processor.platform += 1
-            elif cpu.allocated_function == VSWITCH_CPU_TYPE:
-                cur_processor.vswitch += 1
-            elif cpu.allocated_function == SHARED_CPU_TYPE:
-                cur_processor.shared += 1
-            elif cpu.allocated_function == APPLICATION_CPU_TYPE:
-                cur_processor.vms += 1
-            elif cpu.allocated_function == ISOLATED_CPU_TYPE:
-                cur_processor.isolated += 1
-
-        self.cores_per_cpu = len(cores)
-        self.number_of_cpu = len(self.processors)
-
-    @staticmethod
-    def sort_cpu_by_numa_node(cpus, nodes):
-        newlist = []
-        for node in nodes:
-            for cpu in cpus:
-                if cpu.numa_node == node.numa_node:
-                    newlist.append(cpu)
-        return newlist
-
-
-class HostCpuProfile(CpuProfile):
-    def __init__(self, personality, cpus, nodes=None):
-        super(HostCpuProfile, self).__init__(cpus, nodes)
-        self.personality = personality
-
-    # see if a cpu profile is applicable to this host
-    def profile_applicable(self, profile):
-        if self.number_of_cpu == profile.number_of_cpu and \
-                self.cores_per_cpu == profile.cores_per_cpu:
-            return True
-        else:
-            return False
 
 
 def compress_range(c_list):
