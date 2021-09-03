@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -639,47 +639,4 @@ class UpdateMemory(forms.SelfHandlingForm):
             msg = _('Failed to update memory allocation')
             LOG.info(msg)
             redirect = reverse(self.failure_url, args=[host_id])
-            exceptions.handle(request, msg, redirect=redirect)
-
-
-class AddMemoryProfile(forms.SelfHandlingForm):
-    host_id = forms.CharField(widget=forms.widgets.HiddenInput)
-    profilename = forms.CharField(label=_("Memory Profile Name"),
-                                  required=True)
-
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def __init__(self, *args, **kwargs):
-        super(AddMemoryProfile, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super(AddMemoryProfile, self).clean()
-        # host_id = cleaned_data.get('host_id')
-        return cleaned_data
-
-    def handle(self, request, data):
-
-        memoryProfileName = data['profilename']
-        try:
-            memoryProfile = stx_api.sysinv.host_memprofile_create(
-                request, **data)
-            msg = _('Memory Profile "%s" was successfully created.') % \
-                memoryProfileName
-            LOG.debug(msg)
-            messages.success(request, msg)
-            return memoryProfile
-        except exc.ClientException as ce:
-            # Display REST API error message on UI
-            messages.error(request, ce)
-            LOG.error(ce)
-
-            # Redirect to failure pg
-            redirect = reverse(self.failure_url, args=[data['host_id']])
-            return shortcuts.redirect(redirect)
-        except Exception:
-            msg = _('Failed to create memory profile "%s".') % \
-                memoryProfileName
-            LOG.info(msg)
-            redirect = reverse(self.failure_url,
-                               args=[data['host_id']])
             exceptions.handle(request, msg, redirect=redirect)

@@ -22,46 +22,6 @@ from starlingx_dashboard import api as stx_api
 LOG = logging.getLogger(__name__)
 
 
-class AddDiskProfile(forms.SelfHandlingForm):
-    host_id = forms.CharField(widget=forms.widgets.HiddenInput)
-    profilename = forms.CharField(label=_("Storage Profile Name"),
-                                  required=True)
-
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def __init__(self, *args, **kwargs):
-        super(AddDiskProfile, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super(AddDiskProfile, self).clean()
-        # host_id = cleaned_data.get('host_id')
-        return cleaned_data
-
-    def handle(self, request, data):
-        diskProfileName = data['profilename']
-        try:
-            diskProfile = stx_api.sysinv.host_diskprofile_create(request,
-                                                                 **data)
-
-            msg = _('Storage Profile "%s" was successfully created.') \
-                % diskProfileName
-            LOG.debug(msg)
-
-            messages.success(request, msg)
-
-            return diskProfile
-        except Exception as e:
-            msg = _('Failed to create storage profile "%s".') % diskProfileName
-            LOG.info(msg)
-            LOG.error(e)
-
-            messages.error(request, e)
-
-            redirect = reverse(self.failure_url,
-                               args=[data['host_id']])
-            return shortcuts.redirect(redirect)
-
-
 class EditStorageVolume(forms.SelfHandlingForm):
     id = forms.CharField(widget=forms.widgets.HiddenInput)
 

@@ -64,6 +64,18 @@ class HostsTab(tabs.TableTab):
         self.all_hosts = []
         try:
             self.all_hosts = stx_api.sysinv.host_list(request)
+        # In a DC environment with one subcloud controller, when the
+        # subcloud is offline and the page is refreshed,
+        # TypeError and CommunicationError exception are being caught.
+        # The user is redirected to System
+        # controller and have visibility of the subcloud status.
+        except (TypeError, exc.CommunicationError):
+            if(getattr(settings, 'DC_MODE', False)):
+                failure_url = "/auth/switch_services_region/" \
+                              "SystemController/?next=/dc_admin/"
+                msg = (_('Subcloud is unavailable, '
+                         'redirected to SystemController region'))
+                exceptions.handle(request, msg, redirect=failure_url)
         except Exception:
             exceptions.handle(request,
                               _('Unable to retrieve host list.'))
@@ -208,169 +220,6 @@ class HostsTab(tabs.TableTab):
         return context
 
 
-class CpuProfilesTab(tabs.TableTab):
-    table_classes = (toplevel_tables.CpuProfilesTable, )
-    name = _("Cpu Profiles")
-    slug = "cpuprofiles"
-    template_name = ("admin/inventory/_cpuprofiles.html")
-    preload = False
-
-    def get_cpuprofiles_data(self):
-        cpuprofiles = []
-        try:
-            cpuprofiles = stx_api.sysinv.host_cpuprofile_list(self.request)
-            cpuprofiles.sort(key=lambda f: (f.profilename))
-        except Exception:
-            cpuprofiles = []
-            exceptions.handle(self.request,
-                              _('Unable to retrieve host list.'))
-        return cpuprofiles
-
-    def allowed(self, request, datum=None):
-        # TypeError and CommunicationError are being catched since in
-        # a DC environment with one subcloud controller, when an unlock
-        # action is executed and page refreshed the api function system_list,
-        # tries to iterate through the subcloud hosts.
-        # If the exception is caught, user is redirected to
-        # System controller and have visibility of the subcloud
-        # status.
-        try:
-            return not stx_api.sysinv.is_system_mode_simplex(request)
-        except (TypeError, exc.CommunicationError):
-            if(getattr(settings, 'DC_MODE', False)):
-                failure_url = "/auth/switch_services_region/" \
-                              "SystemController/?next=/dc_admin/"
-                msg = (_('Subcloud is unavailable, '
-                         'redirected to SystemController region'))
-                exceptions.handle(request, msg, redirect=failure_url)
-
-
-class InterfaceProfilesTab(tabs.TableTab):
-    table_classes = (toplevel_tables.InterfaceProfilesTable, )
-    name = _("Interface Profiles")
-    slug = "interfaceprofiles"
-    template_name = ("admin/inventory/_interfaceprofiles.html")
-    preload = False
-
-    def get_interfaceprofiles_data(self):
-        interfaceprofiles = []
-        try:
-            interfaceprofiles = stx_api.sysinv.host_interfaceprofile_list(
-                self.request)
-        except Exception:
-            exceptions.handle(self.request,
-                              _('Unable to retrieve host list.'))
-        interfaceprofiles.sort(key=lambda f: (f.profilename))
-        return interfaceprofiles
-
-    def allowed(self, request, dataum=None):
-        # TypeError and CommunicationError are being catched since in
-        # a DC environment with one subcloud controller, when an unlock
-        # action is executed and page refreshed the api function system_list,
-        # tries to iterate through the subcloud hosts.
-        # If the exception is caught, user is redirected to
-        # System controller and have visibility of the subcloud
-        # status.
-        try:
-            return not stx_api.sysinv.is_system_mode_simplex(request)
-        except (TypeError, exc.CommunicationError):
-            if(getattr(settings, 'DC_MODE', False)):
-                failure_url = "/auth/switch_services_region/" \
-                              "SystemController/?next=/dc_admin/"
-                msg = (_('Subcloud is unavailable, '
-                         'redirected to SystemController region'))
-                exceptions.handle(request, msg, redirect=failure_url)
-
-
-class DiskProfilesTab(tabs.TableTab):
-    table_classes = (toplevel_tables.DiskProfilesTable, )
-    name = _("Storage Profiles")
-    slug = "diskprofiles"
-    template_name = ("admin/inventory/_diskprofiles.html")
-    preload = False
-
-    def get_diskprofiles_data(self):
-        diskprofiles = []
-        try:
-            diskprofiles = stx_api.sysinv.host_diskprofile_list(self.request)
-
-            for diskprofile in diskprofiles:
-                journals = {}
-                count = 0
-                for stor in diskprofile.stors:
-                    if stor.function == 'journal':
-                        count += 1
-                        journals.update({stor.uuid: count})
-
-                for s in diskprofile.stors:
-                    if s.function == 'journal' and count > 1:
-                        setattr(s, "count", journals[s.uuid])
-                    if s.function == 'osd':
-                        if s.journal_location != s.uuid:
-                            if count > 1:
-                                setattr(s, "count",
-                                        journals[s.journal_location])
-        except Exception:
-            exceptions.handle(self.request,
-                              _('Unable to retrieve storage profile list.'))
-        diskprofiles.sort(key=lambda f: (f.profilename))
-        return diskprofiles
-
-    def allowed(self, request, dataum=None):
-        # TypeError and CommunicationError are being catched since in
-        # a DC environment with one subcloud controller, when an unlock
-        # action is executed and page refreshed the api function system_list,
-        # tries to iterate through the subcloud hosts.
-        # If the exception is caught, user is redirected to
-        # System controller and have visibility of the subcloud
-        # status.
-        try:
-            return not stx_api.sysinv.is_system_mode_simplex(request)
-        except (TypeError, exc.CommunicationError):
-            if(getattr(settings, 'DC_MODE', False)):
-                failure_url = "/auth/switch_services_region/" \
-                              "SystemController/?next=/dc_admin/"
-                msg = (_('Subcloud is unavailable, '
-                         'redirected to SystemController region'))
-                exceptions.handle(request, msg, redirect=failure_url)
-
-
-class MemoryProfilesTab(tabs.TableTab):
-    table_classes = (toplevel_tables.MemoryProfilesTable, )
-    name = _("Memory Profiles")
-    slug = "memoryprofiles"
-    template_name = ("admin/inventory/_memoryprofiles.html")
-    preload = False
-
-    def get_memoryprofiles_data(self):
-        memoryprofiles = []
-        try:
-            memoryprofiles = stx_api.sysinv.host_memprofile_list(self.request)
-        except Exception:
-            exceptions.handle(self.request,
-                              _('Unable to retrieve memory profile list.'))
-        memoryprofiles.sort(key=lambda f: (f.profilename))
-        return memoryprofiles
-
-    def allowed(self, request, dataum=None):
-        # TypeError and CommunicationError are being catched since in
-        # a DC environment with one subcloud controller, when an unlock
-        # action is executed and page refreshed the api function system_list,
-        # tries to iterate through the subcloud hosts.
-        # If the exception is caught, user is redirected to
-        # System controller and have visibility of the subcloud
-        # status.
-        try:
-            return not stx_api.sysinv.is_system_mode_simplex(request)
-        except (TypeError, exc.CommunicationError):
-            if(getattr(settings, 'DC_MODE', False)):
-                failure_url = "/auth/switch_services_region/" \
-                              "SystemController/?next=/dc_admin/"
-                msg = (_('Subcloud is unavailable, '
-                         'redirected to SystemController region'))
-                exceptions.handle(request, msg, redirect=failure_url)
-
-
 class DeviceUsageTab(tabs.TableTab):
     table_classes = (device_tables.DeviceUsageTable, )
     name = _("Device Usage")
@@ -412,9 +261,7 @@ class DeviceUsageTab(tabs.TableTab):
 class InventoryTabs(tabs.TabGroup):
     slug = "inventory"
     tabs = (
-        HostsTab,
-        CpuProfilesTab, InterfaceProfilesTab,
-        DiskProfilesTab, MemoryProfilesTab, DeviceUsageTab)
+        HostsTab, DeviceUsageTab)
     sticky = True
 
 

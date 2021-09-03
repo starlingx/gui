@@ -61,20 +61,6 @@ class DeleteInterface(tables.DeleteAction):
             exceptions.handle(request, msg, redirect=redirect)
 
 
-class CreateInterfaceProfile(tables.LinkAction):
-    name = "createProfile"
-    verbose_name = _("Create Interface Profile")
-    url = "horizon:admin:inventory:addinterfaceprofile"
-    classes = ("ajax-modal", "btn-create")
-
-    def get_link_url(self, datum=None):
-        host_id = self.table.kwargs['host_id']
-        return reverse(self.url, args=(host_id,))
-
-    def allowed(self, request, datum):
-        return not stx_api.sysinv.is_system_mode_simplex(request)
-
-
 class CreateInterface(tables.LinkAction):
     name = "create"
     verbose_name = _("Create Interface")
@@ -240,5 +226,5 @@ class InterfacesTable(tables.DataTable):
         name = "interfaces"
         verbose_name = _("Interfaces")
         multi_select = False
-        table_actions = (CreateInterfaceProfile, CreateInterface,)
+        table_actions = (CreateInterface,)
         row_actions = (EditInterface, DeleteInterface,)

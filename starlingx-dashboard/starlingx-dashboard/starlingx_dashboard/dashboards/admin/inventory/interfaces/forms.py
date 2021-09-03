@@ -101,53 +101,6 @@ class MultipleChoiceField(forms.MultipleChoiceField):
         return super(MultipleChoiceField, self).valid_value(value)
 
 
-class AddInterfaceProfile(forms.SelfHandlingForm):
-    host_id = forms.CharField(widget=forms.widgets.HiddenInput)
-    profilename = forms.CharField(label=_("Interface Profile Name"),
-                                  required=True)
-
-    failure_url = 'horizon:admin:inventory:detail'
-
-    def __init__(self, *args, **kwargs):
-        super(AddInterfaceProfile, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super(AddInterfaceProfile, self).clean()
-        # host_id = cleaned_data.get('host_id')
-        # interfaceProfileName = cleaned_data.get('hostname')
-
-        return cleaned_data
-
-    def handle(self, request, data):
-        host_id = data['host_id']
-        interfaceProfileName = data['profilename']
-        try:
-            interfaceProfile = sysinv.host_interfaceprofile_create(request,
-                                                                   **data)
-            msg = _(
-                'Interface Profile "%s" was '
-                'successfully created.') % interfaceProfileName
-            LOG.debug(msg)
-            messages.success(request, msg)
-            return interfaceProfile
-        except exc.ClientException as ce:
-            # Allow REST API error message to appear on UI
-            messages.error(request, ce)
-            LOG.error(ce)
-
-            # Redirect to failure pg
-            redirect = reverse(self.failure_url, args=[host_id])
-            return shortcuts.redirect(redirect)
-        except Exception:
-            msg = _(
-                'Failed to create interface'
-                ' profile "%s".') % interfaceProfileName
-            LOG.info(msg)
-            redirect = reverse(self.failure_url,
-                               args=[data['host_id']])
-            exceptions.handle(request, msg, redirect=redirect)
-
-
 class AddInterface(forms.SelfHandlingForm):
     INTERFACE_CLASS_CHOICES = (
         ('none', _("none")),

@@ -8,7 +8,6 @@
 
 import logging
 
-from .cpu_functions import utils as icpu_utils
 import sysinv.common.constants as sysinv_const
 
 from cgtsclient.common import constants
@@ -55,70 +54,6 @@ BM_TYPES_CHOICES = (
     (sysinv.HOST_BM_TYPE_IPMI, _("IPMI")),
     (sysinv.HOST_BM_TYPE_REDFISH, _("Redfish")),
 )
-
-
-def ifprofile_applicable(request, host, profile):
-    for interface in profile.interfaces:
-        interface_networks = stx_api.sysinv.\
-            interface_network_list_by_interface(request, interface.uuid)
-        if (stx_api.sysinv.PERSONALITY_WORKER == host._personality and
-                any(interface_network.network_type == 'oam'
-                    for interface_network in interface_networks)):
-            return False
-        if (stx_api.sysinv.PERSONALITY_WORKER not in host._subfunctions and
-                interface.ifclass == 'data'):
-            return False
-    return True
-
-
-def diskprofile_applicable(host, diskprofile):
-    # if host contain sufficient number of disks for diskprofile
-    if not len(host.disks) >= len(diskprofile.disks):
-        return False
-
-    if stx_api.sysinv.PERSONALITY_WORKER in host._subfunctions:
-        if diskprofile.lvgs:
-            for lvg in diskprofile.lvgs:
-                if (hasattr(lvg, 'lvm_vg_name') and
-                   'nova-local' in lvg.lvm_vg_name):
-                    return True
-                else:
-                    return False
-        else:
-            return False
-    elif stx_api.sysinv.PERSONALITY_STORAGE in host._subfunctions:
-        if diskprofile.stors:
-            return True
-        else:
-            return False
-
-    return True
-
-
-def memoryprofile_applicable(host, personality, profile):
-    # If profile has more than in host
-    if not len(host.memory) >= len(profile.memory):
-        return False
-    if len(host.nodes) != len(profile.nodes):
-        return False
-    if 'worker' not in personality:
-        return False
-    return True
-
-
-def profile_get_uuid(request, profilename):
-    ifprofiles = stx_api.sysinv.host_interfaceprofile_list(request)
-    cpuprofiles = stx_api.sysinv.host_cpuprofile_list(request)
-    storprofiles = stx_api.sysinv.host_diskprofile_list(request)
-    memoryprofiles = stx_api.sysinv.host_memprofile_list(request)
-
-    profiles = ifprofiles + cpuprofiles + storprofiles + memoryprofiles
-
-    for iprofile in profiles:
-        if iprofile.profilename == profilename:
-            return iprofile.uuid
-
-    raise forms.ValidationError("Profile not found: %s" % profilename)
 
 
 class AddHostInfoAction(workflows.Action):
@@ -244,18 +179,6 @@ class UpdateHostInfoAction(workflows.Action):
         label=_("Clock Synchronization"),
         choices=stx_api.sysinv.CLOCK_SYNCHRONIZATION_CHOICES)
 
-    cpuProfile = forms.ChoiceField(label=_("CPU Profile"),
-                                   required=False)
-
-    interfaceProfile = forms.ChoiceField(label=_("Interface Profile"),
-                                         required=False)
-
-    diskProfile = forms.ChoiceField(label=_("Storage Profile"),
-                                    required=False)
-
-    memoryProfile = forms.ChoiceField(label=_("Memory Profile"),
-                                      required=False)
-
     ttys_dcd = forms.BooleanField(
         label=_("Serial Console Data Carrier Detect"),
         required=False,
@@ -298,140 +221,6 @@ class UpdateHostInfoAction(workflows.Action):
         if self.initial['subfunctions']:
             self.fields['subfunctions'].widget.attrs['readonly'] = 'readonly'
             self.fields['subfunctions'].required = False
-
-        # personality cannot be modified once it is set
-        host_id = self.initial['host_id']
-        personality = self.initial['personality']
-
-        mem_profile_configurable = False
-        cpu_profile_configurable = False
-
-        if personality and self.system_mode != constants.SYSTEM_MODE_SIMPLEX:
-            self.fields['personality'].widget.attrs['readonly'] = 'readonly'
-            self.fields['personality'].required = False
-            self._personality = personality
-
-            host = stx_api.sysinv.host_get(self.request, host_id)
-            host.nodes = stx_api.sysinv.host_node_list(self.request, host.uuid)
-            host.cpus = stx_api.sysinv.host_cpu_list(self.request, host.uuid)
-            host.ports = stx_api.sysinv.host_port_list(self.request, host.uuid)
-            host.disks = stx_api.sysinv.host_disk_list(self.request, host.uuid)
-
-            if 'worker' in host.subfunctions:
-                mem_profile_configurable = True
-                cpu_profile_configurable = True
-                host.memory = stx_api.sysinv.host_memory_list(
-                    self.request, host.uuid)
-            else:
-                del self.fields['memoryProfile']
-
-            if host.nodes and host.cpus and host.ports:
-                # Populate Available Interface Profile Choices
-                try:
-                    avail_interface_profile_list = \
-                        stx_api.sysinv.host_interfaceprofile_list(self.request)
-
-                    interface_profile_tuple_list = [
-                        ('', _("Copy from an available interface profile."))]
-                    for ip in avail_interface_profile_list:
-                        if ifprofile_applicable(request, host, ip):
-                            interface_profile_tuple_list.append(
-                                (ip.profilename, ip.profilename))
-
-                except Exception:
-                    exceptions.handle(self.request, _(
-                        'Unable to retrieve list of interface profiles.'))
-                    interface_profile_tuple_list = []
-
-                self.fields[
-                    'interfaceProfile'].choices = interface_profile_tuple_list
-            else:
-                self.fields[
-                    'interfaceProfile'].widget = forms.widgets.HiddenInput()
-
-            stor_model = sysinv.get_ceph_storage_model(request)
-            if ((personality == 'storage' or
-                 (personality == 'controller' and
-                  stor_model == sysinv_const.CEPH_CONTROLLER_MODEL) or
-                 'worker' in host._subfunctions) and host.disks):
-                # Populate Available Disk Profile Choices
-                try:
-                    disk_profile_tuple_list = [
-                        ('', _("Copy from an available storage profile."))]
-                    avail_disk_profile_list = \
-                        stx_api.sysinv.host_diskprofile_list(self.request)
-                    for dp in avail_disk_profile_list:
-                        if diskprofile_applicable(host, dp):
-                            disk_profile_tuple_list.append(
-                                (dp.profilename, dp.profilename))
-
-                except Exception as e:
-                    LOG.exception(e)
-                    exceptions.handle(self.request, _(
-                        'Unable to retrieve list of storage profiles.'))
-                    disk_profile_tuple_list = []
-
-                self.fields['diskProfile'].choices = disk_profile_tuple_list
-            else:
-                self.fields['diskProfile'].widget = forms.widgets.HiddenInput()
-
-            # Populate Available Cpu Profile Choices
-            if cpu_profile_configurable and host.nodes and host.memory:
-                try:
-                    avail_cpu_profile_list = \
-                        stx_api.sysinv.host_cpuprofile_list(self.request)
-
-                    host_profile = icpu_utils.HostCpuProfile(
-                        host.subfunctions,
-                        host.cpus, host.nodes)
-
-                    cpu_profile_tuple_list = [
-                        ('', _("Copy from an available cpu profile."))]
-                    for ip in avail_cpu_profile_list:
-                        nodes = stx_api.sysinv.host_node_list(self.request,
-                                                              ip.uuid)
-                        cpu_profile = icpu_utils.CpuProfile(ip.cpus, nodes)
-                        if host_profile.profile_applicable(cpu_profile):
-                            cpu_profile_tuple_list.append(
-                                (ip.profilename, ip.profilename))
-
-                except Exception:
-                    exceptions.handle(self.request, _(
-                        'Unable to retrieve list of cpu profiles.'))
-                    cpu_profile_tuple_list = []
-
-                self.fields['cpuProfile'].choices = cpu_profile_tuple_list
-
-            else:
-                self.fields['cpuProfile'].widget = forms.widgets.HiddenInput()
-
-            if mem_profile_configurable and host.nodes and host.memory:
-                # Populate Available Memory Profile Choices
-                try:
-                    avail_memory_profile_list = \
-                        stx_api.sysinv.host_memprofile_list(self.request)
-                    memory_profile_tuple_list = [
-                        ('', _("Copy from an available memory profile."))]
-                    for mp in avail_memory_profile_list:
-                        if memoryprofile_applicable(host, host._subfunctions,
-                                                    mp):
-                            memory_profile_tuple_list.append(
-                                (mp.profilename, mp.profilename))
-
-                except Exception:
-                    exceptions.handle(self.request, _(
-                        'Unable to retrieve list of memory profiles.'))
-                    memory_profile_tuple_list = []
-
-                self.fields[
-                    'memoryProfile'].choices = memory_profile_tuple_list
-
-        else:
-            self.fields['cpuProfile'].widget = forms.widgets.HiddenInput()
-            self.fields[
-                'interfaceProfile'].widget = forms.widgets.HiddenInput()
-            self.fields['diskProfile'].widget = forms.widgets.HiddenInput()
-            self.fields['memoryProfile'].widget = forms.widgets.HiddenInput()
 
     def clean_location(self):
         try:
@@ -483,10 +272,6 @@ class UpdateHostInfo(workflows.Step):
                    "subfunctions",
                    "hostname",
                    "location",
-                   "cpuProfile",
-                   "interfaceProfile",
-                   "diskProfile",
-                   "memoryProfile",
                    "ttys_dcd",
                    "clock_synchronization")
 
@@ -762,33 +547,8 @@ class UpdateHost(workflows.Workflow):
         try:
             host = stx_api.sysinv.host_get(request, data['host_id'])
 
-            if data['cpuProfile']:
-                profile_uuid = profile_get_uuid(request, data['cpuProfile'])
-                stx_api.sysinv.host_apply_profile(request, data['host_id'],
-                                                  profile_uuid)
-            data.pop('cpuProfile')
-
-            if data['interfaceProfile']:
-                profile_uuid = profile_get_uuid(request,
-                                                data['interfaceProfile'])
-                stx_api.sysinv.host_apply_profile(request, data['host_id'],
-                                                  profile_uuid)
-            data.pop('interfaceProfile')
-
             if not data['bm_password']:
                 data.pop('bm_password')
-
-            if data['diskProfile']:
-                profile_uuid = profile_get_uuid(request, data['diskProfile'])
-                stx_api.sysinv.host_apply_profile(request, data['host_id'],
-                                                  profile_uuid)
-            data.pop('diskProfile')
-
-            if data['memoryProfile']:
-                profile_uuid = profile_get_uuid(request, data['memoryProfile'])
-                stx_api.sysinv.host_apply_profile(request, data['host_id'],
-                                                  profile_uuid)
-            data.pop('memoryProfile')
 
             # if not trying to change personality, skip check
             if host._personality == data['personality']:

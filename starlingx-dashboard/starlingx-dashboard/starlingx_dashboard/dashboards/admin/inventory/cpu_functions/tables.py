@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -12,7 +12,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from horizon import tables
 
-from starlingx_dashboard import api as stx_api
 from starlingx_dashboard.dashboards.admin.inventory.cpu_functions \
     import utils as cpufunctions_utils
 
@@ -32,23 +31,6 @@ class EditCpuFunctions(tables.LinkAction):
     def allowed(self, request, cpufunction=None):
         host = self.table.kwargs['host']
         allowed = host._administrative == 'locked' and \
-            'worker' in host.subfunctions
-        return allowed
-
-
-class CreateCpuProfile(tables.LinkAction):
-    name = "createCpuProfile"
-    verbose_name = _("Create Cpu Profile")
-    url = "horizon:admin:inventory:addcpuprofile"
-    classes = ("ajax-modal", "btn-create")
-
-    def get_link_url(self, datum=None):
-        host_id = self.table.kwargs['host_id']
-        return reverse(self.url, args=(host_id,))
-
-    def allowed(self, request, cpufunction=None):
-        host = self.table.kwargs['host']
-        allowed = not stx_api.sysinv.is_system_mode_simplex(request) and \
             'worker' in host.subfunctions
         return allowed
 
@@ -80,7 +62,7 @@ class CpuFunctionsTable(tables.DataTable):
         name = "cpufunctions"
         verbose_name = _("CPU Assignments")
         multi_select = False
-        table_actions = (CreateCpuProfile, EditCpuFunctions,)
+        table_actions = (EditCpuFunctions,)
         row_actions = ()
         hidden_title = False
         footer = False
