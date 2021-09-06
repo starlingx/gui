@@ -26,6 +26,24 @@ class UploadPatchForm(AdminPatchForm):
     failure_url = 'horizon:dc_admin:dc_software_management:index'
 
 
+class ApplyCloudStrategyForm(forms.SelfHandlingForm):
+    failure_url = 'horizon:dc_admin:dc_software_management:index'
+
+    def handle(self, request, data):
+        try:
+            result = api.dc_manager.strategy_apply(request)
+            if result:
+                messages.success(request, "Strategy apply in progress")
+            else:
+                messages.error(request, "Strategy apply failed")
+        except Exception as ex:
+            LOG.exception(ex)
+            redirect = reverse(self.failure_url)
+            exceptions.handle(request, "Strategy apply failed",
+                              redirect=redirect)
+        return True
+
+
 class CreateCloudStrategyForm(forms.SelfHandlingForm):
     failure_url = 'horizon:dc_admin:dc_software_management:index'
 

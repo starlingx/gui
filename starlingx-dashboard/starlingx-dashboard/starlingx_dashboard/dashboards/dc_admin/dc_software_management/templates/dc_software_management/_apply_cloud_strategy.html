@@ -1,0 +1,29 @@
+{% extends "horizon/common/_modal_form.html" %}
+{% load i18n %}
+
+{% block form_action %}{% url 'horizon:dc_admin:dc_software_management:applycloudstrategy' %}{% endblock %}
+
+{% block modal-header %}{% trans "Apply Strategy" %}{% endblock %}
+
+{% block modal-body %}
+{% if out_of_date == True %}
+<p>
+    {% trans "<b>WARNING:</b> The strategy was created " %}
+    {{hours}}
+    {% trans " hours and " %}
+    {{minutes}}
+    {% trans " minutes ago." %}
+    {% trans "Please, verify that this strategy is still valid" %}
+    {% trans "for your environment" %}
+</p>
+{% endif %}
+<p>
+    {% trans "Are you sure you want to apply the strategy?" %}
+</p>
+
+{% endblock %}
+
+{% block modal-footer %}
+  <a class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Ok" %}" />
+{% endblock %}

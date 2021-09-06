@@ -7,6 +7,8 @@
 from django.conf.urls import url
 
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.views \
+    import ApplyCloudStrategyView
+from starlingx_dashboard.dashboards.dc_admin.dc_software_management.views \
     import CreateCloudPatchConfigView
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.views \
     import CreateCloudStrategyView
@@ -31,6 +33,8 @@ urlpatterns = [
         name='dc_patchupload'),
     url(r'^createcloudstrategy/$', CreateCloudStrategyView.as_view(),
         name='createcloudstrategy'),
+    url(r'^applycloudstrategy/$', ApplyCloudStrategyView.as_view(),
+        name='applycloudstrategy'),
     url(r'^createcloudpatchconfig/$', CreateCloudPatchConfigView.as_view(),
         name='createcloudpatchconfig'),
     url(r'^(?P<subcloud>[^/]+)/editcloudpatchconfig/$',

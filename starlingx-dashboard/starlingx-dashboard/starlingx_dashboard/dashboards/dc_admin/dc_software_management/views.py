@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import datetime
 import logging
 
 from django.urls import reverse_lazy
@@ -16,6 +17,8 @@ from horizon import tabs
 from starlingx_dashboard import api
 from starlingx_dashboard.dashboards.admin.software_management.views import \
     DetailPatchView as AdminDetailPatchView
+from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
+    import ApplyCloudStrategyForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
     import CreateCloudPatchConfigForm
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management.forms \
@@ -30,6 +33,8 @@ from starlingx_dashboard.dashboards.dc_admin.dc_software_management.tabs \
     import DCSoftwareManagementTabs
 
 LOG = logging.getLogger(__name__)
+
+STRATEGY_VALID_TIME_IN_MINUTES = 60
 
 
 class IndexView(tabs.TabbedTableView):
@@ -59,6 +64,40 @@ class CreateCloudStrategyView(forms.ModalFormView):
                     'create_cloud_strategy.html'
     context_object_name = 'strategy'
     success_url = reverse_lazy("horizon:dc_admin:dc_software_management:index")
+
+
+def check_strategy_out_of_date(strategy_time_str,
+                               timeout_minutes=STRATEGY_VALID_TIME_IN_MINUTES,
+                               date_format='%Y-%m-%d %H:%M:%S.%f'):
+    creation_time = datetime.datetime.strptime(strategy_time_str, date_format)
+    now = datetime.datetime.now()
+    minutes = (now - creation_time).total_seconds() // 60
+    outdated = False
+    if minutes > timeout_minutes:
+        outdated = True
+    return outdated, int(minutes // 60), int(minutes % 60)
+
+
+class ApplyCloudStrategyView(forms.ModalFormView):
+    form_class = ApplyCloudStrategyForm
+    template_name = 'dc_admin/dc_software_management/' \
+                    'apply_cloud_strategy.html'
+    context_object_name = 'strategy'
+    success_url = reverse_lazy("horizon:dc_admin:dc_software_management:index")
+
+    def get_context_data(self, **kwargs):
+        context = super(ApplyCloudStrategyView, self).get_context_data(
+            **kwargs)
+        strategy = None
+        try:
+            strategy = api.dc_manager.get_strategy(self.request)
+        except Exception as ex:
+            LOG.exception(ex)
+            exceptions.handle(self.request,
+                              _('Unable to retrieve current strategy.'))
+        context['out_of_date'], context['hours'], context['minutes'] = \
+            check_strategy_out_of_date(strategy.created_at)
+        return context
 
 
 class CreateCloudPatchConfigView(forms.ModalFormView):

@@ -121,11 +121,13 @@ class DeleteCloudPatchStrategy(tables.Action):
         return shortcuts.redirect(url)
 
 
-class ApplyCloudPatchStrategy(tables.Action):
+class ApplyCloudPatchStrategy(tables.LinkAction):
     name = "apply_cloud_patch_strategy"
-    requires_input = False
-    disabled = False
+    url = "horizon:dc_admin:dc_software_management:applycloudstrategy"
     verbose_name = _("Apply Strategy")
+    classes = ("ajax-modal", "btn-confirm")
+    disabled = False
+    requires_input = False
 
     def allowed(self, request, datum):
         try:
@@ -144,20 +146,6 @@ class ApplyCloudPatchStrategy(tables.Action):
             return super(ApplyCloudPatchStrategy, self).get_default_classes()
         except Exception as ex:
             LOG.exception(ex)
-
-    def single(self, table, request, obj_id):
-        try:
-            result = api.dc_manager.strategy_apply(request)
-            if result:
-                messages.success(request, "Strategy apply in progress")
-            else:
-                messages.error(request, "Strategy apply failed")
-        except Exception as ex:
-            LOG.exception(ex)
-            messages.error(request, str(ex))
-
-        url = reverse('horizon:dc_admin:dc_software_management:index')
-        return shortcuts.redirect(url)
 
 
 class AbortCloudPatchStrategy(tables.Action):
