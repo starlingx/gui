@@ -605,7 +605,7 @@ class HostsWorkerFilterAction(tables.FilterAction):
                 return True
             return False
 
-        return filter(comp, hosts)
+        return list(filter(comp, hosts))
 
 
 def get_install_percent(cell):
@@ -640,7 +640,8 @@ def get_task_or_status(host):
             if host.install_state_info and '/' in \
                     host.install_state_info.rstrip('+'):
                 values = (host.install_state_info.rstrip('+')).split('/')
-                percent = (float(values[0]) / float(values[1])) * 100
+                percent = (float(values[0]) /  # pylint: disable=W1619
+                           float(values[1])) * 100
                 task_or_status += " (%d%%)" % percent
     elif host.task:
         if '-' in host.task:

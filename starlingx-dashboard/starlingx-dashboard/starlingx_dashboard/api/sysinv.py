@@ -288,11 +288,13 @@ class Disk(base.APIResourceWrapper):
 
     @property
     def size_gib(self):
-        return math.floor(float(self.size_mib) / 1024 * 1000) / 1000.0
+        return math.floor(float(self.size_mib) /  # pylint: disable=W1619
+                          1024 * 1000) / 1000.0
 
     @property
     def available_gib(self):
-        return math.floor(float(self.available_mib) / 1024 * 1000) / 1000.0
+        return math.floor(float(self.available_mib) /  # pylint: disable=W1619
+                          1024 * 1000) / 1000.0
 
 
 class StorageVolume(base.APIResourceWrapper):
@@ -384,7 +386,8 @@ class Partition(base.APIResourceWrapper):
 
     @property
     def size_gib(self):
-        return math.floor(float(self.size_mib) / 1024 * 1000) / 1000.0
+        return math.floor(float(self.size_mib) /  # pylint: disable=W1619
+                          1024 * 1000) / 1000.0
 
 
 def host_disk_partition_list(request, host_id, disk_id=None):
@@ -443,12 +446,12 @@ class LocalVolumeGroup(base.APIResourceWrapper):
 
     @property
     def lvm_vg_size_gib(self):
-        return math.floor(float(
+        return math.floor(float(  # pylint: disable=W1619
             self.lvm_vg_size) / (1024 ** 3) * 1000) / 1000.0
 
     @property
     def lvm_vg_avail_size_gib(self):
-        return math.floor(float(
+        return math.floor(float(  # pylint: disable=W1619
             self.lvm_vg_avail_size) / (1024 ** 3) * 1000) / 1000.0
 
 
