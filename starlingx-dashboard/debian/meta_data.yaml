@@ -1,0 +1,7 @@
+---
+debname: starlingx-dashboard
+debver: 1.0-1
+src_path: starlingx-dashboard
+revision:
+  dist: $STX_DIST
+  PKG_GITREVCOUNT: true

@@ -1,0 +1,8 @@
+/usr/share/openstack-dashboard/openstack_dashboard/enabled/*
+/usr/share/openstack-dashboard/openstack_dashboard/themes/starlingx/*
+/usr/share/openstack-dashboard/openstack_dashboard/local/local_settings.d/*
+/usr/share/openstack-dashboard/openstack_dashboard/starlingx_templates/*
+/usr/share/openstack-dashboard/openstack_dashboard/overrides/*
+
+usr/lib/python3/dist-packages/starlingx_dashboard-*.egg-info/*
+usr/lib/python3/dist-packages/starlingx_dashboard/*

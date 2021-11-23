@@ -1,0 +1,28 @@
+Source: starlingx-dashboard
+Section: admin
+Priority: optional
+Maintainer: StarlingX Developers <starlingx-discuss@lists.starlingx.io>
+Build-Depends: debhelper-compat (= 13),
+ dh-python,
+ python3-all,
+ python3-setuptools,
+ python3-pbr,
+ python3-wheel,
+ python3-pip,
+ openstack-dashboard
+Standards-Version: 4.1.2
+Homepage: https://www.starlingx.io
+
+
+Package: starlingx-dashboard
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends},
+ openstack-dashboard
+Description: Stx Horizon plugins
+ StarlingX specific Horizon plugins
+
+Package: starlingx-dashboard-wheels
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Contains python wheels for StarlingX Horizon plugins
+ This package contains python wheels for specific StarlingX Horizon pugins
