@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,7 +8,6 @@
 
 import logging
 
-from .cpu_functions import utils as icpu_utils
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -18,6 +17,8 @@ from horizon import tabs
 from horizon import workflows
 
 from starlingx_dashboard import api as stx_api
+from starlingx_dashboard.dashboards.admin.inventory.cpu_functions import \
+    utils as icpu_utils
 from starlingx_dashboard.dashboards.admin.inventory.tabs import HostDetailTabs
 from starlingx_dashboard.dashboards.admin.inventory.tabs import InventoryTabs
 from starlingx_dashboard.dashboards.admin.inventory.workflows import AddHost

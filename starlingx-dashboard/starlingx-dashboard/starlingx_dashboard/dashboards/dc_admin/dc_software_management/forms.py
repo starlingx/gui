@@ -160,7 +160,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'subcloud_types',
-                'data-subcloud_types-cloud_name': _()
+                'data-subcloud_types-cloud_name': _("Force")
             }
         )
     )

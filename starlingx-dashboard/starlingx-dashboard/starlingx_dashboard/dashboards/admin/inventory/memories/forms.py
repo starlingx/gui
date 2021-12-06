@@ -347,7 +347,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                         if(m.vm_pending_as_percentage == "True"):
                             vm_2M_field.initial = str(float(
                                 round(  # pylint: disable=W1633
-                                    m.vm_hugepages_nr_2M * 100 \
+                                    m.vm_hugepages_nr_2M * 100
                                     // m.vm_hugepages_possible_2M)))
                         else:
                             vm_2M_field.initial = str(m.vm_hugepages_nr_2M)

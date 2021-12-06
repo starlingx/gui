@@ -5,8 +5,8 @@
 
 import logging
 
-from django.urls import reverse  # noqa
 from django.core import validators  # noqa
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _  # noqa
 
 from horizon import exceptions

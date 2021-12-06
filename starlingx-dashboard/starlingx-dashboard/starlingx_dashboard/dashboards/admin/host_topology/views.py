@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2019 Wind River Systems, Inc.
+# Copyright (c) 2016-2021 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -10,9 +10,9 @@ import logging
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
+from django.http import HttpResponse  # noqa
 from django.urls import reverse
 from django.urls import reverse_lazy
-from django.http import HttpResponse  # noqa
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View  # noqa
 
