@@ -136,10 +136,10 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("Maximum Parallel Subclouds"),
         initial=20,
         min_value=2,
-        max_value=100,
+        max_value=500,
         required=True,
         error_messages={'invalid': _('Maximum Parallel Subclouds must be '
-                                     'between 2 and 100.')},
+                                     'between 2 and 500.')},
         widget=forms.TextInput(
             attrs={
                 'class': 'switched',
@@ -330,10 +330,10 @@ class CreateSubcloudGroupForm(forms.SelfHandlingForm):
         label=_("Maximum Parallel Subclouds"),
         initial=2,
         min_value=2,
-        max_value=100,
+        max_value=500,
         required=True,
         error_messages={'invalid': _('Maximum Parallel Subclouds must be '
-                                     'between 2 and 100.')},
+                                     'between 2 and 500.')},
         widget=forms.TextInput())
 
     def handle(self, request, data):
@@ -390,10 +390,10 @@ class UpdateSubcloudGroupForm(forms.SelfHandlingForm):
     max_parallel_subclouds = forms.IntegerField(
         label=_("Maximum Parallel Subclouds"),
         min_value=2,
-        max_value=100,
+        max_value=500,
         required=True,
         error_messages={'invalid': _('Maximum Parallel Subclouds must be '
-                                     'between 2 and 100.')},
+                                     'between 2 and 500.')},
         widget=forms.TextInput())
 
     def handle(self, request, data):
