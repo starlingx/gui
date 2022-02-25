@@ -89,13 +89,6 @@ class EditcNTP(tables.LinkAction):
     classes = ("ajax-modal", "btn-edit")
 
 
-class EditcPTP(tables.LinkAction):
-    name = "update_cptp"
-    verbose_name = _("Edit PTP")
-    url = "horizon:admin:system_config:update_cptp_table"
-    classes = ("ajax-modal", "btn-edit")
-
-
 class EditcOAM(tables.LinkAction):
     name = "update_coam"
     verbose_name = _("Edit OAM IP")
@@ -191,41 +184,6 @@ class cNTPTable(tables.DataTable):
         row_class = UpdateNTPRow
         multi_select = False
         table_actions = (EditcNTP,)
-
-
-class UpdatePTPRow(tables.Row):
-    ajax = True
-
-    def get_data(self, request, obj_id):
-        return stx_api.sysinv.ptp_get(request, obj_id)
-
-
-class cPTPTable(tables.DataTable):
-
-    mode = tables.Column(
-        'mode',
-        verbose_name=_('PTP Time Stamping Mode'))
-
-    transport = tables.Column(
-        'transport',
-        verbose_name=_('PTP Network Transport'))
-
-    mechanism = tables.Column(
-        'mechanism',
-        verbose_name=_('PTP Delay Mechanism'))
-
-    def get_object_id(self, datum):
-        return str(datum.uuid)
-
-    def get_object_display(self, datum):
-        return datum.uuid
-
-    class Meta(object):
-        name = "cptp_table"
-        verbose_name = _("PTP")
-        row_class = UpdatePTPRow
-        multi_select = False
-        table_actions = (EditcPTP,)
 
 
 class UpdateOAMRow(tables.Row):
