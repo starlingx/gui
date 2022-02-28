@@ -126,40 +126,6 @@ class cNTPTab(tabs.TableTab):
         return data
 
 
-class cPTPTab(tabs.TableTab):
-    table_classes = (toplevel_tables.cPTPTable, )
-    name = _("PTP")
-    slug = "cptp_table"
-    template_name = ("admin/system_config/_cptp_table.html")
-
-    def get_cptp_table_data(self):
-        request = self.request
-        data = []
-
-        try:
-            ptp_data = {'uuid': ' ',
-                        'mode': ' ',
-                        'transport': ' ',
-                        'mechanism': ' '}
-
-            ptp_list = stx_api.sysinv.ptp_list(request)
-            if ptp_list:
-                ptp = ptp_list[0]
-
-                ptp_data['uuid'] = ptp.uuid
-                ptp_data['mode'] = ptp.mode
-                ptp_data['transport'] = ptp.transport
-                ptp_data['mechanism'] = ptp.mechanism
-
-            data.append(type('PTP', (object,), ptp_data)())
-
-        except Exception:
-            exceptions.handle(request,
-                              _('Unable to retrieve ptp list.'))
-
-        return data
-
-
 class cEXTOAMTab(tabs.TableTab):
     table_classes = (toplevel_tables.cOAMTable, )
     name = _("OAM IP")
@@ -261,6 +227,6 @@ class SDNControllerTab(tabs.TableTab):
 
 class ConfigTabs(tabs.TabGroup):
     slug = "system_config_tab"
-    tabs = (SystemsTab, AddressPoolsTab, cDNSTab, cNTPTab, cPTPTab,
+    tabs = (SystemsTab, AddressPoolsTab, cDNSTab, cNTPTab,
             cEXTOAMTab, iStorageTab, iStoragePoolsTab, SDNControllerTab)
     sticky = True

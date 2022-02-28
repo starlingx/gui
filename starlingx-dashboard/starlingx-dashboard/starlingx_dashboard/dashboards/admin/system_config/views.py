@@ -24,8 +24,6 @@ from starlingx_dashboard.dashboards.admin.system_config.forms \
 from starlingx_dashboard.dashboards.admin.system_config.forms \
     import UpdatecNTP
 from starlingx_dashboard.dashboards.admin.system_config.forms \
-    import UpdatecPTP
-from starlingx_dashboard.dashboards.admin.system_config.forms \
     import UpdateiStorage
 from starlingx_dashboard.dashboards.admin.system_config.forms \
     import UpdateiStoragePools
@@ -167,51 +165,6 @@ class UpdatecNTPView(forms.ModalFormView):
                               _("Unable to retrieve NTP data."))
 
         return ntp_form_data
-
-
-class UpdatecPTPView(forms.ModalFormView):
-    form_class = UpdatecPTP
-    template_name = 'admin/system_config/update_cptp_table.html'
-    success_url = reverse_lazy('horizon:admin:system_config:index')
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdatecPTPView, self).get_context_data(**kwargs)
-        ptp_list = stx_api.sysinv.ptp_list(self.request)
-
-        if ptp_list:
-            if "uuid" in ptp_list[0]._attrs:
-                uuid = ptp_list[0].uuid
-
-            else:
-                uuid = " "
-
-        else:
-            uuid = " "
-
-        context['uuid'] = uuid
-        return context
-
-    def get_initial(self):
-        ptp_form_data = {'uuid': ' ',
-                         'mode': None,
-                         'transport': None,
-                         'mechanism': None}
-
-        try:
-            ptp_list = stx_api.sysinv.ptp_list(self.request)
-
-            if ptp_list:
-                ptp = ptp_list[0]
-                ptp_form_data['uuid'] = ptp.uuid
-                ptp_form_data['mode'] = ptp.mode
-                ptp_form_data['transport'] = ptp.transport
-                ptp_form_data['mechanism'] = ptp.mechanism
-
-        except Exception:
-            exceptions.handle(self.request,
-                              _("Unable to retrieve PTP data."))
-
-        return ptp_form_data
 
 
 class UpdatecEXT_OAMView(forms.ModalFormView):
