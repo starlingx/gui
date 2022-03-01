@@ -178,7 +178,7 @@ LOGGING['formatters']['standard'] = {  # noqa
 LOGGING['formatters']['operation'] = {  # noqa
     # The format of "%(message)s" is defined by
     # OPERATION_LOG_OPTIONS['format']
-    'format': '%(asctime)s %(message)s',
+    'format': '%(created)f %(asctime)s %(message)s',
 }
 
 # Overwrite the console handler to send to syslog
