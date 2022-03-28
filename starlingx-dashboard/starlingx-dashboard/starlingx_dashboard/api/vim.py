@@ -29,40 +29,59 @@ STRATEGY_SW_UPGRADE = 'sw-upgrade'
 
 
 class Client(object):
-    def __init__(self, url, token_id):
+    def __init__(self, url, token_id, username=None, user_domain_name=None,
+                 tenant=None):
         self.url = url
         self.token_id = token_id
+        self.username = username
+        self.user_domain_name = user_domain_name
+        self.tenant = tenant
 
     def get_strategy(self, strategy_name):
-        return sw_update.get_strategies(self.token_id, self.url, strategy_name)
+        # pylint: disable=too-many-function-args
+        return sw_update.get_strategies(self.token_id, self.url, strategy_name,
+                                        self.username, self.user_domain_name,
+                                        self.tenant)
 
     def create_strategy(
             self, strategy_name, controller_apply_type, storage_apply_type,
             swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
             default_instance_action, alarm_restrictions):
+        # pylint: disable=too-many-function-args
         return sw_update.create_strategy(
             self.token_id, self.url, strategy_name, controller_apply_type,
             storage_apply_type,
             swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-            default_instance_action, alarm_restrictions)
+            default_instance_action, alarm_restrictions, self.username,
+            self.user_domain_name, self.tenant)
 
     def delete_strategy(self, strategy_name, force):
+        # pylint: disable=too-many-function-args
         return sw_update.delete_strategy(self.token_id, self.url,
-                                         strategy_name, force)
+                                         strategy_name, force,
+                                         self.username, self.user_domain_name,
+                                         self.tenant)
 
     def apply_strategy(self, strategy_name, stage_id):
+        # pylint: disable=too-many-function-args
         return sw_update.apply_strategy(self.token_id, self.url, strategy_name,
-                                        stage_id)
+                                        stage_id, self.username,
+                                        self.user_domain_name, self.tenant)
 
     def abort_strategy(self, strategy_name, stage_id):
+        # pylint: disable=too-many-function-args
         return sw_update.abort_strategy(self.token_id, self.url, strategy_name,
-                                        stage_id)
+                                        stage_id, self.username,
+                                        self.user_domain_name, self.tenant)
 
 
 def _sw_update_client(request):
     o = urlparse(base.url_for(request, 'nfv'))
     url = "://".join((o.scheme, o.netloc))
-    return Client(url, token_id=request.user.token.id)
+    return Client(url, token_id=request.user.token.id,
+                  username=request.user.username,
+                  user_domain_name=request.user.user_domain_name,
+                  tenant=request.user.tenant_name)
 
 
 def get_strategy(request, strategy_name):
