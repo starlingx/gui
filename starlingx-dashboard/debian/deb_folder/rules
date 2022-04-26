@@ -4,12 +4,12 @@ export DH_VERBOSE = 1
 export PBR_VERSION=1.0
 export PYBUILD_NAME=starlingx-dashboard
 export ROOT=debian/tmp
-export DATA_DIR=$(ROOT)/usr/share
-export OS_DIR=$(DATA_DIR)/openstack-dashboard/openstack_dashboard
+export DATA_DIR=$(ROOT)/usr/lib/python3/dist-packages
+export OS_DIR=$(DATA_DIR)/openstack_dashboard
 
 export ENABLED_DIR=$(OS_DIR)/enabled
-export STX_THEMES_DIR=$(OS_DIR)/themes/starlingx
-export LOCAL_SETTINGS_DIR=$(OS_DIR)/local/local_settings.d
+export STX_THEMES_DIR=$(ROOT)/usr/share/openstack-dashboard/themes/starlingx
+export LOCAL_SETTINGS_DIR=$(ROOT)/etc/openstack-dashboard/local_settings.d
 export STX_TEMPLATES_DIR=$(OS_DIR)/starlingx_templates
 export OVERRIDES_DIR=$(OS_DIR)/overrides
 
@@ -17,7 +17,6 @@ export OVERRIDES_DIR=$(OS_DIR)/overrides
 	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_install:
-
 	python3 setup.py install --install-layout=deb --root $(ROOT)
 
 	python3 setup.py bdist_wheel \
