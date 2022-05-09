@@ -11,6 +11,12 @@
         <dd>{{ host.physical_cores|get_value:0 }}</dd>
         <dt>{% trans "Hyper-Threading " %}</dt>
         <dd>{{ host.hyperthreading }}</dd>
+        {% if host.personality == 'Worker' %}
+          <dt>{% trans "Max CPU Frequency " %}</dt>
+          <dd>{{ host.max_cpu_frequency }}</dd>
+          <dt>{% trans "Max CPU Default " %}</dt>
+          <dd>{{ host.max_cpu_default }}</dd>
+        {% endif %}
       </dl>
       <div id="cpufunctions">
          {{ cpufunctions_table.render }}

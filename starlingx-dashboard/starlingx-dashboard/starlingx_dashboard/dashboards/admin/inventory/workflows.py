@@ -55,6 +55,11 @@ BM_TYPES_CHOICES = (
     (sysinv.HOST_BM_TYPE_REDFISH, _("Redfish")),
 )
 
+MAX_CPU_FREQUENCY_CHOICES = (
+    ('max_cpu_default', _("Default")),
+    ('custom', _("Custom")),
+)
+
 
 class AddHostInfoAction(workflows.Action):
     FIELD_LABEL_PERSONALITY = _("Personality")
@@ -170,6 +175,32 @@ class UpdateHostInfoAction(workflows.Action):
                                            stx_api.sysinv.PERSONALITY_WORKER:
                                                _("Host Name")}))
 
+    cpu_freq_config = forms.ChoiceField(
+        label=_("CPU Frequency Configuration"),
+        required=True,
+        initial='max_cpu_default',
+        choices=MAX_CPU_FREQUENCY_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'switchable switched',
+                'data-switch-on': 'personality',
+                'data-personality-' + stx_api.sysinv.PERSONALITY_WORKER:
+                    _("CPU Frequency Configuration"),
+                'data-slug': 'cpu_freq_config'}))
+
+    max_cpu_frequency = forms.IntegerField(
+        label=_("Max CPU Frequency (MHz)"),
+        initial=1,
+        min_value=1,
+        required=True,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'cpu_freq_config',
+                'data-cpu_freq_config-custom':
+                    'Max CPU Frequency (MHz)'}),
+        help_text='Host CPU Cores maximum frequency.')
+
     location = forms.CharField(label=_("Location"),
                                initial='location',
                                required=False,
@@ -198,6 +229,9 @@ class UpdateHostInfoAction(workflows.Action):
     def __init__(self, request, *args, **kwargs):
         super(UpdateHostInfoAction, self).__init__(request, *args, **kwargs)
 
+        host_id = self.initial['host_id']
+        host = stx_api.sysinv.host_get(request, host_id)
+
         # pesonality cannot be storage if ceph is not configured
         storage_backend = stx_api.sysinv.get_storage_backend(request)
         if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
@@ -222,6 +256,17 @@ class UpdateHostInfoAction(workflows.Action):
             self.fields['subfunctions'].widget.attrs['readonly'] = 'readonly'
             self.fields['subfunctions'].required = False
 
+        if (host._capabilities.get(
+                'max_cpu_config') in [None, 'not-configurable'] or
+                sysinv_const.CONTROLLER in host.subfunctions):
+            self.fields['cpu_freq_config'].widget.attrs['readonly'] = \
+                'readonly'
+            self.fields['cpu_freq_config'].required = False
+
+        if (self.initial['max_cpu_frequency'] is not None and
+                self.initial['max_cpu_frequency'] != host.max_cpu_default):
+            self.fields['cpu_freq_config'].initial = 'custom'
+
     def clean_location(self):
         try:
             host_id = self.cleaned_data['host_id']
@@ -236,6 +281,10 @@ class UpdateHostInfoAction(workflows.Action):
 
     def clean(self):
         cleaned_data = super(UpdateHostInfoAction, self).clean()
+
+        if cleaned_data['cpu_freq_config'] == 'max_cpu_default':
+            cleaned_data['max_cpu_frequency'] = 'max_cpu_default'
+
         disabled = self.fields['personality'].widget.attrs.get('disabled')
         if disabled == 'disabled':
             if self.system_type == constants.TS_AIO:
@@ -256,6 +305,23 @@ class UpdateHostInfoAction(workflows.Action):
 
         return cleaned_data
 
+    def handle(self, request, data):
+        host_id = self.initial['host_id']
+        try:
+            max_cpu_frequency = data['max_cpu_frequency']
+            patch = {'max_cpu_frequency': max_cpu_frequency}
+            stx_api.sysinv.host_update(request, host_id, **patch)
+        except exc.ClientException as ce:
+            LOG.error(ce)
+            msg = self.failure_message + " " + str(ce)
+            self.failure_message = msg
+            exceptions.handle(request, msg)
+            return False
+        except Exception as e:
+            msg = str(e)
+            exceptions.handle(request, msg)
+            return False
+
 
 class AddHostInfo(workflows.Step):
     action_class = AddHostInfoAction
@@ -273,7 +339,8 @@ class UpdateHostInfo(workflows.Step):
                    "hostname",
                    "location",
                    "ttys_dcd",
-                   "clock_synchronization")
+                   "clock_synchronization",
+                   "max_cpu_frequency")
 
 
 class UpdateInstallParamsAction(workflows.Action):

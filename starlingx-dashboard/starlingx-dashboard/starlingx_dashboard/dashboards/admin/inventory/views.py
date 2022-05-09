@@ -80,7 +80,8 @@ class UpdateView(workflows.WorkflowView):
                 'bm_ip': host.bm_ip,
                 'bm_username': host.bm_username,
                 'ttys_dcd': host.ttys_dcd,
-                'clock_synchronization': host.clock_synchronization}
+                'clock_synchronization': host.clock_synchronization,
+                'max_cpu_frequency': host.max_cpu_frequency}
 
 
 class DetailView(tabs.TabbedTableView):

@@ -850,7 +850,7 @@ class Host(base.APIResourceWrapper):
               'requires_reboot', 'boot_device', 'rootfs_device',
               'install_output', 'console', 'ttys_dcd', 'patch_state',
               'allow_insvc_patching', 'install_state', 'install_state_info',
-              'clock_synchronization']
+              'clock_synchronization', 'max_cpu_frequency', 'max_cpu_default']
 
     PERSONALITY_DISPLAY_CHOICES = (
         (PERSONALITY_CONTROLLER, _("Controller")),
