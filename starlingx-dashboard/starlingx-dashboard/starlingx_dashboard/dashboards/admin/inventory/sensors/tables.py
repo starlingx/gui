@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,7 +8,7 @@ import logging
 
 from django import template
 from django.urls import reverse  # noqa
-from django.utils.translation import string_concat  # noqa
+from django.utils.text import format_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 
@@ -40,8 +40,10 @@ class AddSensorGroup(tables.LinkAction):
         if not host._administrative == 'locked':
             if "disabled" not in self.classes:
                 self.classes = [c for c in self.classes] + ['disabled']
-                self.verbose_name = string_concat(self.verbose_name, ' ',
-                                                  _("(Node Unlocked)"))
+                self.verbose_name = format_lazy(
+                    '{verbose_name} {node_unlocked}',
+                    verbose_name=self.verbose_name,
+                    node_unlocked=_("(Node Unlocked)"))
         return True  # The action should always be displayed
 
 
