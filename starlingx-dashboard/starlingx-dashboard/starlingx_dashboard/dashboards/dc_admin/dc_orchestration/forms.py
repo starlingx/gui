@@ -63,7 +63,12 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("Strategy Type"),
         required=True,
         choices=STRATEGY_TYPES,
-        widget=forms.Select()
+        widget=forms.Select(
+            attrs={
+                'class': 'switchable',
+                'data-slug': 'strategy_types',
+            }
+        )
     )
 
     target = forms.ChoiceField(
@@ -79,19 +84,19 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
-    cloud_name = forms.CharField(
+    cloud_name = forms.ChoiceField(
         label=_("Subcloud"),
-        required=False,
+        required=True,
         help_text=_("Select subcloud to apply strategy."),
-        widget=forms.TextInput(
+        widget=forms.Select(
             attrs={
-                'class': 'switched',
+                'class': 'switchable switched',
                 'data-switch-on': 'subcloud_types',
-                'data-subcloud_types-cloud_name': _("Subcloud")
+                'data-subcloud_types-cloud_name': _("Subcloud"),
+                'data-slug': 'subcloud_name'
             }
         )
     )
-
     subcloud_group = forms.CharField(
         label=_("Subcloud Group"),
         required=False,
@@ -120,8 +125,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         widget=forms.Select(
             attrs={
                 'class': 'switched',
-                'data-switch-on': 'subcloud_types',
-                'data-subcloud_types-cloud_name': _("Subcloud Apply Type")
+                'data-switch-on': 'subcloud_name',
+                'data-subcloud_name-default': _("Subcloud Apply Type")
             }
         )
     )
@@ -137,8 +142,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'switched',
-                'data-switch-on': 'subcloud_types',
-                'data-subcloud_types-cloud_name':
+                'data-switch-on': 'subcloud_name',
+                'data-subcloud_name-default':
                 _("Maximum Parallel Subclouds")
             }
         )
@@ -148,16 +153,42 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("Force"),
         initial=False,
         required=False,
-        help_text=_('Offline subcloud is skipped unless '
-                    'force is set for Upgrade strategy'),
+        help_text=_('Offline subcloud is not skipped. '
+                    'Applicable only when the strategy is created '
+                    'to a single subcloud.'),
         widget=forms.CheckboxInput(
             attrs={
                 'class': 'switched',
-                'data-switch-on': 'subcloud_types',
-                'data-subcloud_types-cloud_name': _("Force")
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-upgrade': _("Force"),
             }
         )
     )
+
+    force_kubernetes = forms.BooleanField(
+        label=_("Force"),
+        initial=False,
+        required=False,
+        help_text=_('Force Kube upgrade to a subcloud '
+                    'which is in-sync with system controller'),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kubernetes': _("Force")
+            }
+        )
+    )
+
+    def __init__(self, request, *args, **kwargs):
+        super(CreateCloudStrategyForm, self).__init__(request, *args,
+                                                      **kwargs)
+        subcloud_list = [('default', 'All subclouds')]
+        subclouds = api.dc_manager.subcloud_list(self.request)
+        subcloud_list.extend([(c.name, c.name) for c in subclouds])
+        self.fields['cloud_name'].choices = subcloud_list
+        if self.initial.get('cloud_name', None):
+            self.fields['cloud_name'].widget.attrs['disabled'] = 'disabled'
 
     def handle(self, request, data):
         try:
@@ -168,7 +199,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 elif '_' in k:
                     data[k.replace('_', '-')] = data[k]
                     del data[k]
-
             if data['target'] == 'subcloud_group':
                 del data['cloud_name']
                 del data['force']
@@ -176,10 +206,18 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 del data['subcloud-apply-type']
             else:
                 del data['subcloud_group']
-                data['force'] = str(data['force']).lower()
-
+                if data['cloud_name'] == 'default':
+                    del data['cloud_name']
+                    del data['force']
+                else:
+                    del data['max-parallel-subclouds']
+                    del data['subcloud-apply-type']
+                    data['force'] = str(data['force']).lower()
             del data['target']
             data['stop-on-failure'] = str(data['stop-on-failure']).lower()
+            if data['type'] == 'kubernetes':
+                data['force'] = str(data['force-kubernetes']).lower()
+            del data['force-kubernetes']
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:
