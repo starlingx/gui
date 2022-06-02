@@ -115,21 +115,38 @@ class Patch(object):
 
 
 class Host(object):
-    _attrs = ['hostname',
-              'installed',
-              'ip',
-              'missing_pkgs',
-              'nodetype',
-              'patch_current',
-              'patch_failed',
-              'requires_reboot',
-              'secs_since_ack',
-              'stale_details',
-              'to_remove',
-              'sw_version',
-              'state',
-              'allow_insvc_patching',
-              'interim_state']
+    if six.PY2:
+        # Centos
+        _attrs = ['hostname',
+                  'installed',
+                  'ip',
+                  'missing_pkgs',
+                  'nodetype',
+                  'patch_current',
+                  'patch_failed',
+                  'requires_reboot',
+                  'secs_since_ack',
+                  'stale_details',
+                  'to_remove',
+                  'sw_version',
+                  'state',
+                  'allow_insvc_patching',
+                  'interim_state']
+    else:
+        # Debian
+        _attrs = ['hostname',
+                  'ip',
+                  'latest_sysroot_commit',
+                  'nodetype',
+                  'patch_current',
+                  'patch_failed',
+                  'requires_reboot',
+                  'secs_since_ack',
+                  'stale_details',
+                  'sw_version',
+                  'state',
+                  'allow_insvc_patching',
+                  'interim_state']
 
 
 def get_patches(request):
