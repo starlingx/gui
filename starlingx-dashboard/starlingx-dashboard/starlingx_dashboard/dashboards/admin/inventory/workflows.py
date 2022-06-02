@@ -55,8 +55,8 @@ BM_TYPES_CHOICES = (
     (sysinv.HOST_BM_TYPE_REDFISH, _("Redfish")),
 )
 
-MAX_CPU_FREQUENCY_CHOICES = (
-    ('max_cpu_default', _("Default")),
+MAX_CPU_MHZ_CONFIGURED_CHOICES = (
+    ('max_cpu_mhz_allowed', _("Default")),
     ('custom', _("Custom")),
 )
 
@@ -178,8 +178,8 @@ class UpdateHostInfoAction(workflows.Action):
     cpu_freq_config = forms.ChoiceField(
         label=_("CPU Frequency Configuration"),
         required=True,
-        initial='max_cpu_default',
-        choices=MAX_CPU_FREQUENCY_CHOICES,
+        initial='max_cpu_mhz_allowed',
+        choices=MAX_CPU_MHZ_CONFIGURED_CHOICES,
         widget=forms.Select(
             attrs={
                 'class': 'switchable switched',
@@ -188,7 +188,7 @@ class UpdateHostInfoAction(workflows.Action):
                     _("CPU Frequency Configuration"),
                 'data-slug': 'cpu_freq_config'}))
 
-    max_cpu_frequency = forms.IntegerField(
+    max_cpu_mhz_configured = forms.IntegerField(
         label=_("Max CPU Frequency (MHz)"),
         initial=1,
         min_value=1,
@@ -263,8 +263,9 @@ class UpdateHostInfoAction(workflows.Action):
                 'readonly'
             self.fields['cpu_freq_config'].required = False
 
-        if (self.initial['max_cpu_frequency'] is not None and
-                self.initial['max_cpu_frequency'] != host.max_cpu_default):
+        if (self.initial['max_cpu_mhz_configured'] is not None and
+                self.initial['max_cpu_mhz_configured'] !=
+                host.max_cpu_mhz_allowed):
             self.fields['cpu_freq_config'].initial = 'custom'
 
     def clean_location(self):
@@ -282,8 +283,8 @@ class UpdateHostInfoAction(workflows.Action):
     def clean(self):
         cleaned_data = super(UpdateHostInfoAction, self).clean()
 
-        if cleaned_data['cpu_freq_config'] == 'max_cpu_default':
-            cleaned_data['max_cpu_frequency'] = 'max_cpu_default'
+        if cleaned_data['cpu_freq_config'] == 'max_cpu_mhz_allowed':
+            cleaned_data['max_cpu_mhz_configured'] = 'max_cpu_mhz_allowed'
 
         disabled = self.fields['personality'].widget.attrs.get('disabled')
         if disabled == 'disabled':
@@ -308,8 +309,8 @@ class UpdateHostInfoAction(workflows.Action):
     def handle(self, request, data):
         host_id = self.initial['host_id']
         try:
-            max_cpu_frequency = data['max_cpu_frequency']
-            patch = {'max_cpu_frequency': max_cpu_frequency}
+            max_cpu_mhz_configured = data['max_cpu_mhz_configured']
+            patch = {'max_cpu_mhz_configured': max_cpu_mhz_configured}
             stx_api.sysinv.host_update(request, host_id, **patch)
         except exc.ClientException as ce:
             LOG.error(ce)
@@ -340,7 +341,7 @@ class UpdateHostInfo(workflows.Step):
                    "location",
                    "ttys_dcd",
                    "clock_synchronization",
-                   "max_cpu_frequency")
+                   "max_cpu_mhz_configured")
 
 
 class UpdateInstallParamsAction(workflows.Action):

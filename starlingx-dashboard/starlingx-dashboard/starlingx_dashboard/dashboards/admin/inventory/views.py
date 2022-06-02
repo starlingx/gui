@@ -81,7 +81,7 @@ class UpdateView(workflows.WorkflowView):
                 'bm_username': host.bm_username,
                 'ttys_dcd': host.ttys_dcd,
                 'clock_synchronization': host.clock_synchronization,
-                'max_cpu_frequency': host.max_cpu_frequency}
+                'max_cpu_mhz_configured': host.max_cpu_mhz_configured}
 
 
 class DetailView(tabs.TabbedTableView):

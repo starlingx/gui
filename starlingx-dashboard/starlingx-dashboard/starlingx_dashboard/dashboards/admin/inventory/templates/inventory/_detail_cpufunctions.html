@@ -13,9 +13,9 @@
         <dd>{{ host.hyperthreading }}</dd>
         {% if host.personality == 'Worker' %}
           <dt>{% trans "Max CPU Frequency " %}</dt>
-          <dd>{{ host.max_cpu_frequency }}</dd>
+          <dd>{{ host.max_cpu_mhz_configured }}</dd>
           <dt>{% trans "Max CPU Default " %}</dt>
-          <dd>{{ host.max_cpu_default }}</dd>
+          <dd>{{ host.max_cpu_mhz_allowed }}</dd>
         {% endif %}
       </dl>
       <div id="cpufunctions">
