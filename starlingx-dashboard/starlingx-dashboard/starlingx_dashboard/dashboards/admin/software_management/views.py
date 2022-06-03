@@ -6,6 +6,7 @@
 
 import datetime
 import logging
+import six
 
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -55,8 +56,16 @@ class DetailPatchView(views.HorizonTemplateView):
             patch_id = self.kwargs['patch_id']
             try:
                 patch = stx_api.patch.get_patch(self.request, patch_id)
-                patch.contents_display = "%s" % "\n".join(
-                    [_f for _f in patch.contents if _f])
+                # CentOS
+                if six.PY2:
+                    patch.contents_display = "%s" % "\n".join(
+                        [_f for _f in patch.contents if _f])
+                # Debian
+                else:
+                    patch.contents_display = ""
+                    for k, v in patch.contents.items():
+                        patch.contents_display = patch.contents_display + \
+                            "%s: %s" % (k, v) + "\n"
                 patch.requires_display = "%s" % "\n".join(
                     [_f for _f in patch.requires if _f])
             except Exception:

@@ -14,6 +14,7 @@
 #
 
 import logging
+import six
 
 from six.moves.urllib.parse import urlparse
 
@@ -167,7 +168,23 @@ def get_patch(request, patch_id):
 
     # add on patch contents
     data = _patching_client(request).show_patch(patch_id)
-    patch.contents = [str(pkg) for pkg in data['contents'][patch_id]]
+    # CentOS
+    if six.PY2:
+        patch.contents = [str(pkg) for pkg in data['contents'][patch_id]]
+    # Debian:
+    else:
+        patch.contents = {}
+        if "number_of_commits" in data['contents'][patch_id] and \
+                data['contents'][patch_id]['number_of_commits'] != "":
+            patch.contents["number_of_commits"] = \
+                data['contents'][patch_id]['number_of_commits']
+        if "base" in data['contents'][patch_id] and \
+                data['contents'][patch_id]['base']['commit'] != "":
+            patch.contents["base_commit"] = \
+                data['contents'][patch_id]["base"]['commit']
+        for i in range(int(data['contents'][patch_id]['number_of_commits'])):
+            patch.contents["commit%s" % (i + 1)] = \
+                data['contents'][patch_id]["commit%s" % (i + 1)]['commit']
 
     return patch
 
