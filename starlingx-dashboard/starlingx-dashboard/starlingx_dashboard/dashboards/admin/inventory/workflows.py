@@ -257,7 +257,7 @@ class UpdateHostInfoAction(workflows.Action):
             self.fields['subfunctions'].required = False
 
         if (host._capabilities.get(
-                'max_cpu_config') in [None, 'not-configurable'] or
+                'is_max_cpu_configurable') in [None, 'not-configurable'] or
                 sysinv_const.CONTROLLER in host.subfunctions):
             self.fields['cpu_freq_config'].widget.attrs['readonly'] = \
                 'readonly'
