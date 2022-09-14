@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2017-2021 Wind River Systems, Inc.
+# Copyright (c) 2017-2022 Wind River Systems, Inc.
 #
 
 import logging
@@ -51,10 +51,11 @@ def alarm_summary_list(request):
 class Subcloud(base.APIResourceWrapper):
     _attrs = ['subcloud_id', 'name', 'description', 'location',
               'software_version', 'management_subnet', 'management_state',
-              'availability_status', 'deploy_status', 'management_start_ip',
-              'management_end_ip', 'management_gateway_ip',
-              'systemcontroller_gateway_ip', 'created_at', 'updated_at',
-              'group_id', 'sync_status', 'endpoint_sync_status', ]
+              'availability_status', 'deploy_status', 'error_description',
+              'management_start_ip', 'management_end_ip',
+              'management_gateway_ip', 'systemcontroller_gateway_ip',
+              'created_at', 'updated_at', 'group_id', 'sync_status',
+              'endpoint_sync_status', ]
 
 
 def subcloud_list(request):
