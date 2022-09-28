@@ -2504,3 +2504,17 @@ def data_network_modify(request, datanet_id, **kwargs):
 def data_network_delete(request, datanet_id):
     LOG.info("data_network_delete(): datanet_id=%s", datanet_id)
     return cgtsclient(request).datanetwork.delete(datanet_id)
+
+
+class KubeVersion(base.APIResourceWrapper):
+    """Wrapper for Kubernetes versions"""
+
+    _attrs = ['version', 'target', 'state']
+
+    def __init__(self, apiresource):
+        super(KubeVersion, self).__init__(apiresource)
+
+
+def kube_version_list(request):
+    kube_versions = cgtsclient(request).kube_version.list()
+    return [KubeVersion(n) for n in kube_versions]

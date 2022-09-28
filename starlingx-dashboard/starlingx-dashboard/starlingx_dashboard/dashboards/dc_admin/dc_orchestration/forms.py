@@ -71,6 +71,21 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
+    to_version = forms.ChoiceField(
+        label=_("To version"),
+        required=False,
+        help_text=_("Select a version to apply the strategy. \
+                    Otherwise, it will be updated to the available version."),
+        widget=forms.Select(
+            attrs={
+                'class': 'switchable switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kubernetes': _("To version"),
+                'data-slug': 'to_version'
+            }
+        )
+    )
+
     target = forms.ChoiceField(
         label=_("Apply to"),
         required=False,
@@ -190,6 +205,20 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         if self.initial.get('cloud_name', None):
             self.fields['cloud_name'].widget.attrs['disabled'] = 'disabled'
 
+        kube_versions = []
+        version = []
+        is_first_available = False
+        kube_version_list = api.sysinv.kube_version_list(self.request)
+        for k in kube_version_list:
+            if k.state == "available" and not is_first_available:
+                version = [(k.version[1:], '--')]
+                kube_versions[:0] = version
+                is_first_available = True
+            if k.state != "unavailable":
+                version = [(k.version[1:], k.version[1:] + " - " + k.state)]
+                kube_versions.extend(version)
+        self.fields['to_version'].choices = kube_versions
+
     def handle(self, request, data):
         try:
             # convert keys to use dashes
@@ -217,6 +246,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             data['stop-on-failure'] = str(data['stop-on-failure']).lower()
             if data['type'] == 'kubernetes':
                 data['force'] = str(data['force-kubernetes']).lower()
+            else:
+                del data['to-version']
             del data['force-kubernetes']
 
             response = api.dc_manager.strategy_create(request, data)
