@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2021 Wind River Systems, Inc.
+# Copyright (c) 2016-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -15,7 +15,7 @@ from openstack_dashboard.dashboards.admin import dashboard
 class StorageOverview(horizon.Panel):
     name = _("Storage Overview")
     slug = 'storage_overview'
-    permissions = ('openstack.services.platform', 'openstack.roles.admin')
+    permissions = ('openstack.services.platform', 'openstack.roles.reader')
 
     def allowed(self, context):
         if context['request'].user.services_region == 'SystemController':

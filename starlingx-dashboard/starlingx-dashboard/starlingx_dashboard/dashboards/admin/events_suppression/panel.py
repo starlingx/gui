@@ -10,7 +10,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-#  Copyright (c) 2019-2021 Wind River Systems, Inc.
+#  Copyright (c) 2019-2022 Wind River Systems, Inc.
 #
 #  SPDX-License-Identifier: Apache-2.0
 #
@@ -22,7 +22,7 @@ import horizon
 class EventsSuppression(horizon.Panel):
     name = _("Events Suppression")
     slug = "events_suppression"
-    permissions = ('openstack.roles.admin', )
+    permissions = ('openstack.roles.reader', )
 
     def allowed(self, context):
         if context['request'].user.services_region == 'SystemController':

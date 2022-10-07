@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2017-2018 Wind River Systems, Inc.
+# Copyright (c) 2017-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -18,9 +18,8 @@ class DCAdmin(horizon.Dashboard):
     slug = "dc_admin"
     default_panel = 'cloud_overview'
 
-    # Must be admin and in the dcmanager's service region to manage
-    # distributed cloud
-    permissions = ('openstack.roles.admin',
+    # Must be in the dcmanager's service region to view this dashboard
+    permissions = ('openstack.roles.reader',
                    'openstack.services.dcmanager',)
 
     def allowed(self, context):
