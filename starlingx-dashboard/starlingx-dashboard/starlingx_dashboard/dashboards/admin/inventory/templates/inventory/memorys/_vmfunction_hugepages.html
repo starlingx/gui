@@ -1,4 +1,4 @@
-{% if memory.hugepages_configured == 'True' %}
+{% if memory.hugepages_configured == True %}
 
     <strong>{{ "4K Pages: " }}</strong> {{ "<br>" }}
     <strong>{{ "&nbsp;&nbsp;&nbsp;&nbsp;Total: " }}</strong> {{ memory.vm_hugepages_nr_4K }} {{ "<br>" }}
