@@ -33,7 +33,7 @@ class UpdateMemory(tables.LinkAction):
 
 
 def get_processor_memory(memory):
-    if memory.hugepages_configured == 'True':
+    if memory.hugepages_configured is True:
         template_name = \
             'admin/inventory/memorys/_memoryfunction_hugepages.html'
     else:

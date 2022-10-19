@@ -1,4 +1,4 @@
-{% if memory.hugepages_configured == 'True' %}    
+{% if memory.hugepages_configured == True %}    
     <strong>{{ "Size: " }}</strong> {{ memory.vswitch_hugepages_size_mib }} {{ " MiB" }} {{ "<br>" }}
     {% if memory.vswitch_hugepages_reqd or memory.vswitch_hugepages_reqd == 0 %}
         <strong>{{ "&nbsp;&nbsp;&nbsp;&nbsp;Total: " }}</strong> {{ memory.vswitch_hugepages_nr }}
