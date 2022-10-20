@@ -8,7 +8,8 @@
 
 import logging
 
-import utils as icpu_utils
+from starlingx_dashboard.dashboards.admin.inventory.cpu_functions \
+    import utils as icpu_utils
 
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
