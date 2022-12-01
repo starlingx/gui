@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -18,8 +18,6 @@ from starlingx_dashboard import api as stx_api
 import sysinv.common.constants as sysinv_const
 
 LOG = logging.getLogger(__name__)
-
-INTERFACE_CLASS_TYPES = ["platform", "data", "pci-sriov", "pci-passthrough"]
 
 
 class DeleteInterface(tables.DeleteAction):
@@ -78,19 +76,13 @@ class CreateInterface(tables.LinkAction):
         if (host._administrative != 'locked' and not is_aio_sx):
             return False
 
-        count = 0
         sriov_count = 0
         for i in host.interfaces:
             if i.ifclass:
-                count = count + 1
                 if i.ifclass == sysinv_const.INTERFACE_CLASS_PCI_SRIOV:
                     sriov_count += 1
 
         if is_aio_sx and host._administrative != 'locked' and sriov_count == 0:
-            return False
-
-        if host.subfunctions and 'worker' not in host.subfunctions and \
-                count >= len(INTERFACE_CLASS_TYPES):
             return False
 
         return True
