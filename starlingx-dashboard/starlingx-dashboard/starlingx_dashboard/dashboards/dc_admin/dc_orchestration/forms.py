@@ -222,7 +222,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
     def handle(self, request, data):
         try:
             # convert keys to use dashes
-            for k in data.keys():
+            for k in data.copy().keys():
                 if 'subcloud_group' in k or 'cloud_name' in k:
                     continue
                 elif '_' in k:
@@ -340,7 +340,7 @@ class CreateCloudPatchConfigForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
-            for k in data.keys():
+            for k in data.copy().keys():
                 if '_' in k:
                     data[k.replace('_', '-')] = data[k]
                     del data[k]

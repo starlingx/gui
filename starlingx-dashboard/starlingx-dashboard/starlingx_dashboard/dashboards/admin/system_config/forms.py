@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -726,7 +726,7 @@ class UpdateiStoragePools(forms.SelfHandlingForm):
                         STORAGE_VALUES['object_pool_gib'] = \
                             str(storage_config._object_pool_gib)
 
-                    for key in data.keys():
+                    for key in data.copy().keys():
                         data[key] = str(data[key])
 
                     LOG.info("initial send_to_sysinv=%s", send_to_sysinv)
