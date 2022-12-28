@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 
 from __future__ import absolute_import
@@ -242,7 +242,7 @@ class Port(base.APIResourceWrapper):
               'psvendor', 'psdevice', 'numa_node', 'mac', 'mtu', 'speed',
               'link_mode', 'capabilities', 'host_uuid', 'interface_uuid',
               'bootp', 'autoneg', 'type', 'sriov_numvfs', 'sriov_totalvfs',
-              'sriov_vfs_pci_address', 'sriov_vf_driver',
+              'sriov_vfs_pci_address', 'sriov_vf_driver', 'max_tx_rate',
               'driver', 'dpdksupport', 'neighbours']
 
     def __init__(self, apiresource):
@@ -1961,7 +1961,7 @@ class Interface(base.APIResourceWrapper):
               'aemode', 'txhashpolicy', 'primary_reselect', 'vlan_id',
               'uses', 'used_by', 'ihost_uuid',
               'ipv4_mode', 'ipv6_mode', 'ipv4_pool', 'ipv6_pool',
-              'sriov_numvfs', 'sriov_vf_driver']
+              'sriov_numvfs', 'sriov_vf_driver', 'max_tx_rate']
 
     def __init__(self, apiresource):
         super(Interface, self).__init__(apiresource)

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -379,6 +379,23 @@ class AddInterface(forms.SelfHandlingForm):
                 'data-switch-on': 'ipv6_mode',
                 'data-ipv6_mode-pool': 'IPv6 Address Pool'}))
 
+    max_tx_rate = forms.IntegerField(
+        label=_("Max Tx Rate"),
+        initial=0,
+        min_value=0,
+        required=False,
+        help_text=_('Allowed maximum transmit bandwidth, in Mbps, for the '
+                    'specified VF. Setting this parameter to 0 disables '
+                    'rate limiting.'),
+        error_messages={'invalid': _('Max Tx Rate must be '
+                                     'equal or greater than 0.')},
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'interface_type',
+                'data-slug': 'max_tx_rate',
+                'data-interface_type-vf': 'Max Tx Rate'}))
+
     failure_url = 'horizon:admin:inventory:detail'
 
     def __init__(self, *args, **kwargs):
@@ -601,6 +618,13 @@ class AddInterface(forms.SelfHandlingForm):
             if data['ifclass'] != 'pci-sriov':
                 del data['sriov_numvfs']
                 del data['sriov_vf_driver']
+
+            if data['iftype'] == 'vf':
+                if not data['max_tx_rate']:
+                    data['max_tx_rate'] = 0
+                data['max_tx_rate'] = str(data['max_tx_rate'])
+            else:
+                del data['max_tx_rate']
 
             del data['datanetworks']
             del data['networks']
@@ -916,6 +940,13 @@ class UpdateInterface(AddInterface):
 
             if 'sriov_vf_driver' in data:
                 data['sriov_vf_driver'] = str(data['sriov_vf_driver'])
+
+            if data['iftype'] == 'vf':
+                if not data['max_tx_rate']:
+                    data['max_tx_rate'] = 0
+                data['max_tx_rate'] = str(data['max_tx_rate'])
+            else:
+                del data['max_tx_rate']
 
             # Explicitly set iftype when user selects pci-pt or pci-sriov
             ifclass = \
