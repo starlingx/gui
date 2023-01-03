@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2022 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -141,6 +141,7 @@ class AddHostInfoAction(workflows.Action):
 
 
 class UpdateHostInfoAction(workflows.Action):
+    failure_message = _('Unable to modify host "%s".')
     host_id = forms.CharField(widget=forms.widgets.HiddenInput)
 
     personality = forms.ChoiceField(label=_("Personality"),
@@ -192,7 +193,7 @@ class UpdateHostInfoAction(workflows.Action):
         label=_("Max CPU Frequency (MHz)"),
         initial=1,
         min_value=1,
-        required=True,
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'switched',
@@ -283,9 +284,6 @@ class UpdateHostInfoAction(workflows.Action):
     def clean(self):
         cleaned_data = super(UpdateHostInfoAction, self).clean()
 
-        if cleaned_data['cpu_freq_config'] == 'max_cpu_mhz_allowed':
-            cleaned_data['max_cpu_mhz_configured'] = 'max_cpu_mhz_allowed'
-
         disabled = self.fields['personality'].widget.attrs.get('disabled')
         if disabled == 'disabled':
             if self.system_type == constants.TS_AIO:
@@ -316,7 +314,6 @@ class UpdateHostInfoAction(workflows.Action):
             LOG.error(ce)
             msg = self.failure_message + " " + str(ce)
             self.failure_message = msg
-            exceptions.handle(request, msg)
             return False
         except Exception as e:
             msg = str(e)
