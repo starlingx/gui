@@ -32,6 +32,9 @@ import sysinv.common.constants as constants
 SYSTEM_TYPE_STANDARD = constants.TIS_STD_BUILD
 SYSTEM_TYPE_AIO = constants.TIS_AIO_BUILD
 
+APPARMOR_STATE_ENABLED = constants.APPARMOR_STATE_ENABLED
+APPARMOR_STATE_DISABLED = constants.APPARMOR_STATE_DISABLED
+
 PERSONALITY_CONTROLLER = 'controller'
 PERSONALITY_WORKER = 'worker'
 PERSONALITY_NETWORK = 'network'
@@ -841,8 +844,8 @@ class Host(base.APIResourceWrapper):
 
     _attrs = ['id', 'uuid', 'hostname', 'personality',
               'subfunctions', 'subfunction_oper', 'subfunction_avail',
-              'location', 'serialid', 'operational', 'administrative',
-              'invprovision', 'peers',
+              'apparmor', 'location', 'serialid', 'operational',
+              'administrative', 'invprovision', 'peers',
               'availability', 'uptime', 'task', 'capabilities',
               'created_at', 'updated_at', 'mgmt_mac', 'mgmt_ip',
               'bm_ip', 'bm_type', 'bm_username',
@@ -867,6 +870,12 @@ class Host(base.APIResourceWrapper):
         ('disabled', _("Disabled")),
         ('enabled', _("Enabled")),
     )
+
+    APPARMOR_DISPLAY_CHOICES = (
+        (APPARMOR_STATE_ENABLED, _("enabled")),
+        (APPARMOR_STATE_DISABLED, _("disabled")),
+    )
+
     AVAIL_DISPLAY_CHOICES = (
         ('available', _("Available")),
         ('intest', _("In-Test")),
@@ -909,6 +918,7 @@ class Host(base.APIResourceWrapper):
         self._subfunctions = self.subfunctions
         self._subfunction_oper = self.subfunction_oper
         self._subfunction_avail = self.subfunction_avail
+        self._apparmor = self.apparmor
         self._location = self.location
         self._peers = self.peers
         self._bm_type = self.bm_type
@@ -967,6 +977,11 @@ class Host(base.APIResourceWrapper):
     def subfunction_avail(self):
         return self._get_display_value(self.AVAIL_DISPLAY_CHOICES,
                                        self._subfunction_avail)
+
+    @property
+    def apparmor(self):
+        return self._get_display_value(self.APPARMOR_DISPLAY_CHOICES,
+                                       self._apparmor)
 
     @property
     def config_required(self):

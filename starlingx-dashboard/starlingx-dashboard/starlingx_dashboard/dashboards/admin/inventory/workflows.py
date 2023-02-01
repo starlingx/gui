@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2022 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -219,6 +219,11 @@ class UpdateHostInfoAction(workflows.Action):
                     "port revoke any active session and a new login "
                     "process is initiated when a new connection is detected."))
 
+    apparmor = forms.ChoiceField(
+        label=_("AppArmor Module"),
+        required=False,
+        choices=stx_api.sysinv.Host.APPARMOR_DISPLAY_CHOICES)
+
     class Meta(object):
         name = _("Host Info")
         help_text = _(
@@ -334,6 +339,7 @@ class UpdateHostInfo(workflows.Step):
     contributes = ("host_id",
                    "personality",
                    "subfunctions",
+                   "apparmor",
                    "hostname",
                    "location",
                    "ttys_dcd",
@@ -635,6 +641,10 @@ class UpdateHost(workflows.Workflow):
             # if not trying to change clock_synchronization, skip check
             if host.clock_synchronization == data['clock_synchronization']:
                 data.pop('clock_synchronization')
+
+            # if not trying to change apparmor choice, skip check
+            if host.apparmor == data['apparmor']:
+                data.pop('apparmor')
 
             host = stx_api.sysinv.host_update(request, **data)
             return True if host else False

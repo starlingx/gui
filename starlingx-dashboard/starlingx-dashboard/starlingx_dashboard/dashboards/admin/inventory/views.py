@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -75,6 +75,7 @@ class UpdateView(workflows.WorkflowView):
                 'hostname': host.hostname,
                 'personality': host._personality,
                 'subfunctions': host._subfunctions,
+                'apparmor': host.apparmor,
                 'location': host.location,
                 'bm_type': host.bm_type,
                 'bm_ip': host.bm_ip,

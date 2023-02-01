@@ -30,6 +30,8 @@
     <dd>{{ host.serialid }}</dd>
     <dt>{% trans "Location" %}</dt>
     <dd>{{ host.location|default:_("Not Specified") }}</dd>
+    <dt>{% trans "AppArmor Module" %}</dt>
+    <dd>{{ host.apparmor }}</dd>
     <dt>{% trans "Serial Line Carrier Detect" %}</dt>
     <dd>{{ host.ttys_dcd }}</dd>
     <dt>{% trans "Clock Synchronization" %}</dt>
