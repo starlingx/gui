@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019 Wind River Systems, Inc.
+# Copyright (c) 2019-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -51,6 +51,24 @@ class UpdateFilesystems(forms.SelfHandlingForm):
         label=_("Scratch Storage (GiB)"),
         required=True,
         help_text=_("Scratch storage space in gibibytes."),
+        min_value=0)
+
+    root = forms.IntegerField(
+        label=_("Root Storage (GiB)"),
+        required=True,
+        help_text=_("Root storage space in gibibytes."),
+        min_value=0)
+
+    var = forms.IntegerField(
+        label=_("Var Storage (GiB)"),
+        required=True,
+        help_text=_("Var storage space in gibibytes."),
+        min_value=0)
+
+    log = forms.IntegerField(
+        label=_("Log Storage (GiB)"),
+        required=True,
+        help_text=_("Log storage space in gibibytes."),
         min_value=0)
 
     failure_url = 'horizon:admin:inventory:detail'
