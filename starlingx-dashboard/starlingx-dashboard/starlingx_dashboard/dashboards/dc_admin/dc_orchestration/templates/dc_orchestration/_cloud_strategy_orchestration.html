@@ -1,4 +1,4 @@
-{% load i18n sizeformat %}
+{% load i18n sizeformat getvalue %}
 
 {% block main %}
 
@@ -17,6 +17,10 @@
           <dd>{{ strategy.max_parallel_subclouds }}</dd>
           <dt>{% trans "Stop On Failure" %}</dt>
           <dd>{{ strategy.stop_on_failure }}</dd>
+          {% if strategy.strategy_type == 'patch' and strategy.extra_args %}
+            <dt>{% trans "Upload Only" %}</dt>
+            <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
+          {% endif %}
           <dt>{% trans "State" %}</dt>
           <dd>{{ strategy.state }}</dd>
         </dl>

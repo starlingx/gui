@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2017-2022 Wind River Systems, Inc.
+# Copyright (c) 2017-2023 Wind River Systems, Inc.
 #
 
 import logging
@@ -125,7 +125,7 @@ def subcloud_group_update(request, subcloud_group_id, **kwargs):
 class Strategy(base.APIResourceWrapper):
     _attrs = ['strategy_type', 'subcloud_apply_type',
               'max_parallel_subclouds', 'stop_on_failure', 'state',
-              'created_at', 'updated_at']
+              'created_at', 'updated_at', 'extra_args']
 
 
 def get_strategy(request):
