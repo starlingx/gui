@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -195,6 +195,20 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
+    upload_only = forms.BooleanField(
+        label=_("Upload Only"),
+        initial=False,
+        required=False,
+        help_text=_('Stops strategy after uploading patches to subclouds'),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-patch': _("Upload Only")
+            }
+        )
+    )
+
     def __init__(self, request, *args, **kwargs):
         super(CreateCloudStrategyForm, self).__init__(request, *args,
                                                       **kwargs)
@@ -249,6 +263,11 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             else:
                 del data['to-version']
             del data['force-kubernetes']
+
+            if data['type'] == 'patch':
+                data['upload-only'] = str(data['upload-only']).lower()
+            else:
+                del data['upload-only']
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:
