@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -678,7 +678,7 @@ class EditPartition(forms.SelfHandlingForm):
             # No redirect, return to previous storage tab view.
             # The REST API error message will appear on UI as
             # "horizon.exceptions.handle" will invoke "messages.error".
-            return exceptions.handle(request, message=ce)
+            return exceptions.handle(request, message=msg)
         except Exception as e:
             msg = _('Failed to update partition.')
             LOG.info(msg)
