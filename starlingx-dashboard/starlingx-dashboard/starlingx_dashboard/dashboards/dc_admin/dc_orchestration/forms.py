@@ -75,7 +75,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("To version"),
         required=False,
         help_text=_("Select a version to apply the strategy. \
-                    Otherwise, it will be updated to the available version."),
+                    Otherwise, it will be updated to the SystemController \
+                    active version."),
         widget=forms.Select(
             attrs={
                 'class': 'switchable switched',
@@ -221,15 +222,13 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
 
         kube_versions = []
         version = []
-        is_first_available = False
         kube_version_list = api.sysinv.kube_version_list(self.request)
         for k in kube_version_list:
-            if k.state == "available" and not is_first_available:
-                version = [(k.version[1:], '--')]
+            if k.state == "active":
+                version = [(k.version, '--')]
                 kube_versions[:0] = version
-                is_first_available = True
             if k.state != "unavailable":
-                version = [(k.version[1:], k.version[1:] + " - " + k.state)]
+                version = [(k.version, k.version + " - " + k.state)]
                 kube_versions.extend(version)
         self.fields['to_version'].choices = kube_versions
 
