@@ -33,7 +33,7 @@ class ApplyCloudStrategyForm(forms.SelfHandlingForm):
         except Exception as ex:
             LOG.exception(ex)
             redirect = reverse(self.failure_url)
-            msg = _('Strategy apply failed: "%s".') % str(ex)
+            msg = _('Strategy apply failed.')
             exceptions.handle(request, msg,
                               redirect=redirect)
         return True
@@ -273,8 +273,9 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             if not response:
                 messages.error(request, "Strategy creation failed")
         except Exception as ex:
+            LOG.exception(ex)
             redirect = reverse(self.failure_url)
-            msg = _('Strategy creation failed: "%s".') % str(ex)
+            msg = _('Strategy creation failed.')
             exceptions.handle(request, msg,
                               redirect=redirect)
         return True
