@@ -23,8 +23,10 @@
     name: stx-gui-pylint
     parent: openstack-tox-pylint
     description: Run pylint for stx-gui
+    nodeset: debian-bullseye
     vars:
       tox_envlist: pylint
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/upper-constraints.txt'  # yamllint disable-line rule:line-length
       tox_environment:
         STX_DC_CLIENT: distcloud-client
     required-projects:
@@ -33,6 +35,7 @@
       - starlingx/fault
       - starlingx/ha
       - starlingx/nfv
+      - starlingx/root
       - starlingx/update
       - starlingx/utilities
 
