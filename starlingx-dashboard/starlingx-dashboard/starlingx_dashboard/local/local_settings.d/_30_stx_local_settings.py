@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019-2021 Wind River Systems, Inc.
+# Copyright (c) 2019-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -99,7 +99,7 @@ OPERATION_LOG_ENABLED = True
 OPERATION_LOG_OPTIONS = {
     'mask_fields': ['password', 'bm_password', 'bm_confirm_password',
                     'current_password', 'confirm_password', 'new_password',
-                    'fake_password'],
+                    'fake_password', 'sysadmin_password'],
     'ignore_urls': [],
     'target_methods': ['POST', 'PUT', 'DELETE'],
     'format': ("[%(project_name)s %(project_id)s] [%(user_name)s %(user_id)s]"

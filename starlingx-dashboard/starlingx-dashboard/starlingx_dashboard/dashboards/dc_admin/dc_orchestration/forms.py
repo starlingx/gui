@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import base64
 import logging
 
 from dcmanagerclient import exceptions as exc
@@ -40,6 +41,8 @@ class ApplyCloudStrategyForm(forms.SelfHandlingForm):
 
 
 class CreateCloudStrategyForm(forms.SelfHandlingForm):
+    FIELD_LABEL_RELEASE = _("Release")
+    FIELD_LABEL_SYSADMIN_PASSWORD = _("sysadmin password")
     failure_url = 'horizon:dc_admin:dc_orchestration:index'
 
     SUBCLOUD_APPLY_TYPES = (
@@ -52,6 +55,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         ('upgrade', _("Upgrade")),
         ('kubernetes', _("Kubernetes")),
         ('firmware', _("Firmware")),
+        ('prestage', _("Prestage")),
     )
 
     SUBCLOUD_TYPES = (
@@ -186,7 +190,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         initial=False,
         required=False,
         help_text=_('Force Kube upgrade to a subcloud '
-                    'which is in-sync with system controller'),
+                    'which is in-sync with System Controller'),
         widget=forms.CheckboxInput(
             attrs={
                 'class': 'switched',
@@ -206,6 +210,37 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-patch': _("Upload Only")
+            }
+        )
+    )
+
+    release = forms.ChoiceField(
+        label=FIELD_LABEL_RELEASE,
+        required=False,
+        help_text=_("Select a version for the strategy to apply. \
+                    Otherwise, the System Controller active version \
+                    will be used."),
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-prestage': FIELD_LABEL_RELEASE,
+                'data-slug': 'release'
+            }
+        )
+    )
+
+    sysadmin_password = forms.CharField(
+        label=FIELD_LABEL_SYSADMIN_PASSWORD,
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                'autocomplete': 'off',
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-prestage':
+                    FIELD_LABEL_SYSADMIN_PASSWORD,
+                'data-required-when-shown': 'true'
             }
         )
     )
@@ -231,6 +266,27 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 version = [(k.version, k.version + " - " + k.state)]
                 kube_versions.extend(version)
         self.fields['to_version'].choices = kube_versions
+
+        release_list = []
+        sw_versions = api.sysinv.get_sw_versions_for_prestage(self.request)
+        for version in sw_versions:
+            release_list.extend([(version, version)])
+        empty_release = [('', '--')]
+        release_list[:0] = empty_release
+        self.fields['release'].choices = release_list
+
+    def clean(self):
+        cleaned_data = super(CreateCloudStrategyForm, self).clean()
+        if cleaned_data['type'] == 'prestage':
+            if (('sysadmin_password' not in cleaned_data) or
+                    (not cleaned_data['sysadmin_password'])):
+                raise forms.ValidationError(
+                    {'sysadmin_password':
+                     forms.ValidationError('sysadmin password is required')})
+        else:
+            cleaned_data.pop('release', None)
+            cleaned_data.pop('sysadmin_password', None)
+        return cleaned_data
 
     def handle(self, request, data):
         try:
@@ -267,6 +323,13 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 data['upload-only'] = str(data['upload-only']).lower()
             else:
                 del data['upload-only']
+
+            if data['type'] == 'prestage':
+                if data['release'] == '':
+                    data.pop('release', None)
+                data['sysadmin_password'] = base64.b64encode(
+                    data['sysadmin-password'].encode("utf-8")).decode("utf-8")
+            data.pop('sysadmin-password', None)
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:

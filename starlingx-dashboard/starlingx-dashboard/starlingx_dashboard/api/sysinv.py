@@ -111,6 +111,11 @@ HOST_BM_TYPE_IPMI = "ipmi"
 HOST_BM_TYPE_REDFISH = "redfish"
 HOST_BM_TYPE_DYNAMIC = "dynamic"
 
+# Load states
+ACTIVE_LOAD_STATE = 'active'
+INACTIVE_LOAD_STATE = 'inactive'
+IMPORTED_LOAD_STATE = 'imported'
+
 LOG = logging.getLogger(__name__)
 
 
@@ -2533,3 +2538,29 @@ class KubeVersion(base.APIResourceWrapper):
 def kube_version_list(request):
     kube_versions = cgtsclient(request).kube_version.list()
     return [KubeVersion(n) for n in kube_versions]
+
+
+class Load(base.APIResourceWrapper):
+    """Wrapper for Load"""
+
+    _attrs = ['software_version', 'compatible_version', 'required_patches',
+              'state']
+
+    def __init__(self, apiresource):
+        super(Load, self).__init__(apiresource)
+
+
+def load_list(request):
+    loads = cgtsclient(request).load.list()
+    return [Load(n) for n in loads]
+
+
+def get_sw_versions_for_prestage(request):
+    valid_states = [
+        ACTIVE_LOAD_STATE,
+        IMPORTED_LOAD_STATE,
+        INACTIVE_LOAD_STATE
+    ]
+    loads = load_list(request)
+    return [load.software_version for load in loads
+            if load.state in valid_states]

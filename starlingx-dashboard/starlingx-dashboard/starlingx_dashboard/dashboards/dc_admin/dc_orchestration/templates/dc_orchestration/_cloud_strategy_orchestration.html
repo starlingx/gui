@@ -17,9 +17,14 @@
           <dd>{{ strategy.max_parallel_subclouds }}</dd>
           <dt>{% trans "Stop On Failure" %}</dt>
           <dd>{{ strategy.stop_on_failure }}</dd>
-          {% if strategy.strategy_type == 'patch' and strategy.extra_args %}
-            <dt>{% trans "Upload Only" %}</dt>
-            <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
+          {% if strategy.extra_args %}
+            {% if strategy.strategy_type == 'patch' %}
+              <dt>{% trans "Upload Only" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
+            {% elif strategy.strategy_type == 'prestage' %}
+              <dt>{% trans "Prestage Software Version" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"prestage-software-version" }}</dd>
+            {% endif %}
           {% endif %}
           <dt>{% trans "State" %}</dt>
           <dd>{{ strategy.state }}</dd>
