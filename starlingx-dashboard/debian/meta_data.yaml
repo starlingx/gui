@@ -5,3 +5,5 @@ src_path: starlingx-dashboard
 revision:
   dist: $STX_DIST
   PKG_GITREVCOUNT: true
+  SRC_GITREVCOUNT:
+    SRC_BASE_SRCREV: 3e3f666d28eecc6b9490a3a6d162a9c8d22b01c2
