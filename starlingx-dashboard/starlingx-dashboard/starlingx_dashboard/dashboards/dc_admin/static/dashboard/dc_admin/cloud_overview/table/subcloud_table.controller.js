@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2021 Wind River Systems, Inc.
+ * Copyright (c) 2017-2023 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -27,6 +27,7 @@
     '$timeout',
     '$interval',
     '$window',
+    '$cookies',
     'horizon.framework.widgets.toast.service',
     'horizon.framework.util.i18n.gettext',
     'horizon.framework.widgets.form.ModalFormService',
@@ -42,6 +43,7 @@
     $timeout,
     $interval,
     $window,
+    $cookies,
     toast,
     gettext,
     modalFormService,
@@ -354,8 +356,7 @@
       properties: {
         "name": {
           type: "string",
-          title: "Name",
-          readonly: true},
+          title: "Name"},
         "description": {
           type: "string",
           title: "Description"},
@@ -408,9 +409,10 @@
       }
 
       keystone.getCurrentUserSession().success(function(session){
-        session.available_services_regions.indexOf(cloud.name)
-        if (session.available_services_regions.indexOf(cloud.name) > -1) {
-          $window.location.href = "/auth/switch_services_region/"+ cloud.name + "/?next=/admin/active_alarms/";
+        session.available_services_regions.indexOf(cloud.region_name)
+        if (session.available_services_regions.indexOf(cloud.region_name) > -1) {
+          $cookies.put("subcloud_" + cloud.region_name, cloud.name);
+          $window.location.href = "/auth/switch_services_region/"+ cloud.region_name + "/?next=/admin/active_alarms/";
         } else {
           toast.add('error', ctrl.endpointErrorMsg);
           // TODO(tsmith) should we force a logout here with an reason message?
@@ -435,8 +437,9 @@
       }
 
       keystone.getCurrentUserSession().success(function(session){
-        if (session.available_services_regions.indexOf(cloud.name) > -1) {
-          $window.location.href = "/auth/switch_services_region/"+ cloud.name + "/?next=/admin/";
+        if (session.available_services_regions.indexOf(cloud.region_name) > -1) {
+          $cookies.put("subcloud_" + cloud.region_name, cloud.name);
+          $window.location.href = "/auth/switch_services_region/"+ cloud.region_name + "/?next=/admin/";
         } else {
           toast.add('error', ctrl.endpointErrorMsg);
         }

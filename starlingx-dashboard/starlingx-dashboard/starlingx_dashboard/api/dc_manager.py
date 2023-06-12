@@ -55,7 +55,7 @@ class Subcloud(base.APIResourceWrapper):
               'management_start_ip', 'management_end_ip',
               'management_gateway_ip', 'systemcontroller_gateway_ip',
               'created_at', 'updated_at', 'group_id', 'sync_status',
-              'endpoint_sync_status', ]
+              'endpoint_sync_status', 'region_name', ]
 
 
 def subcloud_list(request):

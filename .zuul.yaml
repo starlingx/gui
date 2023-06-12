@@ -29,6 +29,7 @@
       tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/starlingx/root/build-tools/requirements/debian/upper-constraints.txt'  # yamllint disable-line rule:line-length
       tox_environment:
         STX_DC_CLIENT: distcloud-client
+      bindep_profile: pylint
     required-projects:
       - starlingx/config
       - starlingx/distcloud-client
