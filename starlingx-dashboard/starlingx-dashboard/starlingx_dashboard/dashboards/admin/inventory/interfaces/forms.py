@@ -537,14 +537,14 @@ class AddInterface(forms.SelfHandlingForm):
         else:
             datanetworks = []
 
-        # datanetwork selection is required for 'data', 'pci-passthrough'
-        # and 'pci-sriov'. It is NOT required for any other interface class
+        # datanetwork selection is required for 'data' and 'pci-passthrough'
+        # It is NOT required for any other interface class
         if not datanetworks:
 
             # Note that 1 of 3 different controls may be used to select
             # data network, make sure to set the error on the appropriate
             # control
-            if ifclass in ['data', 'pci-passthrough', 'pci-sriov']:
+            if ifclass in ['data', 'pci-passthrough']:
                 raise forms.ValidationError(_(
                     "You must specify a Data Network"))
 
