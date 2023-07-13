@@ -117,7 +117,7 @@ class cNTPTab(tabs.TableTab):
                     for index, server in enumerate(servers):
                         ntp_data['ntpserver_%s' % (index + 1)] = server
 
-            data.append(type('NTP', (object,), ntp_data)())
+                    data.append(type('NTP', (object,), ntp_data)())
 
         except Exception:
             exceptions.handle(request,
