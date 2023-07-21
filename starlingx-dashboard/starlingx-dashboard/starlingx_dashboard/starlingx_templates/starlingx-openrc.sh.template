@@ -2,7 +2,7 @@
 {% load align_auth_url %}
 
 #
-# Copyright (c) 2020 Wind River Systems, Inc.
+# Copyright (c) 2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -18,9 +18,9 @@
 # Image API v1.1, Block Storage API v2, and Compute API v2.0. OS_AUTH_URL is
 # only for the Identity API served through keystone.
 {% if region == 'SystemController' %}
-export OS_AUTH_URL={{ auth_url|align_auth_url }}
+export OS_AUTH_URL={{ auth_url|align_auth_url }}/v{{ os_identity_api_version }}
 {% else %}
-export OS_AUTH_URL={{ auth_url }}
+export OS_AUTH_URL={{ auth_url }}/v{{ os_identity_api_version }}
 {% endif %}
 
 # With the addition of Keystone we have standardized on the term **project**
