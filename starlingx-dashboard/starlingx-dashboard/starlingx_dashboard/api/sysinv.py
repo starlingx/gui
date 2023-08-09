@@ -2169,13 +2169,41 @@ class AddressPool(base.APIResourceWrapper):
 
     _attrs = ['uuid', 'name', 'network', 'prefix', 'order', 'ranges']
 
+    def add_attr(self, attr):
+        self._attrs.append(attr)
+
     def __init__(self, apiresource):
         super(AddressPool, self).__init__(apiresource)
 
 
+def address_pool_check_readonly(request, pools):
+    ro_msg = "Address pool is read-only and cannot be modified or removed"
+    nPools = []
+    if not isinstance(pools, list):
+        nPools.append(pools)
+    else:
+        nPools = pools
+
+    updates = {}
+    for pool in nPools:
+        curr_pool = nPools.index(pool)
+        updates['name'] = pool.name
+        read_only_pool = AddressPool(pool)
+        read_only_pool.add_attr('readonly')
+        try:
+            address_pool_update(request, pool.uuid, **updates)
+            read_only_pool.readonly = False
+        except Exception as e:
+            if str(e) == ro_msg:
+                read_only_pool.readonly = True
+        nPools[curr_pool] = read_only_pool
+    return nPools
+
+
 def address_pool_list(request):
     pools = cgtsclient(request).address_pool.list()
-    return [AddressPool(p) for p in pools]
+    pools = address_pool_check_readonly(request, pools)
+    return pools
 
 
 def address_pool_get(request, address_pool_uuid):
@@ -2183,12 +2211,17 @@ def address_pool_get(request, address_pool_uuid):
     if not pool:
         raise ValueError(
             'No match found for address pool uuid "%s".' % address_pool_uuid)
-    return AddressPool(pool)
+    pool = address_pool_check_readonly(request, pool)
+    return pool[0]
 
 
 def address_pool_create(request, **kwargs):
     pool = cgtsclient(request).address_pool.create(**kwargs)
-    return AddressPool(pool)
+    read_only_pool = AddressPool(pool)
+    read_only_pool.add_attr('readonly')
+    # Address pools created post bootstrap are not read-only.
+    read_only_pool.readonly = False
+    return read_only_pool
 
 
 def address_pool_delete(request, address_pool_uuid):
