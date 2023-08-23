@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2014 Wind River Systems, Inc.
+# Copyright (c) 2014-2023 Wind River Systems, Inc.
 #
 
 import logging
@@ -208,6 +208,7 @@ def get_patch(request, patch_id):
 
 def get_hosts(request):
     hosts = []
+    default_value = None
     try:
         info = _patching_client(request).get_hosts()
     except Exception:
@@ -217,7 +218,14 @@ def get_hosts(request):
         for h in info['data']:
             host = Host()
             for a in host._attrs:
-                setattr(host, a, h[a])
+                # if host received doesn't have this attribute,
+                # add it with a default value
+                if hasattr(h, a):
+                    setattr(host, a, h[a])
+                else:
+                    setattr(host, a, default_value)
+                    LOG.debug("Attribute not found. Adding default:"
+                              "%s", a)
             hosts.append(host)
     return hosts
 

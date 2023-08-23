@@ -1167,12 +1167,37 @@ def host_get(request, host_id):
     host = cgtsclient(request).ihost.get(host_id)
     if not host:
         raise ValueError('No match found for host_id "%s".' % host_id)
+
+    # if host received doesn't have this attribute,
+    # add it with a default value
+    set_host_defaults(host)
+
     return Host(host)
 
 
 def host_list(request):
     hosts = cgtsclient(request).ihost.list()
+
+    # if host received doesn't have this attribute,
+    # add it with a default value
+    for host_data in hosts:
+        set_host_defaults(host_data)
+
     return [Host(n) for n in hosts]
+
+
+def set_host_defaults(host):
+    default_value = None
+    attrs_list = Host._attrs
+
+    host_dict = host._info
+    for attr in attrs_list:
+        if attr not in host_dict:
+            LOG.debug("Attribute not found. Adding default value: %s: %s",
+                      attr, default_value)
+            host._add_details({attr: default_value})
+
+    return
 
 
 class DNS(base.APIResourceWrapper):
