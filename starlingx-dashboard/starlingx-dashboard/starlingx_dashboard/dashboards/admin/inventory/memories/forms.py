@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -122,7 +122,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                     '# of Application 1G Hugepages Node 0'}))
 
     vswitch_hugepages_reqd = forms.CharField(
-        label=_("# of vSwitch 1G Hugepages Node 0"),
+        label=_("# of vSwitch Hugepages Node 0"),
         required=False)
 
     vswitch_hugepages_size_mib = forms.ChoiceField(
@@ -166,7 +166,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                     '# of Application 1G Hugepages Node 1'}))
 
     vswitch_hugepages_reqd_two = forms.CharField(
-        label=_("# of vSwitch 1G Hugepages Node 1"),
+        label=_("# of vSwitch Hugepages Node 1"),
         required=False)
 
     vswitch_hugepages_size_mib_two = forms.ChoiceField(
@@ -207,7 +207,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                     '# of Application 1G Hugepages Node 2'}))
 
     vswitch_hugepages_reqd_three = forms.CharField(
-        label=_("# of vSwitch 1G Hugepages Node 2"),
+        label=_("# of vSwitch Hugepages Node 2"),
         required=False)
 
     vswitch_hugepages_size_mib_three = forms.ChoiceField(
@@ -248,7 +248,7 @@ class UpdateMemory(forms.SelfHandlingForm):
                     '# of Application 1G Hugepages Node 3'}))
 
     vswitch_hugepages_reqd_four = forms.CharField(
-        label=_("# of vSwitch 1G Hugepages Node 3"),
+        label=_("# of vSwitch Hugepages Node 3"),
         required=False)
 
     vswitch_hugepages_size_mib_four = forms.ChoiceField(
