@@ -18,7 +18,8 @@
           <dt>{% trans "Stop On Failure" %}</dt>
           <dd>{{ strategy.stop_on_failure }}</dd>
           {% if strategy.extra_args %}
-            {% if strategy.strategy_type == 'patch' %}
+            <!--TODO(cdeolive): remove patch strategy when usm is fully integrated.-->
+            {% if strategy.strategy_type == 'patch' or strategy.strategy_type == 'upgrade' %}
               <dt>{% trans "Upload Only" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
             {% elif strategy.strategy_type == 'prestage' %}

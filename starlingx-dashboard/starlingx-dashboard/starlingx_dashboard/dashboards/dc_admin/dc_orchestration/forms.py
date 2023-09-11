@@ -204,12 +204,13 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("Upload Only"),
         initial=False,
         required=False,
-        help_text=_('Stops strategy after uploading patches to subclouds'),
+        help_text=_('Stops strategy after uploading releases to subclouds'),
         widget=forms.CheckboxInput(
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
-                'data-strategy_types-patch': _("Upload Only")
+                'data-strategy_types-patch': _("Upload Only"),
+                'data-strategy_types-upgrade': _("Upload Only")
             }
         )
     )
@@ -319,7 +320,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 del data['to-version']
             del data['force-kubernetes']
 
-            if data['type'] == 'patch':
+            if data['type'] == 'patch' or data['type'] == 'upgrade':
                 data['upload-only'] = str(data['upload-only']).lower()
             else:
                 del data['upload-only']
