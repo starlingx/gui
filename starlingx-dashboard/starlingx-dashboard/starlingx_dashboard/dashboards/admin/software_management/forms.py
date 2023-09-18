@@ -6,6 +6,7 @@
 
 import logging
 
+from django.forms import FileInput
 from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,10 +18,14 @@ from starlingx_dashboard import api as stx_api
 LOG = logging.getLogger(__name__)
 
 
+class MultipleFileInput(FileInput):
+    allow_multiple_selected = True
+
+
 class UploadPatchForm(forms.SelfHandlingForm):
     failure_url = 'horizon:admin:software_management:index'
     patch_files = forms.FileField(label=_("Patch File(s)"),
-                                  widget=forms.FileInput(attrs={
+                                  widget=MultipleFileInput(attrs={
                                       'data-source-file': _('Patch File(s)'),
                                       'multiple': "multiple"}),
                                   required=True)
