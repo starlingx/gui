@@ -20,6 +20,8 @@ from six.moves.urllib.parse import urlparse
 
 import requests
 
+from horizon import messages
+
 from openstack_dashboard.api import base
 from requests_toolbelt import MultipartEncoder
 
@@ -236,10 +238,12 @@ def get_host(request, hostname):
                 None)
 
 
-def get_message(data):
+def get_message(request, data):
     LOG.info("RESPONSE: %s", data)
     if not data or ('error' in data and data["error"] != ""):
-        raise ValueError(data["error"] or "Invalid patch file")
+        error_msg = data["error"] or "Invalid patch file"
+        messages.error(request, error_msg)
+        LOG.error(error_msg)
     if 'warning' in data and data["warning"] != "":
         return data["warning"]
     if 'info' in data and data["info"] != "":
@@ -250,29 +254,29 @@ def get_message(data):
 def upload_patch(request, patchfile, name):
     _file = {'file': (name, patchfile,)}
     resp = _patching_client(request).upload(_file)
-    return get_message(resp)
+    return get_message(request, resp)
 
 
 def patch_apply_req(request, patch_id):
     resp = _patching_client(request).apply(patch_id)
-    return get_message(resp)
+    return get_message(request, resp)
 
 
 def patch_remove_req(request, patch_id):
     resp = _patching_client(request).remove(patch_id)
-    return get_message(resp)
+    return get_message(request, resp)
 
 
 def patch_delete_req(request, patch_id):
     resp = _patching_client(request).delete(patch_id)
-    return get_message(resp)
+    return get_message(request, resp)
 
 
 def host_install(request, hostname):
     resp = _patching_client(request).host_install(hostname)
-    return get_message(resp)
+    return get_message(request, resp)
 
 
 def host_install_async(request, hostname):
     resp = _patching_client(request).host_install_async(hostname)
-    return get_message(resp)
+    return get_message(request, resp)
