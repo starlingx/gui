@@ -1,11 +1,12 @@
 #
-# Copyright (c) 2016-2020 Wind River Systems, Inc.
+# Copyright (c) 2016-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 import logging
 
+from django.forms import FileField
 from django.forms import FileInput
 from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
@@ -22,13 +23,27 @@ class MultipleFileInput(FileInput):
     allow_multiple_selected = True
 
 
+class MultipleFileField(FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
 class UploadPatchForm(forms.SelfHandlingForm):
     failure_url = 'horizon:admin:software_management:index'
-    patch_files = forms.FileField(label=_("Patch File(s)"),
-                                  widget=MultipleFileInput(attrs={
-                                      'data-source-file': _('Patch File(s)'),
-                                      'multiple': "multiple"}),
-                                  required=True)
+    patch_files = MultipleFileField(
+        label=_("Patch File(s)"),
+        widget=MultipleFileInput(attrs={
+            'data-source-file': _('Patch File(s)'),
+            'multiple': "multiple"}), required=True)
 
     def __init__(self, *args, **kwargs):
         super(UploadPatchForm, self).__init__(*args, **kwargs)
