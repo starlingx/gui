@@ -262,8 +262,10 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             if k.state == "active":
                 version = [(k.version, '--')]
                 kube_versions[:0] = version
-            if k.state != "unavailable":
                 version = [(k.version, k.version + " - " + k.state)]
+                kube_versions.extend(version)
+            else:
+                version = [(k.version, k.version)]
                 kube_versions.extend(version)
         self.fields['to_version'].choices = kube_versions
 
