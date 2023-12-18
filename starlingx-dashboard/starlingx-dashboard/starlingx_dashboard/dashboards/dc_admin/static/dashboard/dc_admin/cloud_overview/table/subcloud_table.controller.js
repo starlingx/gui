@@ -384,7 +384,15 @@
         form: ["*"],
         model: model
       };
+
+      var cur_cloud_name = model.name;
+
       return modalFormService.open(config).then(function(){
+        // Avoids sending the name param when the subcloud name
+        // is the same as the previous one.
+        if(cur_cloud_name == model.name){
+          delete model.name;
+        }
         return dc_manager.editSubcloud(cloud.subcloud_id, model);
       });
     }
