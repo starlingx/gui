@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -20,9 +20,9 @@ from starlingx_dashboard.dashboards.admin.software_management.views import \
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
     import ApplyCloudStrategyForm
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
-    import CreateCloudPatchConfigForm
-from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
     import CreateCloudStrategyForm
+from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
+    import CreateSubcloudConfigForm
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
     import CreateSubcloudGroupForm
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
@@ -91,23 +91,23 @@ class ApplyCloudStrategyView(forms.ModalFormView):
         return context
 
 
-class CreateCloudPatchConfigView(forms.ModalFormView):
-    form_class = CreateCloudPatchConfigForm
+class CreateSubcloudStrategyConfigView(forms.ModalFormView):
+    form_class = CreateSubcloudConfigForm
     template_name = 'dc_admin/dc_orchestration/' \
-                    'create_cloud_patch_config.html'
+                    'create_subcloud_strategy_config.html'
     context_object_name = 'config'
     success_url = reverse_lazy("horizon:dc_admin:dc_orchestration:index")
 
 
-class EditCloudPatchConfigView(forms.ModalFormView):
-    form_class = CreateCloudPatchConfigForm
+class EditSubCloudStrategyConfigView(forms.ModalFormView):
+    form_class = CreateSubcloudConfigForm
     template_name = 'dc_admin/dc_orchestration/' \
-                    'edit_cloud_patch_config.html'
+                    'edit_subcloud_strategy_config.html'
     context_object_name = 'config'
     success_url = reverse_lazy("horizon:dc_admin:dc_orchestration:index")
 
     def get_context_data(self, **kwargs):
-        context = super(EditCloudPatchConfigView, self).get_context_data(
+        context = super(EditSubCloudStrategyConfigView, self).get_context_data(
             **kwargs)
         context['subcloud'] = self.kwargs['subcloud']
         return context
