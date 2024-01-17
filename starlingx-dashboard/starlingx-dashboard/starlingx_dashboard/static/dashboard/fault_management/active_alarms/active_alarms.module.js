@@ -12,7 +12,7 @@
  * under the License.
  */
 /**
- * Copyright (c) 2019 Wind River Systems, Inc.
+ * Copyright (c) 2019-2024 Wind River Systems, Inc.
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -181,6 +181,7 @@
     $provide.constant('horizon.dashboard.fault_management.active_alarms.basePath', path);
     $routeProvider.when('/admin/active_alarms', {
       templateUrl: path + 'panel.html',
+      controller: 'ActiveAlarmsController',
       resolve: {
         searchResults: ['horizon.dashboard.fault_management.active_alarms.service', function (searchService) {
             return searchService.getSuppressionList();

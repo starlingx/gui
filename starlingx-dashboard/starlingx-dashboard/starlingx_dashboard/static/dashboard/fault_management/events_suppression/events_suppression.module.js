@@ -12,7 +12,7 @@
  * under the License.
  */
 /**
- *  Copyright (c) 2019 Wind River Systems, Inc.
+ *  Copyright (c) 2019-2024 Wind River Systems, Inc.
  *
  *  SPDX-License-Identifier: Apache-2.0
  *
@@ -130,7 +130,8 @@
     var path = $windowProvider.$get().STATIC_URL + 'dashboard/fault_management/events_suppression/';
     $provide.constant('horizon.dashboard.fault_management.events_suppression.basePath', path);
     $routeProvider.when('/admin/events_suppression', {
-      templateUrl: path + 'panel.html'
+      templateUrl: path + 'panel.html',
+      controller: 'EventsSuppressionController',
     });
   }
 })();

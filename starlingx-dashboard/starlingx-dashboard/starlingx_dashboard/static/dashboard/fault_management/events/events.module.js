@@ -12,7 +12,7 @@
  * under the License.
  */
 /**
- *  Copyright (c) 2019 Wind River Systems, Inc.
+ *  Copyright (c) 2019-2024 Wind River Systems, Inc.
  *
  *  SPDX-License-Identifier: Apache-2.0
  *
@@ -195,6 +195,7 @@
 
     $routeProvider.when('/admin/events', {
       templateUrl: path + 'panel.html',
+      controller: 'EventsController',
       resolve: {
         searchResults: ['horizon.dashboard.fault_management.events.service', function (searchService) {
             return searchService.getSuppressionList();
