@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2023 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -345,7 +345,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         return True
 
 
-class CreateCloudPatchConfigForm(forms.SelfHandlingForm):
+class CreateSubcloudConfigForm(forms.SelfHandlingForm):
     failure_url = 'horizon:dc_admin:dc_orchestration:index'
 
     APPLY_TYPES = (
@@ -411,8 +411,8 @@ class CreateCloudPatchConfigForm(forms.SelfHandlingForm):
         widget=forms.Select())
 
     def __init__(self, request, *args, **kwargs):
-        super(CreateCloudPatchConfigForm, self).__init__(request, *args,
-                                                         **kwargs)
+        super(CreateSubcloudConfigForm, self).__init__(request, *args,
+                                                       **kwargs)
         subcloud_list = [(api.dc_manager.DEFAULT_CONFIG_NAME,
                           api.dc_manager.DEFAULT_CONFIG_NAME), ]
         subclouds = api.dc_manager.subcloud_list(self.request)
@@ -436,7 +436,7 @@ class CreateCloudPatchConfigForm(forms.SelfHandlingForm):
 
             response = api.dc_manager.config_update(request, subcloud, data)
             if not response:
-                messages.error(request, "Cloud Patching Configuration "
+                messages.error(request, "Subcloud Strategy Configuration "
                                         "creation failed")
 
         except exc.APIException as e:
@@ -448,7 +448,8 @@ class CreateCloudPatchConfigForm(forms.SelfHandlingForm):
         except Exception:
             redirect = reverse(self.failure_url)
             exceptions.handle(request,
-                              "Cloud Patching Configuration creation failed",
+                              "Subcloud Strategy Configuration "
+                              "creation failed",
                               redirect=redirect)
         return True
 

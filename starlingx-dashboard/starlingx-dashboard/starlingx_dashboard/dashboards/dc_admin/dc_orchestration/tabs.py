@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -51,15 +51,15 @@ class CloudOrchestrationTab(tabs.TableTab):
         return steps
 
 
-class CloudPatchConfigTab(tabs.TableTab):
-    table_classes = (tables.CloudPatchConfigTable,)
-    name = _("Cloud Patching Configurations")
-    slug = "cloud_patch_config"
+class SubcloudStrategyConfigTab(tabs.TableTab):
+    table_classes = (tables.SubcloudStrategyConfigTable,)
+    name = _("Subcloud Strategy Configurations")
+    slug = "subcloud_strategy_config"
     template_name = ("dc_admin/dc_orchestration/"
-                     "_cloud_patch_config.html")
+                     "_subcloud_strategy_config.html")
     preload = False
 
-    def get_cloudpatchconfig_data(self):
+    def get_subcloudstrategyconfig_data(self):
         request = self.request
         steps = []
         try:
@@ -72,11 +72,11 @@ class CloudPatchConfigTab(tabs.TableTab):
 
 
 class SubcloudGroupTab(tabs.TableTab):
-    table_classes = (tables.SubcloudGroupManagementTable,)
-    name = _("Subcloud Group Management")
-    slug = "subcloud_group_managment"
+    table_classes = (tables.SubcloudGroupsTable,)
+    name = _("Subcloud Groups")
+    slug = "subcloud_groups"
     template_name =\
-        ("dc_admin/dc_orchestration/_subcloud_group_mgmt.html")
+        ("dc_admin/dc_orchestration/_subcloud_groups.html")
     preload = False
 
     def get_subcloudgroupmgmt_data(self):
@@ -92,5 +92,5 @@ class SubcloudGroupTab(tabs.TableTab):
 
 class DCSoftwareManagementTabs(tabs.TabGroup):
     slug = "dc_orchestration_tabs"
-    tabs = (CloudOrchestrationTab, CloudPatchConfigTab, SubcloudGroupTab)
+    tabs = (CloudOrchestrationTab, SubcloudStrategyConfigTab, SubcloudGroupTab)
     sticky = True

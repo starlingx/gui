@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -246,35 +246,35 @@ class CloudPatchStepsTable(tables.DataTable):
 
 
 # Cloud Patch Config
-class CreateCloudPatchConfig(tables.LinkAction):
-    name = "createcloudpatchconfig"
-    url = "horizon:dc_admin:dc_orchestration:createcloudpatchconfig"
-    verbose_name = _("Create New Cloud Patching Configuration")
+class CreateSubcloudStrategyConfig(tables.LinkAction):
+    name = "createsubcloudstrategyconfig"
+    url = "horizon:dc_admin:dc_orchestration:createsubcloudstrategyconfig"
+    verbose_name = _("Create New Subcloud Strategy Configuration")
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
 
 
-class EditCloudPatchConfig(tables.LinkAction):
-    name = "editcloudpatchconfig"
-    url = "horizon:dc_admin:dc_orchestration:editcloudpatchconfig"
+class EditSubcloudStrategyConfig(tables.LinkAction):
+    name = "editsubcloudstrategyconfig"
+    url = "horizon:dc_admin:dc_orchestration:editsubcloudstrategyconfig"
     verbose_name = _("Edit Configuration")
     classes = ("ajax-modal",)
 
 
-class DeleteCloudPatchConfig(tables.DeleteAction):
+class DeleteSubcloudStrategyConfig(tables.DeleteAction):
     @staticmethod
     def action_present(count):
         return ungettext_lazy(
-            "Delete Cloud Patching Configuration",
-            "Delete Cloud Patching Configurations",
+            "Delete Subcloud Strategy Configuration",
+            "Delete Subcloud Strategy Configuration",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ungettext_lazy(
-            "Deleted Cloud Patching Configuration",
-            "Deleted Cloud Patching Configurations",
+            "Deleted Subcloud Strategy Configuration",
+            "Deleted Subcloud Strategy Configuration",
             count
         )
 
@@ -296,7 +296,7 @@ class DeleteCloudPatchConfig(tables.DeleteAction):
         return shortcuts.redirect(url)
 
 
-class CloudPatchConfigTable(tables.DataTable):
+class SubcloudStrategyConfigTable(tables.DataTable):
     cloud = tables.Column('cloud', verbose_name=_('Cloud'))
     storage_apply_type = tables.Column('storage_apply_type',
                                        verbose_name=_('Storage Apply Type'))
@@ -316,15 +316,16 @@ class CloudPatchConfigTable(tables.DataTable):
         return obj.cloud
 
     class Meta(object):
-        name = "cloudpatchconfig"
+        name = "subcloudstrategyconfig"
         multi_select = False
-        table_actions = (CreateCloudPatchConfig,)
-        row_actions = (EditCloudPatchConfig, DeleteCloudPatchConfig,)
-        verbose_name = _("Cloud Patching Configurations")
+        table_actions = (CreateSubcloudStrategyConfig,)
+        row_actions = (EditSubcloudStrategyConfig,
+                       DeleteSubcloudStrategyConfig,)
+        verbose_name = _("Subcloud Strategy Configurations")
         hidden_title = False
 
 
-# Subcloud Group Management
+# Subcloud Groups
 class EditSubcloudGroup(tables.LinkAction):
     name = "editsubcloudgroup"
     url = "horizon:dc_admin:dc_orchestration:editsubcloudgroup"
@@ -375,7 +376,7 @@ class CreateSubcloudGroup(tables.LinkAction):
     icon = "plus"
 
 
-class SubcloudGroupManagementTable(tables.DataTable):
+class SubcloudGroupsTable(tables.DataTable):
     name = tables.Column('name', verbose_name=_('Name'))
     description = tables.Column('description', verbose_name=_('Description'))
     update_apply_type = tables.Column(
@@ -398,5 +399,5 @@ class SubcloudGroupManagementTable(tables.DataTable):
         multi_select = False
         table_actions = (CreateSubcloudGroup,)
         row_actions = (EditSubcloudGroup, DeleteSubcloudGroup,)
-        verbose_name = _("Subcloud Group Management")
+        verbose_name = _("Subcloud Groups")
         hidden_title = False

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -9,17 +9,17 @@ from django.conf.urls import url
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
     import ApplyCloudStrategyView
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
-    import CreateCloudPatchConfigView
-from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
     import CreateCloudStrategyView
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
     import CreateSubcloudGroupView
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
+    import CreateSubcloudStrategyConfigView
+from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
     import DetailPatchView
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
-    import EditCloudPatchConfigView
-from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
     import EditSubcloudGroupView
+from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
+    import EditSubCloudStrategyConfigView
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.views \
     import IndexView
 
@@ -31,11 +31,12 @@ urlpatterns = [
         name='createcloudstrategy'),
     url(r'^applycloudstrategy/$', ApplyCloudStrategyView.as_view(),
         name='applycloudstrategy'),
-    url(r'^createcloudpatchconfig/$', CreateCloudPatchConfigView.as_view(),
-        name='createcloudpatchconfig'),
-    url(r'^(?P<subcloud>[^/]+)/editcloudpatchconfig/$',
-        EditCloudPatchConfigView.as_view(),
-        name='editcloudpatchconfig'),
+    url(r'^createsubcloudstrategyconfig/$',
+        CreateSubcloudStrategyConfigView.as_view(),
+        name='createsubcloudstrategyconfig'),
+    url(r'^(?P<subcloud>[^/]+)/editsubcloudstrategyconfig/$',
+        EditSubCloudStrategyConfigView.as_view(),
+        name='editsubcloudstrategyconfig'),
     url(r'^createsubcloudgroup/$', CreateSubcloudGroupView.as_view(),
         name='createsubcloudgroup'),
     url(r'^(?P<subcloud_group>[^/]+)/editsubcloudgroup/$',

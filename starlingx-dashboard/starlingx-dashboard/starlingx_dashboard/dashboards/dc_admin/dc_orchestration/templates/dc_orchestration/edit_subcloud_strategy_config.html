@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Edit Subcloud Strategy Configuration" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Edit Subcloud Strategy Configuration") %}
+{% endblock page_header %}
+
+{% block main %}
+  {% include 'dc_admin/dc_orchestration/_edit_subcloud_strategy_config.html' %}
+{% endblock %}
