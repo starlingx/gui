@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -116,7 +116,7 @@ class HostsTab(tabs.TableTab):
                     h.allow_insvc_patching = ph.allow_insvc_patching
 
         # Sort hosts by hostname
-        hosts.sort(key=lambda f: (f.hostname))
+        hosts.sort(key=lambda f: f.hostname if f.hostname else '')
         return hosts
 
     def get_hostscontroller_data(self):
