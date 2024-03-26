@@ -1,10 +1,10 @@
 {% extends "horizon/common/_modal_form.html" %}
 {% load i18n %}
 
-{% block form_action %}{% url 'horizon:dc_admin:dc_software_management:dc_patchupload' %}{% endblock %}
+{% block form_action %}{% url 'horizon:dc_admin:dc_software_management:dc_releaseupload' %}{% endblock %}
 {% block form_attrs %}enctype="multipart/form-data"{% endblock %}
 
-{% block modal-header %}{% trans "Upload Patches" %}{% endblock %}
+{% block modal-header %}{% trans "Upload Releases" %}{% endblock %}
 
 {% block modal-body %}
 <div class="left">
@@ -15,7 +15,7 @@
 <div class="right">
     <h3>{% trans "Description:" %}</h3>
     <p>
-        {% trans "Specify one or more patch files to upload to the Patching Service." %}
+        {% trans "Specify one or more release files to upload to the system for software deployment." %}
     </p>
 
 </div>
@@ -23,5 +23,5 @@
 
 {% block modal-footer %}
   <a class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
-  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Upload Patches" %}" />
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Upload Releases" %}" />
 {% endblock %}

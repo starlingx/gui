@@ -16,7 +16,7 @@ from horizon import tabs
 
 from starlingx_dashboard import api
 from starlingx_dashboard.dashboards.admin.software_management.views import \
-    DetailPatchView as AdminDetailPatchView
+    DetailReleaseView as AdminDetailPatchView
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
     import ApplyCloudStrategyForm
 from starlingx_dashboard.dashboards.dc_admin.dc_orchestration.forms \
@@ -45,7 +45,7 @@ class IndexView(tabs.TabbedTableView):
 
 
 class DetailPatchView(AdminDetailPatchView):
-    template_name = 'dc_admin/dc_orchestration/_detail_patches.html'
+    template_name = 'dc_admin/dc_orchestration/_detail_releases.html'
     failure_url = 'horizon:dc_admin:dc_orchestration:index'
 
 

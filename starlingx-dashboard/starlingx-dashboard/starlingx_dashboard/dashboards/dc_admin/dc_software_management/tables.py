@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -16,27 +16,29 @@ from starlingx_dashboard.dashboards.admin.software_management import tables \
 LOG = logging.getLogger(__name__)
 
 
-# Patching
-class UploadPatch(AdminTables.UploadPatch):
-    url = "horizon:dc_admin:dc_software_management:dc_patchupload"
+# Releasing
+class UploadRelease(AdminTables.UploadRelease):
+    url = "horizon:dc_admin:dc_software_management:dc_releaseupload"
 
 
-class PatchesTable(AdminTables.PatchesTable):
+class ReleasesTable(AdminTables.ReleasesTable):
     index_url = 'horizon:dc_admin:dc_software_management:index'
-    patch_id = tables.Column('patch_id',
-                             link="horizon:dc_admin:dc_software_management:"
-                                  "dc_patchdetail",
-                             verbose_name=_('Patch ID'))
+    release_id = tables.Column('release_id',
+                               link="horizon:dc_admin:dc_software_management:"
+                                    "dc_releasedetail",
+                               verbose_name=_('Release'))
 
     class Meta(object):
-        name = "dc_patches"
+        name = "dc_releases"
         multi_select = True
-        row_class = AdminTables.UpdatePatchRow
-        status_columns = ['patchstate']
-        row_actions = (AdminTables.ApplyPatch, AdminTables.RemovePatch,
-                       AdminTables.DeletePatch)
+        row_class = AdminTables.UpdateReleaseRow
+        status_columns = ['state']
+        row_actions = (AdminTables.CommitRelease, AdminTables.DeployPrecheck,
+                       AdminTables.DeployStart, AdminTables.DeployActivate,
+                       AdminTables.DeleteRelease)
         table_actions = (
-            AdminTables.PatchFilterAction, UploadPatch, AdminTables.ApplyPatch,
-            AdminTables.RemovePatch, AdminTables.DeletePatch)
-        verbose_name = _("Patches")
+            AdminTables.ReleaseFilterAction, UploadRelease,
+            AdminTables.CommitRelease,
+            AdminTables.DeleteRelease)
+        verbose_name = _("Releases")
         hidden_title = False

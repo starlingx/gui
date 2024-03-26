@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2023 Wind River Systems, Inc.
+# Copyright (c) 2016-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -37,29 +37,29 @@ class MultipleFileField(FileField):
         return result
 
 
-class UploadPatchForm(forms.SelfHandlingForm):
+class UploadReleaseForm(forms.SelfHandlingForm):
     failure_url = 'horizon:admin:software_management:index'
-    patch_files = MultipleFileField(
-        label=_("Patch File(s)"),
+    release_files = MultipleFileField(
+        label=_("Release File(s)"),
         widget=MultipleFileInput(attrs={
-            'data-source-file': _('Patch File(s)'),
+            'data-source-file': _('Release File(s)'),
             'multiple': "multiple"}), required=True)
 
     def __init__(self, *args, **kwargs):
-        super(UploadPatchForm, self).__init__(*args, **kwargs)
+        super(UploadReleaseForm, self).__init__(*args, **kwargs)
 
     def clean(self):
-        data = super(UploadPatchForm, self).clean()
+        data = super(UploadReleaseForm, self).clean()
         return data
 
     def handle(self, request, data):
         success_responses = []
         failure_responses = []
 
-        for f in request.FILES.getlist('patch_files'):
+        for f in request.FILES.getlist('release_files'):
             try:
                 success_responses.append(
-                    stx_api.patch.upload_patch(request, f, f.name))
+                    stx_api.usm.release_upload_req(request, f, f.name))
             except Exception as ex:
                 failure_responses.append(str(ex))
 

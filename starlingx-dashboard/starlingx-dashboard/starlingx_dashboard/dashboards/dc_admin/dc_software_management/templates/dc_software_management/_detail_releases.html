@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load i18n breadcrumb_nav %}
+{% block title %}{% trans "Release Details" %}{% endblock %}
+
+{% block main %}
+<h3> {{ release.release_id }} </h3>
+
+<div class="row-fluid">
+  <div class="col-sm-12">
+	<div class="info row-fluid detail">
+	  <h4>{% trans "Info" %}</h4>
+	  <hr class="header_rule">
+	  <dl>
+		<dt>{% trans "State" %}</dt>
+		<dd>{{ release.state }}</dd>
+		<dt>{% trans "Version" %}</dt>
+		<dd>{{ release.sw_version }}</dd>
+		<dt>{% trans "Reboot-Required" %}</dt>
+		<dd>{{ release.reboot_required }}</dd>
+		<dt>{% trans "Release Status Code" %}</dt>
+		<dd>{{ release.status }}</dd>
+	    <dt>{% trans "Unremovable" %}</dt>
+	    <dd>{{ release.unremovable }}</dd>
+		<dt>{% trans "Required Releases" %}</dt>
+		<dd>{{ release.requires | linebreaks }}</dd>
+	    {% if release.unremovable == "Y" %}
+		<dt>{% trans "Unremovable" %}</dt>
+		<dd>{% trans "This patch cannot be removed" %}</dd>
+	    {% endif %}
+	   </dl>
+	   <dl>
+		<dt>{% trans "Summary" %}</dt>
+		<dd>{{ release.summary|linebreaks }}</dd>
+	   </dl>
+	   <dl>
+		<dt>{% trans "Description" %}</dt>
+		<dd>{{ release.description|linebreaks }}</dd>
+	   </dl>
+	   <dl>
+		<dt>{% trans "Warnings" %}</dt>
+		<dd>{{ release.warnings|linebreaks }}</dd>
+	   </dl>
+	   <dl>
+		<dt>{% trans "Installation Instructions" %}</dt>
+		<dd>{{ release.install_instructions|linebreaks }}</dd>
+	   </dl>
+	   <dl>
+		<dt>{% trans "Packages" %}</dt>
+	   {% for package in release.packages %}
+			<dd>{{ package|linebreaks }}</dd>
+	   {% empty %}
+	   		<dd>-</dd>
+	   {% endfor %}
+	   </dl>
+	</div>
+  </div>
+</div>
+{% endblock %}

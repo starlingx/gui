@@ -1,12 +1,11 @@
 #
-# Copyright (c) 2013-2016 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 import datetime
 import logging
-import six
 
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -23,7 +22,7 @@ from starlingx_dashboard.dashboards.admin.software_management.forms import \
 from starlingx_dashboard.dashboards.admin.software_management.forms import \
     CreateUpgradeStrategyForm
 from starlingx_dashboard.dashboards.admin.software_management.forms import \
-    UploadPatchForm
+    UploadReleaseForm
 from starlingx_dashboard.dashboards.admin.software_management import \
     tables as toplevel_tables
 from starlingx_dashboard.dashboards.admin.software_management.tabs \
@@ -41,48 +40,36 @@ class IndexView(tabs.TabbedTableView):
         return self.tab_group_class(request, **kwargs)
 
 
-class DetailPatchView(views.HorizonTemplateView):
-    template_name = 'admin/software_management/_detail_patches.html'
+class DetailReleaseView(views.HorizonTemplateView):
+    template_name = 'admin/software_management/_detail_releases.html'
     failure_url = 'horizon:admin:software_management:index'
-    page_title = 'Patch Detail'
+    page_title = 'Release Detail'
 
     def get_context_data(self, **kwargs):
-        context = super(DetailPatchView, self).get_context_data(**kwargs)
-        context["patch"] = self.get_data()
+        context = super(DetailReleaseView, self).get_context_data(**kwargs)
+        context["release"] = self.get_data()
         return context
 
     def get_data(self):
-        if not hasattr(self, "_patch"):
-            patch_id = self.kwargs['patch_id']
+        if not hasattr(self, "_release"):
+            release_id = self.kwargs['release_id']
             try:
-                patch = stx_api.patch.get_patch(self.request, patch_id)
-                # CentOS
-                if six.PY2:
-                    patch.contents_display = "%s" % "\n".join(
-                        [_f for _f in patch.contents if _f])
-                # Debian
-                else:
-                    patch.contents_display = ""
-                    for k, v in patch.contents.items():
-                        patch.contents_display = patch.contents_display + \
-                            "%s: %s" % (k, v) + "\n"
-                patch.requires_display = "%s" % "\n".join(
-                    [_f for _f in patch.requires if _f])
+                release = stx_api.usm.get_release(self.request, release_id)
             except Exception:
                 redirect = reverse(self.failure_url)
                 exceptions.handle(self.request,
                                   _('Unable to retrieve details for '
-                                    'patch "%s".') % patch_id,
+                                    'release "%s".') % release_id,
                                   redirect=redirect)
 
-            self._patch = patch
-        return self._patch
+            self._release = release
+        return self._release
 
 
-class UploadPatchView(forms.ModalFormView):
-    form_class = UploadPatchForm
-    template_name = 'admin/software_management/upload_patch.html'
-    context_object_name = 'patch'
+class UploadReleaseView(forms.ModalFormView):
+    form_class = UploadReleaseForm
+    template_name = 'admin/software_management/upload_release.html'
+    context_object_name = 'releaseupload'
     success_url = reverse_lazy("horizon:admin:software_management:index")
 
 

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2018 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -18,37 +18,37 @@ from starlingx_dashboard.dashboards.admin.software_management import \
 LOG = logging.getLogger(__name__)
 
 
-class PatchesTab(tabs.TableTab):
-    table_classes = (toplevel_tables.PatchesTable,)
-    name = _("Patches")
-    slug = "patches"
-    template_name = ("admin/software_management/_patches.html")
+class ReleasesTab(tabs.TableTab):
+    table_classes = (toplevel_tables.ReleasesTable,)
+    name = _("Releases")
+    slug = "releases"
+    template_name = "admin/software_management/_releases.html"
 
     def get_context_data(self, request):
-        context = super(PatchesTab, self).get_context_data(request)
+        context = super(ReleasesTab, self).get_context_data(request)
 
         phosts = []
         try:
-            phosts = stx_api.patch.get_hosts(request)
+            phosts = stx_api.usm.get_hosts(request)
         except Exception:
             exceptions.handle(request,
                               _('Unable to retrieve host list.'))
 
-        context['patch_current'] = all(
-            phost.patch_current is True for phost in phosts)
+        context['patch_current'] = True if not phosts else False
 
         return context
 
-    def get_patches_data(self):
+    def get_releases_data(self):
         request = self.request
-        patches = []
+        releases = []
         try:
-            patches = stx_api.patch.get_patches(request)
+            releases = stx_api.usm.get_releases(request)
+
         except Exception:
             exceptions.handle(self.request,
-                              _('Unable to retrieve patch list.'))
+                              _('Unable to retrieve release list.'))
 
-        return patches
+        return releases
 
 
 class PatchOrchestrationTab(tabs.TableTab):
@@ -137,5 +137,5 @@ class UpgradeOrchestrationTab(tabs.TableTab):
 
 class SoftwareManagementTabs(tabs.TabGroup):
     slug = "software_management_tabs"
-    tabs = (PatchesTab, PatchOrchestrationTab, UpgradeOrchestrationTab)
+    tabs = (ReleasesTab, PatchOrchestrationTab, UpgradeOrchestrationTab)
     sticky = True

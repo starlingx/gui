@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2020 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -17,8 +17,241 @@ from horizon import messages
 from horizon import tables
 from starlingx_dashboard import api as stx_api
 
-
 LOG = logging.getLogger(__name__)
+
+
+class UploadRelease(tables.LinkAction):
+    name = "releaseupload"
+    verbose_name = _("Upload Releases")
+    url = "horizon:admin:software_management:releaseupload"
+    classes = ("ajax-modal", "btn-create")
+    icon = "plus"
+
+
+class DeleteRelease(tables.BatchAction):
+    name = "delete"
+    icon = 'trash'
+    action_type = 'danger'
+
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            "Delete Release",
+            "Delete Releases",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            "Deleted Release",
+            "Deleted Releases",
+            count
+        )
+
+    def allowed(self, request, release=None):
+        if release is None:
+            return True
+        return release.state == "available"
+
+    def handle(self, table, request, obj_ids):
+        try:
+            result = stx_api.usm.release_delete_req(request, obj_ids)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class CommitRelease(tables.BatchAction):
+    name = "commit"
+
+    @staticmethod
+    def action_present(count):
+        return ungettext_lazy(
+            "Commit Release",
+            "Commit Releases",
+            count
+        )
+
+    @staticmethod
+    def action_past(count):
+        return ungettext_lazy(
+            "Committed Release",
+            "Committed Releases",
+            count
+        )
+
+    def allowed(self, request, release=None):
+        if release is None:
+            return True
+        return release.state == "available"
+
+    def handle(self, table, request, obj_ids):
+        try:
+            result = stx_api.usm.release_commit_req(request, obj_ids)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class DeployPrecheck(tables.Action):
+    name = "deploy-precheck"
+    verbose_name = _("Deploy Precheck")
+
+    def allowed(self, request, release=None):
+        if release is None:
+            return True
+        return release.state == "available"
+
+    def single(self, table, request, obj_ids):
+        try:
+            result = stx_api.usm.deploy_precheck_req(request, obj_ids)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class DeployStart(tables.Action):
+    name = "deploy-start"
+    verbose_name = _("Deploy Start")
+
+    def allowed(self, request, release=None):
+        if release is None:
+            return True
+        return release.state == "available"
+
+    def single(self, table, request, obj_ids):
+        try:
+            result = stx_api.usm.deploy_start(request, obj_ids)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class DeployActivate(tables.Action):
+    name = "deploy-activate"
+    verbose_name = _("Deploy Activate")
+
+    def allowed(self, request, release=None):
+        if release is None:
+            return True
+        return release.state == "available"
+
+    def single(self, table, request):
+        try:
+            result = stx_api.usm.deploy_activate(request)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class DeployComplete(tables.Action):
+    name = "deploy-complete"
+    verbose_name = _("Deploy Complete")
+
+    def allowed(self, request, release=None):
+        if release is None:
+            return True
+        return release.state == "available"
+
+    def single(self, table, request):
+        try:
+            result = stx_api.usm.deploy_complete(request)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class ReleaseFilterAction(tables.FilterAction):
+    def filter(self, table, releases, filter_string):
+        """Naive case-insensitive search."""
+        q = filter_string.lower()
+
+        def comp(release):
+            if q in release.release_id.lower():
+                return True
+            return False
+
+        return list(filter(comp, releases))
+
+
+class UpdateReleaseRow(tables.Row):
+    ajax = True
+
+    def get_data(self, request, release_id):
+        patch = stx_api.usm.get_release(request, release_id)
+        return patch
+
+
+class ReleasesTable(tables.DataTable):
+    index_url = 'horizon:admin:software_management:index'
+    RELEASE_STATE_CHOICES = (
+        (None, True),
+        ("", True),
+        ("none", True),
+        ("available", True),
+        ("Deployed", True),
+        ("Partial-Remove", True),
+        ("Applied", True),
+        ("Committed", True)
+    )
+    SERVICE_STATE_DISPLAY_CHOICES = (
+        ("true", _("Y")),
+        ("false", _("N")),
+    )
+    release_id = tables.Column('release_id',
+                               link="horizon:admin:software_management:"
+                                    "releasedetail",
+                               verbose_name=_('Release'))
+    reboot_required = tables.Column(
+        'reboot_required',
+        verbose_name=_('RR'),
+        display_choices=SERVICE_STATE_DISPLAY_CHOICES
+    )
+    state = tables.Column('state',
+                          verbose_name=_('State'),
+                          status=True,
+                          status_choices=RELEASE_STATE_CHOICES,
+                          classes=['text-capitalize'])
+    summary = tables.Column('summary',
+                            verbose_name=_('Summary'))
+
+    def get_object_id(self, obj):
+        return obj.release_id
+
+    def get_object_display(self, obj):
+        return obj.release_id
+
+    class Meta(object):
+        name = "releases"
+        multi_select = True
+        row_class = UpdateReleaseRow
+        status_columns = ['state']
+        row_actions = (CommitRelease, DeleteRelease, DeployPrecheck,
+                       DeployStart, DeployActivate)
+        table_actions = (
+            ReleaseFilterAction, UploadRelease, CommitRelease,
+            DeleteRelease)
+        verbose_name = _("Release")
+        hidden_title = False
 
 
 class UploadPatch(tables.LinkAction):
@@ -599,7 +832,7 @@ def get_result(stage):
         return stage.phase.result
     if stage.inprogress:
         return "In Progress (Step " + str(stage.current_step + 1) + "/" + \
-               str(stage.total_steps) + ")"
+            str(stage.total_steps) + ")"
     return stage.result
 
 
@@ -646,7 +879,7 @@ class StagesTable(tables.DataTable):
     current_step = tables.Column(get_current_step_name,
                                  verbose_name=_('Current Step Name'))
     step_timeout = tables.Column(get_current_step_time,
-                                 verbose_name=_('Current Step Timeout'),)
+                                 verbose_name=_('Current Step Timeout'), )
     status = tables.Column(get_result,
                            status=True,
                            status_choices=STAGE_STATE_CHOICES,
@@ -735,9 +968,9 @@ class StepsTable(tables.DataTable):
     step_id = tables.Column('step_id', verbose_name=_('Step ID'))
     step_name = tables.Column('step_name', verbose_name=_('Step Name'))
     entities = tables.Column(display_entities, verbose_name=_('Entities'))
-    start = tables.Column('start_date_time', verbose_name=_('Start Time'),)
-    end = tables.Column('end_date_time', verbose_name=_('End Time'),)
-    timeout = tables.Column(get_time, verbose_name=_('Timeout'),)
+    start = tables.Column('start_date_time', verbose_name=_('Start Time'), )
+    end = tables.Column('end_date_time', verbose_name=_('End Time'), )
+    timeout = tables.Column(get_time, verbose_name=_('Timeout'), )
     result = tables.Column('result',
                            status=True,
                            status_choices=STAGE_STATE_CHOICES,

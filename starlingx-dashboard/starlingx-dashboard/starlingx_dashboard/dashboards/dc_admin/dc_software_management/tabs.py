@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2022 Wind River Systems, Inc.
+# Copyright (c) 2018-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -17,26 +17,26 @@ from starlingx_dashboard.dashboards.dc_admin.dc_software_management \
 LOG = logging.getLogger(__name__)
 
 
-class PatchesTab(tabs.TableTab):
-    table_classes = (tables.PatchesTable,)
-    name = _("Patches")
-    slug = "patches"
-    template_name = ("dc_admin/dc_software_management/_patches.html")
+class ReleasesTab(tabs.TableTab):
+    table_classes = (tables.ReleasesTable,)
+    name = _("Releases")
+    slug = "releases"
+    template_name = "dc_admin/dc_software_management/_releases.html"
     preload = False
 
-    def get_dc_patches_data(self):
+    def get_dc_releases_data(self):
         request = self.request
-        patches = []
+        releases = []
         try:
-            patches = api.patch.get_patches(request)
+            releases = api.usm.get_releases(request)
         except Exception:
             exceptions.handle(self.request,
-                              _('Unable to retrieve patch list.'))
+                              _('Unable to retrieve release list.'))
 
-        return patches
+        return releases
 
 
 class DCSoftwareManagementTabs(tabs.TabGroup):
     slug = "dc_software_management_tabs"
-    tabs = (PatchesTab,)
+    tabs = (ReleasesTab,)
     sticky = True
