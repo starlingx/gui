@@ -2,7 +2,7 @@
 {% load align_auth_url %}
 
 #
-# Copyright (c) 2023 Wind River Systems, Inc.
+# Copyright (c) 2023-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -19,8 +19,10 @@
 # only for the Identity API served through keystone.
 {% if region == 'SystemController' %}
 export OS_AUTH_URL={{ auth_url|align_auth_url }}/v{{ os_identity_api_version }}
-{% else %}
+{% elif region == 'RegionOne' %}
 export OS_AUTH_URL={{ auth_url }}/v{{ os_identity_api_version }}
+{% else %}
+export OS_AUTH_URL={% align_subcloud_auth_url auth_url %}/v{{ os_identity_api_version }}
 {% endif %}
 
 # With the addition of Keystone we have standardized on the term **project**
