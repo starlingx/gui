@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2023 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -903,7 +903,13 @@ class UpdateInterface(AddInterface):
             if data['ports']:
                 del data['uses']
             else:
-                uses = data['uses'][:]
+                uses = []
+                iface_list = sysinv.host_interface_list(self.request, host_id)
+                for u in data['uses']:
+                    for i in iface_list:
+                        if u == i.uuid:
+                            uses.append(i.ifname)
+
                 data['usesmodify'] = ','.join(uses)
                 del data['ports']
                 del data['uses']
