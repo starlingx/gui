@@ -86,7 +86,7 @@ class UploadReleaseForm(forms.SelfHandlingForm):
         return True
 
 
-class CreatePatchStrategyForm(forms.SelfHandlingForm):
+class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
     failure_url = 'horizon:admin:software_management:index'
 
     CONTROLLER_APPLY_TYPES = (
@@ -100,12 +100,12 @@ class CreatePatchStrategyForm(forms.SelfHandlingForm):
         ('ignore', _("Ignore")),
     )
 
-    INSTANCE_ACTIONS = (
-        ('stop-start', _("Stop-Start")),
+    INSTANCE_ACTION_TYPES = (
         ('migrate', _("Migrate")),
+        ('stop-start', _("Stop-Start")),
     )
 
-    SIMPLEX_INSTANCE_ACTIONS = (
+    SIMPLEX_INSTANCE_ACTIONS_TYPES = (
         ('stop-start', _("Stop-Start")),
     )
 
@@ -113,106 +113,17 @@ class CreatePatchStrategyForm(forms.SelfHandlingForm):
         ('strict', _("Strict")),
         ('relaxed', _("Relaxed")),
     )
+
+    release = forms.ChoiceField(
+        label=_("Select Release"),
+        required=True,
+        widget=forms.Select())
 
     controller_apply_type = forms.ChoiceField(
         label=_("Controller Apply Type"),
         required=True,
         choices=CONTROLLER_APPLY_TYPES,
         widget=forms.Select())
-
-    storage_apply_type = forms.ChoiceField(
-        label=_("Storage Apply Type"),
-        required=True,
-        choices=GENERIC_APPLY_TYPES,
-        widget=forms.Select())
-
-    worker_apply_type = forms.ChoiceField(
-        label=_("Worker Apply Type"),
-        required=True,
-        choices=GENERIC_APPLY_TYPES,
-        widget=forms.Select(
-            attrs={
-                'class': 'switchable',
-                'data-slug': 'worker_apply_type'}))
-
-    max_parallel_worker_hosts = forms.IntegerField(
-        label=_("Maximum Parallel Worker Hosts"),
-        initial=2,
-        min_value=2,
-        max_value=100,
-        required=True,
-        error_messages={'invalid': _('Maximum Parallel Worker Hosts must be '
-                                     'between 2 and 100.')},
-        widget=forms.TextInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'worker_apply_type',
-                'data-worker_apply_type-parallel':
-                    'Maximum Parallel Worker Hosts'}))
-
-    default_instance_action = forms.ChoiceField(
-        label=_("Default Instance Action"),
-        required=True,
-        choices=INSTANCE_ACTIONS,
-        widget=forms.Select())
-
-    alarm_restrictions = forms.ChoiceField(
-        label=_("Alarm Restrictions"),
-        required=True,
-        choices=ALARM_RESTRICTION_TYPES,
-        widget=forms.Select())
-
-    def __init__(self, request, *args, **kwargs):
-        super(CreatePatchStrategyForm, self).__init__(request, *args, **kwargs)
-
-        storage_backend = stx_api.sysinv.get_storage_backend(request)
-        if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
-            del self.fields['storage_apply_type']
-
-        system_type = stx_api.sysinv.get_system_type(request)
-        if system_type == stx_api.sysinv.SYSTEM_TYPE_AIO:
-            del self.fields['controller_apply_type']
-
-        if stx_api.sysinv.is_system_mode_simplex(request):
-            self.fields['default_instance_action'].choices = \
-                self.SIMPLEX_INSTANCE_ACTIONS
-
-    def clean(self):
-        data = super(CreatePatchStrategyForm, self).clean()
-        return data
-
-    def handle(self, request, data):
-        try:
-            response = stx_api.vim.create_strategy(
-                request, stx_api.vim.STRATEGY_SW_PATCH,
-                data.get('controller_apply_type', 'ignore'),
-                data.get('storage_apply_type', 'ignore'), 'ignore',
-                data['worker_apply_type'],
-                data['max_parallel_worker_hosts'],
-                data['default_instance_action'],
-                data['alarm_restrictions'])
-            if not response:
-                messages.error(request, "Strategy creation failed")
-        except Exception:
-            redirect = reverse(self.failure_url)
-            exceptions.handle(request, "Strategy creation failed",
-                              redirect=redirect)
-        return True
-
-
-class CreateUpgradeStrategyForm(forms.SelfHandlingForm):
-    failure_url = 'horizon:admin:software_management:index'
-
-    GENERIC_APPLY_TYPES = (
-        ('serial', _("Serial")),
-        ('parallel', _("Parallel")),
-        ('ignore', _("Ignore")),
-    )
-
-    ALARM_RESTRICTION_TYPES = (
-        ('strict', _("Strict")),
-        ('relaxed', _("Relaxed")),
-    )
 
     storage_apply_type = forms.ChoiceField(
         label=_("Storage Apply Type"),
@@ -244,6 +155,12 @@ class CreateUpgradeStrategyForm(forms.SelfHandlingForm):
                 'data-worker_apply_type-parallel':
                     'Maximum Parallel Worker Hosts'}))
 
+    default_instance_action = forms.ChoiceField(
+        label=_("Default Instance Action"),
+        required=True,
+        choices=INSTANCE_ACTION_TYPES,
+        widget=forms.Select())
+
     alarm_restrictions = forms.ChoiceField(
         label=_("Alarm Restrictions"),
         required=True,
@@ -251,25 +168,39 @@ class CreateUpgradeStrategyForm(forms.SelfHandlingForm):
         widget=forms.Select())
 
     def __init__(self, request, *args, **kwargs):
-        super(CreateUpgradeStrategyForm, self).__init__(request, *args,
-                                                        **kwargs)
+        super().__init__(request, *args, **kwargs)
+
+        releases = stx_api.usm.get_releases(request)
+        self.fields['release'].choices = \
+            [(release.release_id, release.release_id) for release in releases]
+
         storage_backend = stx_api.sysinv.get_storage_backend(request)
         if stx_api.sysinv.STORAGE_BACKEND_CEPH not in storage_backend:
             del self.fields['storage_apply_type']
 
+        system_type = stx_api.sysinv.get_system_type(request)
+        if system_type == stx_api.sysinv.SYSTEM_TYPE_AIO:
+            del self.fields['controller_apply_type']
+
+        if stx_api.sysinv.is_system_mode_simplex(request):
+            self.fields['default_instance_action'].choices = \
+                self.SIMPLEX_INSTANCE_ACTIONS_TYPES
+
     def clean(self):
-        data = super(CreateUpgradeStrategyForm, self).clean()
+        data = super().clean()
         return data
 
     def handle(self, request, data):
         try:
             response = stx_api.vim.create_strategy(
-                request, stx_api.vim.STRATEGY_SW_UPGRADE, 'ignore',
+                request, stx_api.vim.STRATEGY_SW_DEPLOY,
+                data.get('controller_apply_type', 'ignore'),
                 data.get('storage_apply_type', 'ignore'), 'ignore',
                 data['worker_apply_type'],
                 data['max_parallel_worker_hosts'],
-                'migrate',
-                data['alarm_restrictions'])
+                data['default_instance_action'],
+                data['alarm_restrictions'],
+                data['release'], False)
             if not response:
                 messages.error(request, "Strategy creation failed")
         except Exception:

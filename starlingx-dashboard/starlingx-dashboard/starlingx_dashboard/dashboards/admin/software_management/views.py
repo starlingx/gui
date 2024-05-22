@@ -18,9 +18,7 @@ from horizon import tabs
 from horizon import views
 from starlingx_dashboard import api as stx_api
 from starlingx_dashboard.dashboards.admin.software_management.forms import \
-    CreatePatchStrategyForm
-from starlingx_dashboard.dashboards.admin.software_management.forms import \
-    CreateUpgradeStrategyForm
+    CreateSoftwareDeployStrategyForm
 from starlingx_dashboard.dashboards.admin.software_management.forms import \
     UploadReleaseForm
 from starlingx_dashboard.dashboards.admin.software_management import \
@@ -73,33 +71,16 @@ class UploadReleaseView(forms.ModalFormView):
     success_url = reverse_lazy("horizon:admin:software_management:index")
 
 
-class CreatePatchStrategyView(forms.ModalFormView):
-    form_class = CreatePatchStrategyForm
-    template_name = 'admin/software_management/create_patch_strategy.html'
+class CreateSoftwareDeployStrategyView(forms.ModalFormView):
+    form_class = CreateSoftwareDeployStrategyForm
+    template_name = \
+        'admin/software_management/create_software_deploy_strategy.html'
     context_object_name = 'strategy'
     success_url = reverse_lazy("horizon:admin:software_management:index")
 
     def get_context_data(self, **kwargs):
-        context = super(CreatePatchStrategyView, self).get_context_data(
-            **kwargs)
-        alarms = stx_api.fm.alarm_list(self.request)
-        affecting = \
-            len([alarm for alarm in alarms if alarm.mgmt_affecting == 'True'])
-
-        context['alarms'] = len(alarms)
-        context['affecting'] = affecting
-        return context
-
-
-class CreateUpgradeStrategyView(forms.ModalFormView):
-    form_class = CreateUpgradeStrategyForm
-    template_name = 'admin/software_management/create_upgrade_strategy.html'
-    context_object_name = 'strategy'
-    success_url = reverse_lazy("horizon:admin:software_management:index")
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateUpgradeStrategyView, self).get_context_data(
-            **kwargs)
+        context = super(CreateSoftwareDeployStrategyView, self).\
+            get_context_data(**kwargs)
         alarms = stx_api.fm.alarm_list(self.request)
         affecting = \
             len([alarm for alarm in alarms if alarm.mgmt_affecting == 'True'])
@@ -151,11 +132,6 @@ class DetailStageView(tables.DataTableView):
         return steps
 
 
-class DetailPatchStageView(DetailStageView):
-    table_class = toplevel_tables.PatchStepsTable
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
-
-
-class DetailUpgradeStageView(DetailStageView):
-    table_class = toplevel_tables.UpgradeStepsTable
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class DetailSoftwareDeployStageView(DetailStageView):
+    table_class = toplevel_tables.SoftwareDeployStepsTable
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY

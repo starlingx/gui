@@ -7,15 +7,11 @@
 from django.conf.urls import url
 
 from starlingx_dashboard.dashboards.admin.software_management.views import \
-    CreatePatchStrategyView
-from starlingx_dashboard.dashboards.admin.software_management.views import \
-    CreateUpgradeStrategyView
-from starlingx_dashboard.dashboards.admin.software_management.views import \
-    DetailPatchStageView
+    CreateSoftwareDeployStrategyView
 from starlingx_dashboard.dashboards.admin.software_management.views import \
     DetailReleaseView
 from starlingx_dashboard.dashboards.admin.software_management.views import \
-    DetailUpgradeStageView
+    DetailSoftwareDeployStageView
 from starlingx_dashboard.dashboards.admin.software_management.views import \
     IndexView
 from starlingx_dashboard.dashboards.admin.software_management.views import \
@@ -28,12 +24,11 @@ urlpatterns = [
         DetailReleaseView.as_view(), name='releasedetail'),
     url(r'^releaseupload/$', UploadReleaseView.as_view(),
         name='releaseupload'),
-    url(r'^(?P<stage_id>[^/]+)/phase/(?P<phase>[^/]+)/patchstagedetail/$',
-        DetailPatchStageView.as_view(), name='patchstagedetail'),
-    url(r'^(?P<stage_id>[^/]+)/phase/(?P<phase>[^/]+)/upgradestagedetail/$',
-        DetailUpgradeStageView.as_view(), name='upgradestagedetail'),
-    url(r'^createpatchstrategy/$', CreatePatchStrategyView.as_view(),
-        name='createpatchstrategy'),
-    url(r'^createupgradestrategy/$', CreateUpgradeStrategyView.as_view(),
-        name='createupgradestrategy')
+    url(r'^(?P<stage_id>[^/]+)/phase/(?P<phase>[^/]+)\
+        /softwaredeploystagedetail/$',
+        DetailSoftwareDeployStageView.as_view(),
+        name='softwaredeploystagedetail'),
+    url(r'^createsoftwaredeploystrategy/$',
+        CreateSoftwareDeployStrategyView.as_view(),
+        name='create_software_deploy_strategy')
 ]

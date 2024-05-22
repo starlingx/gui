@@ -1,9 +1,9 @@
 {% extends "horizon/common/_modal_form.html" %}
 {% load i18n %}
 
-{% block form_action %}{% url 'horizon:admin:software_management:createpatchstrategy' %}{% endblock %}
+{% block form_action %}{% url 'horizon:admin:software_management:create_software_deploy_strategy' %}{% endblock %}
 
-{% block modal-header %}{% trans "Create Patch Strategy" %}{% endblock %}
+{% block modal-header %}{% trans "Create Software Deploy Strategy" %}{% endblock %}
 
 {% block modal-body %}
 <div class="left">
@@ -14,7 +14,7 @@
 <div class="right">
     <h3>{% trans "Description:" %}</h3>
     <p>
-        {% trans "Create a strategy to specify how the system should be patched." %}
+        {% trans "Create a strategy to specify how the release should be deployed in the system." %}
     </p>
     <p>
         {% trans "There are " %}{{ alarms }}{% trans " active alarms on the system, " %}{{ affecting }}{% trans " of which are management affecting." %}
@@ -31,5 +31,5 @@
 
 {% block modal-footer %}
   <a class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
-  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Create Patch Strategy" %}" />
+  <input class="btn btn-primary pull-right" type="submit" value="{% trans "Create Software Deploy Strategy" %}" />
 {% endblock %}

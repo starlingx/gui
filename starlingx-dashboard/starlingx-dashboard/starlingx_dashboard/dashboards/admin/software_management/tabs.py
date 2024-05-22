@@ -6,7 +6,6 @@
 
 import logging
 
-from cgtsclient.common import constants
 from django.utils.translation import ugettext_lazy as _
 
 from horizon import exceptions
@@ -51,59 +50,20 @@ class ReleasesTab(tabs.TableTab):
         return releases
 
 
-class PatchOrchestrationTab(tabs.TableTab):
-    table_classes = (toplevel_tables.PatchStagesTable,)
-    name = _("Patch Orchestration")
-    slug = "patch_orchestration"
-    template_name = ("admin/software_management/_patch_orchestration.html")
+class DeployOrchestrationTab(tabs.TableTab):
+    table_classes = (toplevel_tables.SoftwareDeployStagesTable,)
+    name = _("Deploy Orchestration")
+    slug = "deploy_orchestration"
+    template_name = ("admin/software_management/_deploy_orchestration.html")
 
     def get_context_data(self, request):
-        context = super(PatchOrchestrationTab, self).get_context_data(request)
-
-        strategy = None
-        try:
-            strategy = stx_api.vim.get_strategy(request,
-                                                stx_api.vim.STRATEGY_SW_PATCH)
-        except Exception as ex:
-            LOG.exception(ex)
-            exceptions.handle(request,
-                              _('Unable to retrieve current strategy.'))
-
-        context['strategy'] = strategy
-        return context
-
-    def get_patchstages_data(self):
-        request = self.request
-        stages = []
-        try:
-            stages = stx_api.vim.get_stages(request,
-                                            stx_api.vim.STRATEGY_SW_PATCH)
-        except Exception:
-            exceptions.handle(self.request,
-                              _('Unable to retrieve stages list.'))
-
-        return stages
-
-    def allowed(self, request):
-        if request.user.services_region == 'SystemController':
-            return False
-        return True
-
-
-class UpgradeOrchestrationTab(tabs.TableTab):
-    table_classes = (toplevel_tables.UpgradeStagesTable,)
-    name = _("Upgrade Orchestration")
-    slug = "upgrade_orchestration"
-    template_name = ("admin/software_management/_upgrade_orchestration.html")
-
-    def get_context_data(self, request):
-        context = super(UpgradeOrchestrationTab, self).get_context_data(
+        context = super(DeployOrchestrationTab, self).get_context_data(
             request)
 
         strategy = None
         try:
             strategy = stx_api.vim.get_strategy(
-                request, stx_api.vim.STRATEGY_SW_UPGRADE)
+                request, stx_api.vim.STRATEGY_SW_DEPLOY)
         except Exception as ex:
             LOG.exception(ex)
             exceptions.handle(request,
@@ -112,12 +72,12 @@ class UpgradeOrchestrationTab(tabs.TableTab):
         context['strategy'] = strategy
         return context
 
-    def get_upgradestages_data(self):
+    def get_softwaredeploystages_data(self):
         request = self.request
         stages = []
         try:
             stages = stx_api.vim.get_stages(request,
-                                            stx_api.vim.STRATEGY_SW_UPGRADE)
+                                            stx_api.vim.STRATEGY_SW_DEPLOY)
         except Exception:
             exceptions.handle(self.request,
                               _('Unable to retrieve stages list.'))
@@ -126,16 +86,11 @@ class UpgradeOrchestrationTab(tabs.TableTab):
 
     def allowed(self, request):
         if request.user.services_region == 'SystemController':
-            return False
-        # Upgrade orchestration not available on CPE deployments
-        systems = stx_api.sysinv.system_list(request)
-        system_type = systems[0].to_dict().get('system_type')
-        if system_type == constants.TS_AIO:
             return False
         return True
 
 
 class SoftwareManagementTabs(tabs.TabGroup):
     slug = "software_management_tabs"
-    tabs = (ReleasesTab, PatchOrchestrationTab, UpgradeOrchestrationTab)
+    tabs = (ReleasesTab, DeployOrchestrationTab)
     sticky = True

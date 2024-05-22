@@ -452,11 +452,11 @@ def get_cached_strategy(request, strategy_name, table):
             table.kwargs['patchstrategy'] = stx_api.vim.get_strategy(
                 request, strategy_name)
         return table.kwargs['patchstrategy']
-    elif stx_api.vim.STRATEGY_SW_UPGRADE == strategy_name:
-        if 'upgradestrategy' not in table.kwargs:
-            table.kwargs['upgradestrategy'] = stx_api.vim.get_strategy(
+    elif stx_api.vim.STRATEGY_SW_DEPLOY == strategy_name:
+        if 'softwaredeploystrategy' not in table.kwargs:
+            table.kwargs['softwaredeploystrategy'] = stx_api.vim.get_strategy(
                 request, strategy_name)
-        return table.kwargs['upgradestrategy']
+        return table.kwargs['softwaredeploystrategy']
 
 
 class CreateStrategy(tables.LinkAction):
@@ -472,7 +472,7 @@ class CreateStrategy(tables.LinkAction):
                                            self.table)
             if not strategy:
                 strategy = get_cached_strategy(request,
-                                               stx_api.vim.STRATEGY_SW_UPGRADE,
+                                               stx_api.vim.STRATEGY_SW_DEPLOY,
                                                self.table)
 
             classes = [c for c in self.classes if c != "disabled"]
@@ -491,9 +491,9 @@ class CreatePatchStrategy(CreateStrategy):
     url = "horizon:admin:software_management:createpatchstrategy"
 
 
-class CreateUpgradeStrategy(CreateStrategy):
-    name = "createupgradestrategy"
-    url = "horizon:admin:software_management:createupgradestrategy"
+class CreateSoftwareDeployStrategy(CreateStrategy):
+    name = "create_software_deploy_strategy"
+    url = "horizon:admin:software_management:create_software_deploy_strategy"
 
 
 class DeleteStrategy(tables.Action):
@@ -544,9 +544,9 @@ class DeletePatchStrategy(DeleteStrategy):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class DeleteUpgradeStrategy(DeleteStrategy):
-    name = "delete_upgrade_strategy"
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class DeleteSoftwareDeployStrategy(DeleteStrategy):
+    name = "delete_software_deploy_strategy"
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 class ApplyStrategy(tables.Action):
@@ -595,9 +595,9 @@ class ApplyPatchStrategy(ApplyStrategy):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class ApplyUpgradeStrategy(ApplyStrategy):
-    name = "apply_upgrade_strategy"
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class ApplySoftwareDeployStrategy(ApplyStrategy):
+    name = "apply_software_deploy_strategy"
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 class AbortStrategy(tables.Action):
@@ -646,9 +646,9 @@ class AbortPatchStrategy(AbortStrategy):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class AbortUpgradeStrategy(AbortStrategy):
-    name = "abort_upgrade_strategy"
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class AbortSoftwareDeployStrategy(AbortStrategy):
+    name = "abort_software_deploy_strategy"
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 class ApplyStage(tables.BatchAction):
@@ -716,9 +716,9 @@ class ApplyPatchStage(ApplyStage):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class ApplyUpgradeStage(ApplyStage):
-    name = "apply_upgrade_stage"
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class ApplySoftwareDeployStage(ApplyStage):
+    name = "apply_software_deploy_stage"
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 class AbortStage(tables.BatchAction):
@@ -780,9 +780,9 @@ class AbortPatchStage(AbortStage):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class AbortUpgradeStage(AbortStage):
-    name = "abort_upgrade_stage"
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class AbortSoftwareDeployStage(AbortStage):
+    name = "abort_software_deploy_stage"
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 def get_current_step_time(stage):
@@ -867,8 +867,8 @@ class UpdatePatchStageRow(UpdateStageRow):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class UpdateUpgradeStageRow(UpdateStageRow):
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class UpdateSoftwareDeployStageRow(UpdateStageRow):
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 class StagesTable(tables.DataTable):
@@ -916,24 +916,27 @@ class PatchStagesTable(StagesTable):
         hidden_title = False
 
 
-def get_upgradestage_link_url(stage):
-    return reverse("horizon:admin:software_management:upgradestagedetail",
-                   args=(stage.stage_id, stage.phase.phase_name))
+def get_softwaredeploystage_link_url(stage):
+    return reverse(
+        "horizon:admin:software_management:softwaredeploystagedetail",
+        args=(stage.stage_id, stage.phase.phase_name))
 
 
-class UpgradeStagesTable(StagesTable):
+class SoftwareDeployStagesTable(StagesTable):
     stage_name = tables.Column('stage_name',
-                               link=get_upgradestage_link_url,
+                               link=get_softwaredeploystage_link_url,
                                verbose_name=_('Stage Name'))
 
     class Meta(object):
-        name = "upgradestages"
+        name = "softwaredeploystages"
         multi_select = False
         status_columns = ['status', ]
-        row_class = UpdateUpgradeStageRow
-        row_actions = (ApplyUpgradeStage, AbortUpgradeStage)
-        table_actions = (CreateUpgradeStrategy, ApplyUpgradeStrategy,
-                         AbortUpgradeStrategy, DeleteUpgradeStrategy)
+        row_class = UpdateSoftwareDeployStageRow
+        row_actions = (ApplySoftwareDeployStage, AbortSoftwareDeployStage)
+        table_actions = (CreateSoftwareDeployStrategy,
+                         ApplySoftwareDeployStrategy,
+                         AbortSoftwareDeployStrategy,
+                         DeleteSoftwareDeployStrategy)
         verbose_name = _("Stages")
         hidden_title = False
 
@@ -960,8 +963,8 @@ class UpdatePatchStepRow(UpdateStepRow):
     strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
-class UpdateUpgradeStepRow(UpdateStepRow):
-    strategy_name = stx_api.vim.STRATEGY_SW_UPGRADE
+class UpdateSoftwareDeployStepRow(UpdateStepRow):
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
 class StepsTable(tables.DataTable):
@@ -990,10 +993,10 @@ class PatchStepsTable(StepsTable):
         hidden_title = False
 
 
-class UpgradeStepsTable(StepsTable):
+class SoftwareDeployStepsTable(StepsTable):
     class Meta(object):
         name = "steps"
         status_columns = ['result', ]
-        row_class = UpdateUpgradeStepRow
+        row_class = UpdateSoftwareDeployStepRow
         verbose_name = _("Steps")
         hidden_title = False

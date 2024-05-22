@@ -10,22 +10,20 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2016-2018 Wind River Systems, Inc.
+# Copyright (c) 2016-2024 Wind River Systems, Inc.
 #
-
 import logging
 
 from six.moves.urllib.parse import urlparse
 
-from openstack_dashboard.api import base
-
 from nfv_client.openstack import sw_update
+from openstack_dashboard.api import base
 
 LOG = logging.getLogger(__name__)
 
 
 STRATEGY_SW_PATCH = 'sw-patch'
-STRATEGY_SW_UPGRADE = 'sw-upgrade'
+STRATEGY_SW_DEPLOY = 'sw-upgrade'
 
 
 class Client(object):
@@ -46,14 +44,14 @@ class Client(object):
     def create_strategy(
             self, strategy_name, controller_apply_type, storage_apply_type,
             swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-            default_instance_action, alarm_restrictions):
+            default_instance_action, alarm_restrictions, release, rollback):
         # pylint: disable=too-many-function-args
         return sw_update.create_strategy(
             self.token_id, self.url, strategy_name, controller_apply_type,
-            storage_apply_type,
-            swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-            default_instance_action, alarm_restrictions, self.username,
-            self.user_domain_name, self.tenant)
+            storage_apply_type, swift_apply_type, worker_apply_type,
+            max_parallel_worker_hosts, default_instance_action,
+            alarm_restrictions, self.username, self.user_domain_name,
+            self.tenant, release=release, rollback=rollback)
 
     def delete_strategy(self, strategy_name, force):
         # pylint: disable=too-many-function-args
@@ -92,11 +90,11 @@ def get_strategy(request, strategy_name):
 def create_strategy(
         request, strategy_name, controller_apply_type, storage_apply_type,
         swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-        default_instance_action, alarm_restrictions):
+        default_instance_action, alarm_restrictions, release, rollback):
     strategy = _sw_update_client(request).create_strategy(
         strategy_name, controller_apply_type, storage_apply_type,
         swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-        default_instance_action, alarm_restrictions)
+        default_instance_action, alarm_restrictions, release, rollback)
     return strategy
 
 
