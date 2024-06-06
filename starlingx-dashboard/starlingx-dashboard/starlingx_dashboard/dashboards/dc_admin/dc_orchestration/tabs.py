@@ -17,17 +17,16 @@ from starlingx_dashboard.dashboards.dc_admin.dc_orchestration \
 LOG = logging.getLogger(__name__)
 
 
-class CloudOrchestrationTab(tabs.TableTab):
+class StrategyTab(tabs.TableTab):
     table_classes = (tables.CloudPatchStepsTable,)
-    name = _("Orchestration Strategy")
+    name = _("Strategy")
     slug = "cloud_strategy_orchestration"
     template_name = ("dc_admin/dc_orchestration/"
                      "_cloud_strategy_orchestration.html")
     preload = False
 
     def get_context_data(self, request):
-        context = super(CloudOrchestrationTab, self).\
-            get_context_data(request)
+        context = super(StrategyTab, self).get_context_data(request)
 
         strategy = None
         try:
@@ -92,5 +91,5 @@ class SubcloudGroupTab(tabs.TableTab):
 
 class DCSoftwareManagementTabs(tabs.TabGroup):
     slug = "dc_orchestration_tabs"
-    tabs = (CloudOrchestrationTab, SubcloudStrategyConfigTab, SubcloudGroupTab)
+    tabs = (StrategyTab, SubcloudStrategyConfigTab, SubcloudGroupTab)
     sticky = True

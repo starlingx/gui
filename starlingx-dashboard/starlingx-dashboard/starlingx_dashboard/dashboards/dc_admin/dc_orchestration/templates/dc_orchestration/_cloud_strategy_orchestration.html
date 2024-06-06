@@ -3,7 +3,7 @@
 {% block main %}
 
   <div class="info row-fluid detail">
-    <h3>{% trans "Orchestration Strategy" %}</h3>
+    <h3>{% trans "Strategy" %}</h3>
     <hr class="header_rule">
     <div id="cloud-strategy-detail">
 
@@ -18,10 +18,17 @@
           <dt>{% trans "Stop On Failure" %}</dt>
           <dd>{{ strategy.stop_on_failure }}</dd>
           {% if strategy.extra_args %}
-            {% if strategy.strategy_type == 'patch' %}
+            {% if strategy.strategy_type == 'sw-deploy' %}
+              <dt>{% trans "Release" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"release_id" }}</dd>
+            {% elif strategy.strategy_type == 'patch' %}
+              <dt>{% trans "Patch" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"patch_id" }}</dd>
               <dt>{% trans "Upload Only" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
             {% elif strategy.strategy_type == 'prestage' %}
+              <dt>{% trans "For Software Deploy" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"for_sw_deploy" }}</dd>
               <dt>{% trans "Prestage Software Version" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"prestage-software-version" }}</dd>
             {% endif %}

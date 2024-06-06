@@ -41,8 +41,6 @@ class ApplyCloudStrategyForm(forms.SelfHandlingForm):
 
 
 class CreateCloudStrategyForm(forms.SelfHandlingForm):
-    FIELD_LABEL_RELEASE = _("Release")
-    FIELD_LABEL_SYSADMIN_PASSWORD = _("sysadmin password")
     failure_url = 'horizon:dc_admin:dc_orchestration:index'
 
     SUBCLOUD_APPLY_TYPES = (
@@ -51,8 +49,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
     )
 
     STRATEGY_TYPES = (
+        ('sw-deploy', _("Software Deploy")),
         ('patch', _("Patch")),
-        ('upgrade', _("Upgrade")),
         ('kubernetes', _("Kubernetes")),
         ('firmware', _("Firmware")),
         ('prestage', _("Prestage")),
@@ -75,18 +73,71 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
+    release_id = forms.ChoiceField(
+        label=_("Release"),
+        required=True,
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Release")
+            }
+        )
+    )
+
+    release = forms.ChoiceField(
+        label=_("Release"),
+        required=True,
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-prestage': _("Release")
+            }
+        )
+    )
+
+    patch_id = forms.ChoiceField(
+        label=_("Patch File"),
+        required=True,
+        help_text=_("The patch ID to upload/apply on the subcloud."),
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-patch': _("Patch")
+            }
+        )
+    )
+
     to_version = forms.ChoiceField(
         label=_("To version"),
         required=False,
-        help_text=_("Select a version to apply the strategy. \
-                    Otherwise, it will be updated to the SystemController \
-                    active version."),
+        help_text=_("Select a version to apply the strategy. "
+                    "Otherwise, it will be updated to the SystemController "
+                    "active version."),
         widget=forms.Select(
             attrs={
                 'class': 'switchable switched',
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-kubernetes': _("To version"),
                 'data-slug': 'to_version'
+            }
+        )
+    )
+
+    for_sw_deploy = forms.BooleanField(
+        label=_("For Software Deploy"),
+        initial=False,
+        required=False,
+        help_text=_("Prestage for software deploy operations. If not "
+                    "specified, prestaging is targeted towards full "
+                    "installation."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-prestage': _("For Software Deploy")
             }
         )
     )
@@ -157,8 +208,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         min_value=2,
         max_value=500,
         required=True,
-        error_messages={'invalid': _('Maximum Parallel Subclouds must be '
-                                     'between 2 and 500.')},
+        error_messages={'invalid': _("Maximum Parallel Subclouds must be "
+                                     "between 2 and 500.")},
         widget=forms.TextInput(
             attrs={
                 'class': 'switched',
@@ -169,28 +220,12 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
-    force = forms.BooleanField(
-        label=_("Force"),
-        initial=False,
-        required=False,
-        help_text=_('Offline subcloud is not skipped. '
-                    'Applicable only when the strategy is created '
-                    'to a single subcloud.'),
-        widget=forms.CheckboxInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-upgrade': _("Force"),
-            }
-        )
-    )
-
     force_kubernetes = forms.BooleanField(
         label=_("Force"),
         initial=False,
         required=False,
-        help_text=_('Force Kube upgrade to a subcloud '
-                    'which is in-sync with System Controller'),
+        help_text=_("Force Kube upgrade to a subcloud "
+                    "which is in-sync with System Controller"),
         widget=forms.CheckboxInput(
             attrs={
                 'class': 'switched',
@@ -204,7 +239,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("Upload Only"),
         initial=False,
         required=False,
-        help_text=_('Stops strategy after uploading patches to subclouds'),
+        help_text=_("Stops strategy after uploading patches to subclouds"),
         widget=forms.CheckboxInput(
             attrs={
                 'class': 'switched',
@@ -214,40 +249,37 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
-    release = forms.ChoiceField(
-        label=FIELD_LABEL_RELEASE,
-        required=False,
-        help_text=_("Select a version for the strategy to apply. \
-                    Otherwise, the System Controller active version \
-                    will be used."),
-        widget=forms.Select(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-prestage': FIELD_LABEL_RELEASE,
-                'data-slug': 'release'
-            }
-        )
-    )
-
     sysadmin_password = forms.CharField(
-        label=FIELD_LABEL_SYSADMIN_PASSWORD,
+        label=_("sysadmin password"),
         required=False,
         widget=forms.PasswordInput(
             attrs={
                 'autocomplete': 'off',
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
-                'data-strategy_types-prestage':
-                    FIELD_LABEL_SYSADMIN_PASSWORD,
+                'data-strategy_types-prestage': _("sysadmin password"),
                 'data-required-when-shown': 'true'
             }
         )
     )
 
     def __init__(self, request, *args, **kwargs):
-        super(CreateCloudStrategyForm, self).__init__(request, *args,
-                                                      **kwargs)
+        super().__init__(request, *args, **kwargs)
+
+        releases = api.usm.get_releases(request)
+        # Match all releases for sw-deploy
+        self.fields['release_id'].choices = [
+            (release.release_id, release.release_id) for release in releases]
+        # Match only major releases for prestage
+        self.fields['release'].choices = [
+            (".".join(release.sw_version.split(".")[0:2]),
+             ".".join(release.sw_version.split(".")[0:2]))
+            for release in releases if release.sw_version.endswith('.0')]
+
+        patches = api.patch.get_patches(request)
+        self.fields['patch_id'].choices = [
+            (patch.patch_id, patch.patch_id) for patch in patches]
+
         subcloud_list = [('default', 'All subclouds')]
         subclouds = api.dc_manager.subcloud_list(self.request)
         subcloud_list.extend([(c.name, c.name) for c in subclouds])
@@ -269,16 +301,16 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 kube_versions.extend(version)
         self.fields['to_version'].choices = kube_versions
 
-        release_list = []
-        sw_versions = api.sysinv.get_sw_versions_for_prestage(self.request)
-        for version in sw_versions:
-            release_list.extend([(version, version)])
-        empty_release = [('', '--')]
-        release_list[:0] = empty_release
-        self.fields['release'].choices = release_list
-
     def clean(self):
         cleaned_data = super(CreateCloudStrategyForm, self).clean()
+        if cleaned_data['type'] != 'patch':
+            if 'patch_id' in self.errors:
+                del self.errors['patch_id']
+            cleaned_data.pop('patch-id', None)
+
+        if cleaned_data['type'] != 'sw-deploy':
+            cleaned_data.pop('release-id', None)
+
         if cleaned_data['type'] == 'prestage':
             if (('sysadmin_password' not in cleaned_data) or
                     (not cleaned_data['sysadmin_password'])):
@@ -286,6 +318,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                     {'sysadmin_password':
                      forms.ValidationError('sysadmin password is required')})
         else:
+            cleaned_data.pop('for-sw-deploy', None)
             cleaned_data.pop('release', None)
             cleaned_data.pop('sysadmin_password', None)
         return cleaned_data
@@ -301,18 +334,15 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                     del data[k]
             if data['target'] == 'subcloud_group':
                 del data['cloud_name']
-                del data['force']
                 del data['max-parallel-subclouds']
                 del data['subcloud-apply-type']
             else:
                 del data['subcloud_group']
                 if data['cloud_name'] == 'default':
                     del data['cloud_name']
-                    del data['force']
                 else:
                     del data['max-parallel-subclouds']
                     del data['subcloud-apply-type']
-                    data['force'] = str(data['force']).lower()
             del data['target']
             data['stop-on-failure'] = str(data['stop-on-failure']).lower()
             if data['type'] == 'kubernetes':
@@ -321,17 +351,23 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 del data['to-version']
             del data['force-kubernetes']
 
+            if data['type'] == 'sw-deploy':
+                data['release_id'] = data['release-id']
+            data.pop('release-id', None)
+
             if data['type'] == 'patch':
                 data['upload-only'] = str(data['upload-only']).lower()
+                data['patch_id'] = data['patch-id']
             else:
                 del data['upload-only']
+            data.pop('patch-id', None)
 
             if data['type'] == 'prestage':
-                if data['release'] == '':
-                    data.pop('release', None)
                 data['sysadmin_password'] = base64.b64encode(
                     data['sysadmin-password'].encode("utf-8")).decode("utf-8")
+                data['for_sw_deploy'] = str(data['for-sw-deploy']).lower()
             data.pop('sysadmin-password', None)
+            data.pop('for-sw-deploy', None)
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:
