@@ -28,7 +28,7 @@ class ReleasesTab(tabs.TableTab):
 
         phosts = []
         try:
-            phosts = stx_api.usm.get_hosts(request)
+            phosts = stx_api.usm.get_deploy_hosts(request)
         except Exception:
             exceptions.handle(request,
                               _('Unable to retrieve host list.'))
@@ -42,11 +42,33 @@ class ReleasesTab(tabs.TableTab):
         releases = []
         try:
             releases = stx_api.usm.get_releases(request)
-
         except Exception:
             exceptions.handle(self.request,
                               _('Unable to retrieve release list.'))
 
+        if releases:
+            for release in releases:
+                if release.state == 'deploying':
+                    deploy_show_data = None
+                    try:
+                        deploy_show_data = stx_api.usm.deploy_show_req(request)
+                    except Exception:
+                        exceptions.handle(
+                            self.request,
+                            _('Unable to retrieve release deploy list.')
+                        )
+                    release.deploy_host_state = None
+                    if deploy_show_data:
+                        matching_release = next(
+                            (deploy_host_release for deploy_host_release in
+                             deploy_show_data
+                             if deploy_host_release['to_release']
+                             == release.sw_version),
+                            None
+                        )
+                        if matching_release:
+                            release.deploy_host_state \
+                                = matching_release['state']
         return releases
 
 

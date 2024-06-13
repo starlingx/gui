@@ -55,13 +55,40 @@ class UploadReleaseForm(forms.SelfHandlingForm):
     def handle(self, request, data):
         success_responses = []
         failure_responses = []
+        iso_sig_pairs = {}
 
-        for f in request.FILES.getlist('release_files'):
-            try:
-                success_responses.append(
-                    stx_api.usm.release_upload_req(request, f, f.name))
-            except Exception as ex:
-                failure_responses.append(str(ex))
+        files = request.FILES.getlist('release_files')
+
+        for f in files:
+            if f.name.endswith('.iso'):
+                iso_sig_pairs.setdefault(f.name[:-4], {})['iso'] = f
+            elif f.name.endswith('.sig'):
+                iso_sig_pairs.setdefault(f.name[:-4], {})['sig'] = f
+            else:
+                try:
+                    success_responses.append(
+                        stx_api.usm.release_upload_req(request, f, f.name))
+                except Exception as ex:
+                    failure_responses.append(str(ex))
+
+        # iso and sig file should be uploaded together
+        if iso_sig_pairs:
+            for base_name, pair in iso_sig_pairs.items():
+                if 'iso' in pair and 'sig' in pair:
+                    try:
+                        success_responses.append(
+                            stx_api.usm.release_upload_req(
+                                request,
+                                release=pair['iso'], name=f'{base_name}.iso',
+                                release_extra=pair['sig'],
+                                name_extra=f'{base_name}.sig')
+                        )
+                    except Exception as ex:
+                        failure_responses.append(str(ex))
+                else:
+                    missing_file = 'iso' if 'iso' not in pair else 'sig'
+                    failure_responses.append(
+                        f"Missing {missing_file} file for {base_name}")
 
         # Consolidate server responses into one success/error message
         # respectively
