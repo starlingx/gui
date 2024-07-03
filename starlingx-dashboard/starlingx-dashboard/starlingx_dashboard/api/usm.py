@@ -53,13 +53,13 @@ class Client(object):
         return self._make_request(self.token_id, "GET", self.version,
                                   "release/%s" % release_id)
 
-    def get_hosts(self):
+    def get_deploy_hosts(self):
         return self._make_request(self.token_id, "GET", self.version,
                                   "deploy_host")
 
-    def install_host(self, hostname):
+    def deploy_host(self, hostname):
         return self._make_request(self.token_id, "POST", self.version,
-                                  "deploy_host/%s", hostname)
+                                  "deploy_host/%s" % hostname)
 
     def upload_release(self, release):
         encoder = MultipartEncoder(fields=release)
@@ -203,19 +203,19 @@ def get_deploy_hosts(request):
     deploy_hosts = []
 
     try:
-        info = _usm_client(request).get_hosts()
+        info = _usm_client(request).get_deploy_hosts()
     except Exception:
         return deploy_hosts
 
     for dh in info:
-        deploy_host = DeployHost()
+        deploy_host_instance = DeployHost()
         for attr, value in dh.items():
-            setattr(deploy_host, attr, value)
-        deploy_hosts.append(deploy_host)
+            setattr(deploy_host_instance, attr, value)
+        deploy_hosts.append(deploy_host_instance)
     return deploy_hosts
 
 
-def get_host(request, hostname):
+def get_deploy_host(request, hostname):
     phosts = get_deploy_hosts(request)
     return next((phost for phost in phosts if phost.hostname == hostname),
                 None)
@@ -235,8 +235,8 @@ def get_message(request, data):
     return ""
 
 
-def host_install(request, hostname):
-    resp = _usm_client(request).install_host(hostname)
+def deploy_host(request, hostname):
+    resp = _usm_client(request).deploy_host(hostname)
     return get_message(request, resp)
 
 
@@ -297,6 +297,6 @@ def deploy_delete_req(request):
     return get_message(request, resp)
 
 
-def deploy_rollback_req(request, hostname):
+def deploy_host_rollback_req(request, hostname):
     resp = _usm_client(request).deploy_host_rollback(hostname)
     return get_message(request, resp)

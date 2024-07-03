@@ -272,11 +272,24 @@ class UpdateReleaseRow(tables.Row):
 
     def get_data(self, request, release_id):
         release = stx_api.usm.get_release(request, release_id)
+
+        if release is not None and release.state == "deploying":
+            deploy_show_data = stx_api.usm.deploy_show_req(request)
+            deploy_host_release = deploy_show_data[0]
+            release.deploy_host_state = deploy_host_release[
+                'state']
+
+            if release.reboot_required is False:
+                release.reboot_required = "N"
+            elif release.reboot_required is True:
+                release.reboot_required = "Y"
+
         return release
 
 
 def get_state_display(release):
-    if release.state == "deploying" and release.deploy_host_state:
+
+    if release.state == "deploying" and hasattr(release, 'deploy_host_state'):
         return f"{release.state} ({release.deploy_host_state})"
     return release.state
 
@@ -292,7 +305,20 @@ class ReleasesTable(tables.DataTable):
         ("Partial-Remove", True),
         ("Applied", True),
         ("Committed", True),
-        ("Deploying", True)
+        ("Deploying", True),
+        ("Deploying (Start-Done)", True),
+        ("Deploying (Start-Failed)", True),
+        ("Deploying (Host-Done)", True),
+        ("Deploying (Host-Failed)", True),
+        ("Deploying (Activate-Done)", True),
+        ("Deploying (Activate-Failed)", True),
+        ("Deploying (Completed)", True),
+        ("Deploying (Activate-Rollback-Pending)", True),
+        ("Deploying (Activate-Rollback-Failed)", True),
+        ("Deploying (Activate-Rollback-Done)", True),
+        ("Deploying (Host-Rollback-Done)", True),
+        ("Deploying (Host-Rollback-Failed)", True),
+        ("Deploying (Host-Rollback)", True)
     )
     SERVICE_STATE_DISPLAY_CHOICES = (
         ("true", _("Y")),

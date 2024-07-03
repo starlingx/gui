@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -10,6 +10,7 @@ import logging
 
 from django import shortcuts
 from django.template.defaultfilters import safe  # noqa
+from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext_lazy
 
@@ -20,7 +21,6 @@ from horizon.utils import filters
 from horizon.utils import functions
 
 from starlingx_dashboard import api as stx_api
-
 
 LOG = logging.getLogger(__name__)
 
@@ -513,30 +513,34 @@ class SwactHost(tables.BatchAction):
         return handle_sysinv(self, table, request, obj_ids)
 
 
-class PatchInstallAsync(tables.BatchAction):
-    name = "install-async"
+class DeploySoftwareAsync(tables.BatchAction):
+    name = "deploy-software-async"
 
     @staticmethod
     def action_present(count):
         return ungettext_lazy(
-            "Install Patch",
-            "Install Patches",
+            "Deploy Software",
+            "Deploy Software",
             count
         )
 
     @staticmethod
     def action_past(count):
         return ungettext_lazy(
-            "Installed Patch",
-            "Installed Patches",
+            "Deployed Software",
+            "Deployed Software",
             count
         )
 
     def allowed(self, request, host=None):
         if host is None:
             return True
+        release_on = stx_api.usm.deploy_show_req(request)
+        deploy_host = stx_api.usm.get_deploy_host(request, host.hostname)
+
         return (host.patch_current is not True and
-                (host_locked(host) or host.allow_insvc_patching))
+                (host_locked(host) or host.allow_insvc_patching) and
+                (release_on and deploy_host.host_state == "pending"))
 
     def handle(self, table, request, obj_ids):
 
@@ -549,12 +553,53 @@ class PatchInstallAsync(tables.BatchAction):
 
             try:
                 LOG.info("Installing patch for host %s ...", ihost.hostname)
-                stx_api.patch.host_install_async(request, ihost.hostname)
+                result = stx_api.usm.deploy_host(request, ihost.hostname)
+                messages.success(request, result)
             except Exception as ex:
                 messages.error(request, ex)
-                return
 
-        LOG.info("End of host-install-async")
+        LOG.info("End of deploy-software-async")
+        url = reverse('horizon:admin:inventory:index')
+        return shortcuts.redirect(url)
+
+
+class DeployRollbackSoftware(tables.Action):
+    name = "deploy-rollback-software"
+    verbose_name = _("Rollback Software")
+
+    def allowed(self, request, host=None):
+        if host is None:
+            return True
+
+        valid_states = {
+            "rollback-deploying",
+            "rollback-pending",
+            "rollback-failed",
+        }
+        release_on = stx_api.usm.deploy_show_req(request)
+        deploy_host = stx_api.usm.get_deploy_host(request, host.hostname)
+
+        return (host_locked(host) and
+                deploy_host.host_state in valid_states and
+                (release_on[0]['state'] == 'activate-rollback-done') or
+                (release_on[0]['state'] == 'host-rollback'))
+
+    def single(self, table, request, host_id):
+
+        try:
+            ihost = stx_api.sysinv.host_get(request, host_id)
+        except Exception:
+            exceptions.handle(request,
+                              _('Unable to retrieve host.'))
+
+        try:
+            result = stx_api.usm.deploy_host_rollback_req(
+                request, ihost.hostname)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        LOG.info("End of deploy-rollback-software")
 
 
 class UpdateRow(tables.Row):
@@ -648,7 +693,7 @@ def get_task_or_status(host):
         task_or_status = host.config_status
     elif host.vim_progress_status:
         if host.vim_progress_status != 'services-enabled' and \
-           host.vim_progress_status != 'services-disabled':
+                host.vim_progress_status != 'services-disabled':
             task_or_status = host.vim_progress_status
 
     if host.requires_reboot is True:
@@ -760,7 +805,8 @@ class HostsController(Hosts):
             SwactHost,
             PowerOnHost,
             PowerOffHost, RebootHost,
-            ResetHost, ReinstallHost, PatchInstallAsync, DeleteHost)
+            ResetHost, ReinstallHost, DeploySoftwareAsync, DeleteHost,
+            DeployRollbackSoftware)
         table_actions = (AddHost,)
         hidden_title = False
 
@@ -782,9 +828,10 @@ class HostsStorage(Hosts):
             SwactHost,
             PowerOnHost,
             PowerOffHost, RebootHost,
-            ResetHost, ReinstallHost, PatchInstallAsync, DeleteHost)
+            ResetHost, ReinstallHost, DeploySoftwareAsync, DeleteHost,
+            DeployRollbackSoftware)
         table_actions = (HostsStorageFilterAction, LockHost,
-                         UnlockHost, PatchInstallAsync)
+                         UnlockHost, DeploySoftwareAsync)
         hidden_title = False
 
 
@@ -800,9 +847,10 @@ class HostsWorker(Hosts):
             SwactHost,
             PowerOnHost,
             PowerOffHost, RebootHost,
-            ResetHost, ReinstallHost, PatchInstallAsync, DeleteHost)
+            ResetHost, ReinstallHost, DeploySoftwareAsync, DeleteHost,
+            DeployRollbackSoftware)
         table_actions = (HostsWorkerFilterAction, LockHost,
-                         UnlockHost, PatchInstallAsync)
+                         UnlockHost, DeploySoftwareAsync)
         hidden_title = False
 
 
@@ -817,5 +865,5 @@ class HostsUnProvisioned(Hosts):
             EditHost, LockHost, ForceLockHost, UnlockHost, SwactHost,
             PowerOnHost,
             PowerOffHost, RebootHost,
-            ResetHost, ReinstallHost, DeleteHost)
+            ResetHost, ReinstallHost, DeleteHost, DeployRollbackSoftware)
         hidden_title = False
