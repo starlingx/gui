@@ -27,16 +27,19 @@ def align_auth_url(auth_url):
 
 @register.simple_tag(name='align_subcloud_auth_url', takes_context=True)
 def align_subcloud_auth_url(context, auth_url):
-    request = context["request"]
-    subcloud_name = request.COOKIES.get("subcloud_" +
-                                        request.user.services_region)
-    request.user.services_region = 'SystemController'
-    endpoint = base.url_for(request, 'dcmanager')
-    dc_manager = client.Client(project_id=request.user.project_id,
-                               user_id=request.user.id,
-                               auth_token=request.user.token.id,
-                               dcmanager_url=endpoint)
-    result = dc_manager.subcloud_manager.\
-        subcloud_additional_details(subcloud_name)
-    subcloud_oam_floating_ip = result[0].oam_floating_ip
-    return align_ip_port(auth_url, subcloud_oam_floating_ip)
+    try:
+        request = context["request"]
+        subcloud_name = request.COOKIES.get("subcloud_" +
+                                            request.user.services_region)
+        request.user.services_region = 'SystemController'
+        endpoint = base.url_for(request, 'dcmanager')
+        dc_manager = client.Client(project_id=request.user.project_id,
+                                   user_id=request.user.id,
+                                   auth_token=request.user.token.id,
+                                   dcmanager_url=endpoint)
+        result = dc_manager.subcloud_manager.\
+            subcloud_additional_details(subcloud_name)
+        subcloud_oam_floating_ip = result[0].oam_floating_ip
+        return align_ip_port(auth_url, subcloud_oam_floating_ip)
+    except Exception:
+        return auth_url

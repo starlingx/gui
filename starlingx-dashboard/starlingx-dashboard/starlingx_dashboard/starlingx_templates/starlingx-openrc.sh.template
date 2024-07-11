@@ -19,8 +19,6 @@
 # only for the Identity API served through keystone.
 {% if region == 'SystemController' %}
 export OS_AUTH_URL={{ auth_url|align_auth_url }}/v{{ os_identity_api_version }}
-{% elif region == 'RegionOne' %}
-export OS_AUTH_URL={{ auth_url }}/v{{ os_identity_api_version }}
 {% else %}
 export OS_AUTH_URL={% align_subcloud_auth_url auth_url %}/v{{ os_identity_api_version }}
 {% endif %}
