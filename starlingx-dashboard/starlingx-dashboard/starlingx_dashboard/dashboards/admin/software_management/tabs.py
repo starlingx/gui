@@ -59,16 +59,9 @@ class ReleasesTab(tabs.TableTab):
                         )
                     release.deploy_host_state = None
                     if deploy_show_data:
-                        matching_release = next(
-                            (deploy_host_release for deploy_host_release in
-                             deploy_show_data
-                             if deploy_host_release['to_release']
-                             == release.sw_version),
-                            None
-                        )
-                        if matching_release:
-                            release.deploy_host_state \
-                                = matching_release['state']
+                        deploy_host_release = deploy_show_data[0]
+                        release.deploy_host_state = deploy_host_release[
+                            'state']
         return releases
 
 

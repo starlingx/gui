@@ -108,6 +108,10 @@ class Client(object):
         return self._make_request(self.token_id, "POST", self.version,
                                   "deploy_host/%s/rollback" % hostname)
 
+    def deploy_activate_rollback(self):
+        return self._make_request(self.token_id, "POST", self.version,
+                                  "deploy/activate_rollback")
+
 
 def _usm_client(request):
     o = urlparse(base.url_for(request, USM_API_SERVICENAME))
@@ -299,4 +303,9 @@ def deploy_delete_req(request):
 
 def deploy_host_rollback_req(request, hostname):
     resp = _usm_client(request).deploy_host_rollback(hostname)
+    return get_message(request, resp)
+
+
+def deploy_activate_rollback_req(request):
+    resp = _usm_client(request).deploy_activate_rollback()
     return get_message(request, resp)
