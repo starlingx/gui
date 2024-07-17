@@ -89,6 +89,11 @@ class UploadReleaseForm(forms.SelfHandlingForm):
 class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
     failure_url = 'horizon:admin:software_management:index'
 
+    STRATEGY_TYPES = (
+        ('sw-deploy', _("Software Deploy")),
+        ('rollback', _("Rollback")),
+    )
+
     CONTROLLER_APPLY_TYPES = (
         ('serial', _("Serial")),
         ('ignore', _("Ignore")),
@@ -114,10 +119,28 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
         ('relaxed', _("Relaxed")),
     )
 
-    release = forms.ChoiceField(
-        label=_("Select Release"),
+    type = forms.ChoiceField(
+        label=_("Strategy Type"),
         required=True,
-        widget=forms.Select())
+        choices=STRATEGY_TYPES,
+        widget=forms.Select(
+            attrs={
+                'class': 'switchable',
+                'data-slug': 'strategy_types',
+            }
+        )
+    )
+
+    release = forms.ChoiceField(
+        label=_("Release"),
+        required=True,
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Release"),
+            }
+        ))
 
     controller_apply_type = forms.ChoiceField(
         label=_("Controller Apply Type"),
@@ -191,6 +214,13 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
         return data
 
     def handle(self, request, data):
+        if data['type'] == 'rollback':
+            rollback = True
+            release = None
+        else:
+            rollback = False
+            release = data['release']
+
         try:
             response = stx_api.vim.create_strategy(
                 request, stx_api.vim.STRATEGY_SW_DEPLOY,
@@ -200,7 +230,7 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
                 data['max_parallel_worker_hosts'],
                 data['default_instance_action'],
                 data['alarm_restrictions'],
-                data['release'], False)
+                release=release, rollback=rollback)
             if not response:
                 messages.error(request, "Strategy creation failed")
         except Exception:

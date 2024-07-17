@@ -44,14 +44,14 @@ class Client(object):
     def create_strategy(
             self, strategy_name, controller_apply_type, storage_apply_type,
             swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-            default_instance_action, alarm_restrictions, release, rollback):
+            default_instance_action, alarm_restrictions, **kwargs):
         # pylint: disable=too-many-function-args
         return sw_update.create_strategy(
             self.token_id, self.url, strategy_name, controller_apply_type,
             storage_apply_type, swift_apply_type, worker_apply_type,
             max_parallel_worker_hosts, default_instance_action,
             alarm_restrictions, self.username, self.user_domain_name,
-            self.tenant, release=release, rollback=rollback)
+            self.tenant, **kwargs)
 
     def delete_strategy(self, strategy_name, force):
         # pylint: disable=too-many-function-args
@@ -90,11 +90,11 @@ def get_strategy(request, strategy_name):
 def create_strategy(
         request, strategy_name, controller_apply_type, storage_apply_type,
         swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-        default_instance_action, alarm_restrictions, release, rollback):
+        default_instance_action, alarm_restrictions, **kwargs):
     strategy = _sw_update_client(request).create_strategy(
         strategy_name, controller_apply_type, storage_apply_type,
         swift_apply_type, worker_apply_type, max_parallel_worker_hosts,
-        default_instance_action, alarm_restrictions, release, rollback)
+        default_instance_action, alarm_restrictions, **kwargs)
     return strategy
 
 
