@@ -100,6 +100,14 @@ class Client(object):
         return self._make_request(self.token_id, "POST", self.version,
                                   "deploy/abort")
 
+    def deploy_delete(self):
+        return self._make_request(self.token_id, "DELETE", self.version,
+                                  "deploy")
+
+    def deploy_host_rollback(self, hostname):
+        return self._make_request(self.token_id, "POST", self.version,
+                                  "deploy_host/%s/rollback" % hostname)
+
 
 def _usm_client(request):
     o = urlparse(base.url_for(request, USM_API_SERVICENAME))
@@ -145,6 +153,20 @@ class Host(object):
         return self._attrs
 
 
+class DeployHost(object):
+    _attrs = [
+        'hostname',
+        'software_release',
+        'target_release',
+        'reboot_required',
+        'host_state'
+    ]
+
+    @property
+    def attrs(self):
+        return self._attrs
+
+
 def get_releases(request):
     releases = []
     try:
@@ -177,32 +199,24 @@ def get_release(request, release_id):
     return release
 
 
-def get_hosts(request):
-    hosts = []
-    default_value = None
+def get_deploy_hosts(request):
+    deploy_hosts = []
+
     try:
         info = _usm_client(request).get_hosts()
     except Exception:
-        return hosts
+        return deploy_hosts
 
-    if info:
-        for h in info['data']:
-            host = Host()
-            for a in host.attrs:
-                # if host received doesn't have this attribute,
-                # add it with a default value
-                if hasattr(h, a):
-                    setattr(host, a, h[a])
-                else:
-                    setattr(host, a, default_value)
-                    msg = f'Attribute not found. Adding default: {a}'
-                    LOG.debug(msg)
-            hosts.append(host)
-    return hosts
+    for dh in info:
+        deploy_host = DeployHost()
+        for attr, value in dh.items():
+            setattr(deploy_host, attr, value)
+        deploy_hosts.append(deploy_host)
+    return deploy_hosts
 
 
 def get_host(request, hostname):
-    phosts = get_hosts(request)
+    phosts = get_deploy_hosts(request)
     return next((phost for phost in phosts if phost.hostname == hostname),
                 None)
 
@@ -226,8 +240,14 @@ def host_install(request, hostname):
     return get_message(request, resp)
 
 
-def release_upload_req(request, release, name):
-    _file = {'file': (name, release,)}
+def release_upload_req(request, release, name,
+                       release_extra=None, name_extra=None):
+    _file = {
+        'file': (name, release),
+    }
+    # iso and sig file should be in the same body for upload
+    if release_extra is not None and name_extra is not None:
+        _file['file_1'] = (name_extra, release_extra)
     resp = _usm_client(request).upload_release(_file)
     return get_message(request, resp)
 
@@ -269,4 +289,14 @@ def deploy_show_req(request):
 
 def deploy_abort_req(request):
     resp = _usm_client(request).deploy_abort()
+    return get_message(request, resp)
+
+
+def deploy_delete_req(request):
+    resp = _usm_client(request).deploy_delete()
+    return get_message(request, resp)
+
+
+def deploy_rollback_req(request, hostname):
+    resp = _usm_client(request).deploy_host_rollback(hostname)
     return get_message(request, resp)

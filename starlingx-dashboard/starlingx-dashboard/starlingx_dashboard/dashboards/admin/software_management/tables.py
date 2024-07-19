@@ -50,9 +50,15 @@ class DeleteRelease(tables.BatchAction):
         )
 
     def allowed(self, request, release=None):
+
+        valid_states = {
+            "available",
+            "unavailable"
+            "committed"
+        }
         if release is None:
             return True
-        return release.state == "available"
+        return release.state in valid_states
 
     def handle(self, table, request, obj_ids):
         try:
@@ -87,7 +93,7 @@ class CommitRelease(tables.BatchAction):
     def allowed(self, request, release=None):
         if release is None:
             return True
-        return release.state == "available"
+        return release.state == "deployed"
 
     def handle(self, table, request, obj_ids):
         try:
@@ -129,9 +135,9 @@ class DeployStart(tables.Action):
             return True
         return release.state == "available"
 
-    def single(self, table, request, obj_ids):
+    def single(self, table, request, obj_id):
         try:
-            result = stx_api.usm.deploy_start(request, obj_ids)
+            result = stx_api.usm.deploy_start_req(request, obj_id)
             messages.success(request, result)
         except Exception as ex:
             messages.error(request, str(ex))
@@ -147,11 +153,18 @@ class DeployActivate(tables.Action):
     def allowed(self, request, release=None):
         if release is None:
             return True
-        return release.state == "available"
 
-    def single(self, table, request):
+        valid_states = {
+            "host-done",
+            "activate-failed"
+        }
+
+        return (release.state == "deploying" and
+                release.deploy_host_state in valid_states)
+
+    def single(self, table, request, obj_id):
         try:
-            result = stx_api.usm.deploy_activate(request)
+            result = stx_api.usm.deploy_activate_req(request)
             messages.success(request, result)
         except Exception as ex:
             messages.error(request, str(ex))
@@ -167,11 +180,72 @@ class DeployComplete(tables.Action):
     def allowed(self, request, release=None):
         if release is None:
             return True
-        return release.state == "available"
+        return (release.state == "deploying" and
+                release.deploy_host_state == "activate-done")
 
-    def single(self, table, request):
+    def single(self, table, request, obj_id):
         try:
-            result = stx_api.usm.deploy_complete(request)
+            result = stx_api.usm.deploy_complete_req(request)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class DeployAbort(tables.Action):
+    name = "deploy-abort"
+    verbose_name = _("Deploy Abort")
+
+    def allowed(self, request, release=None):
+
+        valid_states = {
+            "activate-done",
+            "activate",
+            "activate-failed",
+            "completed",
+            "host-done",
+            "host-failed",
+        }
+
+        if release is None:
+            return True
+        return (release.state == "deploying" and
+                release.deploy_host_state in valid_states)
+
+    def single(self, table, request, obj_id):
+        try:
+            result = stx_api.usm.deploy_abort_req(request)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
+class DeployDelete(tables.Action):
+    name = "deploy-delete"
+    verbose_name = _("Deploy Delete")
+
+    def allowed(self, request, release=None):
+
+        valid_states = {
+            "start-done",
+            "start-failed",
+            "completed",
+            "host-rollback-done",
+        }
+
+        if release is None:
+            return True
+        return (release.state == "deploying" and
+                release.deploy_host_state in valid_states)
+
+    def single(self, table, request, obj_id):
+        try:
+            result = stx_api.usm.deploy_delete_req(request)
             messages.success(request, result)
         except Exception as ex:
             messages.error(request, str(ex))
@@ -197,8 +271,14 @@ class UpdateReleaseRow(tables.Row):
     ajax = True
 
     def get_data(self, request, release_id):
-        patch = stx_api.usm.get_release(request, release_id)
-        return patch
+        release = stx_api.usm.get_release(request, release_id)
+        return release
+
+
+def get_state_display(release):
+    if release.state == "deploying" and release.deploy_host_state:
+        return f"{release.state} ({release.deploy_host_state})"
+    return release.state
 
 
 class ReleasesTable(tables.DataTable):
@@ -211,7 +291,8 @@ class ReleasesTable(tables.DataTable):
         ("Deployed", True),
         ("Partial-Remove", True),
         ("Applied", True),
-        ("Committed", True)
+        ("Committed", True),
+        ("Deploying", True)
     )
     SERVICE_STATE_DISPLAY_CHOICES = (
         ("true", _("Y")),
@@ -226,7 +307,7 @@ class ReleasesTable(tables.DataTable):
         verbose_name=_('RR'),
         display_choices=SERVICE_STATE_DISPLAY_CHOICES
     )
-    state = tables.Column('state',
+    state = tables.Column(get_state_display,
                           verbose_name=_('State'),
                           status=True,
                           status_choices=RELEASE_STATE_CHOICES,
@@ -245,11 +326,20 @@ class ReleasesTable(tables.DataTable):
         multi_select = True
         row_class = UpdateReleaseRow
         status_columns = ['state']
-        row_actions = (CommitRelease, DeleteRelease, DeployPrecheck,
-                       DeployStart, DeployActivate)
+        row_actions = (
+            DeployPrecheck,
+            DeployStart,
+            DeployActivate,
+            DeployComplete,
+            DeployDelete,
+            DeleteRelease,
+            DeployAbort,
+        )
         table_actions = (
-            ReleaseFilterAction, UploadRelease, CommitRelease,
-            DeleteRelease)
+            ReleaseFilterAction,
+            UploadRelease,
+            DeleteRelease,
+        )
         verbose_name = _("Release")
         hidden_title = False
 
