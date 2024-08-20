@@ -579,10 +579,17 @@ class DeployRollbackSoftware(tables.Action):
         release_on = stx_api.usm.deploy_show_req(request)
         deploy_host = stx_api.usm.get_deploy_host(request, host.hostname)
 
-        return (host_locked(host) and
-                deploy_host.host_state in valid_states and
-                (release_on[0]['state'] == 'activate-rollback-done') or
-                (release_on[0]['state'] == 'host-rollback'))
+        if deploy_host is None or release_on is None or len(release_on) == 0:
+            return False
+
+        is_valid_host_state = deploy_host.host_state in valid_states
+        is_valid_release_state = (
+            release_on[0]['state'] == 'activate-rollback-done' or
+            release_on[0]['state'] == 'host-rollback'
+        )
+
+        return (host_locked(host) and is_valid_host_state and
+                is_valid_release_state)
 
     def single(self, table, request, host_id):
 
