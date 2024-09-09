@@ -232,6 +232,7 @@ def get_message(request, data):
         error_msg = data.get('error', "Invalid release file")
         messages.error(request, error_msg)
         LOG.error(error_msg)
+        return error_msg
     if data.get('warning'):
         return data["warning"]
     if data.get('info'):
