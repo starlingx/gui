@@ -1,4 +1,4 @@
-# Copyright 2015-2023 Wind River Systems, Inc
+# Copyright 2015 Wind River Systems, Inc
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -66,12 +66,6 @@ class UpdateAddressPool(tables.LinkAction):
     verbose_name = _("Update Address Pool")
     url = "horizon:admin:system_config:updateaddrpool"
     classes = ("ajax-modal", "btn-edit")
-
-    def allowed(self, request, pool):
-        if pool.readonly is True:
-            if "disabled" not in self.classes:
-                self.classes = [c for c in self.classes] + ["disabled"]
-        return True
 
     def get_link_url(self, pool):
         return reverse(self.url, args=(pool.uuid,))
