@@ -9,6 +9,12 @@
 
       {% if strategy %}
         <dl class="dl-horizontal-wide">
+          <dt>{% trans "Release" %}</dt>
+          <dd>{{ strategy.release }}</dd>
+          <dt>{% trans "Rollback" %}</dt>
+          <dd>{{ strategy.rollback }}</dd>
+          <dt>{% trans "Delete" %}</dt>
+          <dd>{{ strategy.delete }}</dd>
           <dt>{% trans "Controller Apply Type" %}</dt>
           <dd>{{ strategy.controller_apply_type }}</dd>
           <dt>{% trans "Storage Apply Type" %}</dt>

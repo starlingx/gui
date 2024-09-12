@@ -217,6 +217,16 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
         choices=ALARM_RESTRICTION_TYPES,
         widget=forms.Select())
 
+    delete = forms.BooleanField(
+        label=_("Delete"),
+        initial=False,
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Delete")}))
+
     def __init__(self, request, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
 
@@ -244,10 +254,11 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
         if data['type'] == 'rollback':
             rollback = True
             release = None
+            delete = None
         else:
             rollback = False
-            release = data['release']
-
+            release = data.get('release')
+            delete = data.get('delete')
         try:
             response = stx_api.vim.create_strategy(
                 request, stx_api.vim.STRATEGY_SW_DEPLOY,
@@ -257,7 +268,7 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
                 data['max_parallel_worker_hosts'],
                 data['default_instance_action'],
                 data['alarm_restrictions'],
-                release=release, rollback=rollback)
+                release=release, rollback=rollback, delete=delete)
             if not response:
                 messages.error(request, "Strategy creation failed")
         except Exception:
