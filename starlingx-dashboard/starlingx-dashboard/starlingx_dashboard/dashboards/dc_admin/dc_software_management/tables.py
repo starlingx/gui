@@ -33,11 +33,17 @@ class ReleasesTable(AdminTables.ReleasesTable):
         multi_select = True
         row_class = AdminTables.UpdateReleaseRow
         status_columns = ['state']
-        row_actions = (AdminTables.DeployPrecheck,
-                       AdminTables.DeployStart, AdminTables.DeployActivate,
-                       AdminTables.DeleteRelease)
+        row_actions = (
+            AdminTables.DeployPrecheck,
+            AdminTables.DeployStart,
+            AdminTables.DeployActivate,
+            AdminTables.DeleteRelease,
+            AdminTables.DeployDelete
+        )
         table_actions = (
-            AdminTables.ReleaseFilterAction, UploadRelease,
-            AdminTables.DeleteRelease)
+            AdminTables.ReleaseFilterAction,
+            UploadRelease,
+            AdminTables.DeleteRelease
+        )
         verbose_name = _("Releases")
         hidden_title = False

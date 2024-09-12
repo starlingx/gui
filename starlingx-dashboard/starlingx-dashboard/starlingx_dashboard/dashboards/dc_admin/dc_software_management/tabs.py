@@ -8,16 +8,17 @@ import logging
 
 from django.utils.translation import ugettext_lazy as _
 
-from horizon import exceptions
 from horizon import tabs
-from starlingx_dashboard import api
+
+from starlingx_dashboard.dashboards.admin.software_management.tabs import \
+    BaseReleasesTab
 from starlingx_dashboard.dashboards.dc_admin.dc_software_management \
     import tables as tables
 
 LOG = logging.getLogger(__name__)
 
 
-class ReleasesTab(tabs.TableTab):
+class ReleasesTab(BaseReleasesTab):
     table_classes = (tables.ReleasesTable,)
     name = _("Releases")
     slug = "releases"
@@ -25,15 +26,7 @@ class ReleasesTab(tabs.TableTab):
     preload = False
 
     def get_dc_releases_data(self):
-        request = self.request
-        releases = []
-        try:
-            releases = api.usm.get_releases(request)
-        except Exception:
-            exceptions.handle(self.request,
-                              _('Unable to retrieve release list.'))
-
-        return releases
+        return self.get_releases_data()
 
 
 class DCSoftwareManagementTabs(tabs.TabGroup):
