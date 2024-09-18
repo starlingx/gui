@@ -220,6 +220,21 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
+    force_prestage = forms.BooleanField(
+        label=_("Force"),
+        initial=False,
+        required=False,
+        help_text=_("Skip checking the subcloud for management affecting "
+                    "alarms."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-prestage': _("Force"),
+            }
+        )
+    )
+
     force_kubernetes = forms.BooleanField(
         label=_("Force"),
         initial=False,
@@ -366,8 +381,10 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 data['sysadmin_password'] = base64.b64encode(
                     data['sysadmin-password'].encode("utf-8")).decode("utf-8")
                 data['for_sw_deploy'] = str(data['for-sw-deploy']).lower()
+                data['force'] = str(data['force-prestage']).lower()
             data.pop('sysadmin-password', None)
             data.pop('for-sw-deploy', None)
+            data.pop('force-prestage', None)
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:
