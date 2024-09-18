@@ -4,14 +4,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import ipaddress
 import uuid
 
 from django.utils.translation import ugettext_lazy as _
-
 from horizon import exceptions
 from horizon import views
-from openstack_dashboard.api import base
 
+from openstack_dashboard.api import base
 from starlingx_dashboard import api as stx_api
 
 
@@ -22,8 +22,17 @@ def _get_service_port(url):
     return ip.split(':')[-1]
 
 
+def _format_ip_addr(ip_address_string):
+    """Add brackets if an IPv6 address"""
+    ip = ipaddress.ip_address(ip_address_string)
+    if isinstance(ip, ipaddress.IPv6Address):
+        return f"[{ip_address_string}]"
+    return ip_address_string
+
+
 def _build_endpoint(endpoint_url, subcloud_ip, region_name):
     service_port = _get_service_port(endpoint_url)
+    subcloud_ip = _format_ip_addr(subcloud_ip)
 
     new_endpoint = {
         "id": str(uuid.uuid4()),
