@@ -24,8 +24,8 @@ urlpatterns = [
         DetailReleaseView.as_view(), name='releasedetail'),
     url(r'^releaseupload/$', UploadReleaseView.as_view(),
         name='releaseupload'),
-    url(r'^(?P<stage_id>[^/]+)/phase/(?P<phase>[^/]+)\
-        /softwaredeploystagedetail/$',
+    url(r'^(?P<stage_id>[^/]+)/phase/(?P<phase>[^/]+)/'
+        r'softwaredeploystagedetail/$',
         DetailSoftwareDeployStageView.as_view(),
         name='softwaredeploystagedetail'),
     url(r'^createsoftwaredeploystrategy/$',
