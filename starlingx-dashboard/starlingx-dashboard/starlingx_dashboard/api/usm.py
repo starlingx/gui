@@ -114,7 +114,7 @@ class Client(object):
 
 
 def _usm_client(request):
-    o = urlparse(base.url_for(request, USM_API_SERVICENAME))
+    o = urlparse(base.url_for(request, USM_API_SERVICENAME, 'internalURL'))
     url = "://".join((o.scheme, o.netloc))
     return Client(USM_API_VERSION, url, token_id=request.user.token.id)
 
