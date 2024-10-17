@@ -29,7 +29,7 @@ class BaseReleasesTab(tabs.TableTab):
 
         if releases:
             for release in releases:
-                if release.state == 'deploying':
+                if release.state in ['deploying', 'removing']:
                     deploy_show_data = None
                     try:
                         deploy_show_data = stx_api.usm.deploy_show_req(request)

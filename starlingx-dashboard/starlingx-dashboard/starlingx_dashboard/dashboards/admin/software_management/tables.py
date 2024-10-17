@@ -151,15 +151,15 @@ class DeployActivate(tables.Action):
     verbose_name = _("Deploy Activate")
 
     def allowed(self, request, release=None):
-        if release is None:
-            return True
 
         valid_states = {
             "host-done",
             "activate-failed"
         }
 
-        return (release.state == "deploying" and
+        if release is None:
+            return True
+        return (release.state in ["deploying", "removing"] and
                 release.deploy_host_state in valid_states)
 
     def single(self, table, request, obj_id):
@@ -180,7 +180,7 @@ class DeployComplete(tables.Action):
     def allowed(self, request, release=None):
         if release is None:
             return True
-        return (release.state == "deploying" and
+        return (release.state in ["removing", "deploying"] and
                 release.deploy_host_state == "activate-done")
 
     def single(self, table, request, obj_id):
@@ -240,7 +240,7 @@ class DeployDelete(tables.Action):
 
         if release is None:
             return True
-        return (release.state == "deploying" and
+        return (release.state in ["deploying", "removing"] and
                 release.deploy_host_state in valid_states)
 
     def single(self, table, request, obj_id):
@@ -273,7 +273,7 @@ class UpdateReleaseRow(tables.Row):
     def get_data(self, request, release_id):
         release = stx_api.usm.get_release(request, release_id)
 
-        if release is not None and release.state == "deploying":
+        if release is not None and release.state in ["deploying", "removing"]:
             deploy_show_data = stx_api.usm.deploy_show_req(request)
             deploy_host_release = deploy_show_data[0]
             release.deploy_host_state = deploy_host_release[
@@ -289,7 +289,8 @@ class UpdateReleaseRow(tables.Row):
 
 def get_state_display(release):
 
-    if release.state == "deploying" and hasattr(release, 'deploy_host_state'):
+    if (release.state in ["deploying", "removing"] and
+            hasattr(release, 'deploy_host_state')):
         return f"{release.state} ({release.deploy_host_state})"
     return release.state
 
