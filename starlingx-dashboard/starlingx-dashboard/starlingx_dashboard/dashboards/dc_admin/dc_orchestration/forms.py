@@ -264,6 +264,20 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
+    remove = forms.BooleanField(
+        label=_("Remove"),
+        initial=False,
+        required=False,
+        help_text=_("Remove the patch on the subcloud."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-patch': _("Remove")
+            }
+        )
+    )
+
     sysadmin_password = forms.CharField(
         label=_("sysadmin password"),
         required=False,
@@ -373,8 +387,10 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             if data['type'] == 'patch':
                 data['upload-only'] = str(data['upload-only']).lower()
                 data['patch_id'] = data['patch-id']
+                data['remove'] = str(data['remove']).lower()
             else:
                 del data['upload-only']
+                del data['remove']
             data.pop('patch-id', None)
 
             if data['type'] == 'prestage':
