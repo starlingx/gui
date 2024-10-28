@@ -254,6 +254,38 @@ class DeployDelete(tables.Action):
         return shortcuts.redirect(url)
 
 
+class DeployActivateRollback(tables.Action):
+    name = "deploy-activate-rollback"
+    verbose_name = _("Deploy Activate Rollback")
+
+    def allowed(self, request, release=None):
+        deploy_show = stx_api.usm.deploy_show_req(request)
+        if not deploy_show:
+            return False
+
+        deploy_show_state = deploy_show[0]['state']
+        valid_states = {
+            "activate-rollback-failed",
+            "activate-rollback-pending",
+        }
+
+        if release is None:
+            return True
+
+        return (release.state in ["deploying", "removing"] and
+                deploy_show_state in valid_states)
+
+    def single(self, table, request, obj_id):
+        try:
+            result = stx_api.usm.deploy_activate_rollback_req(request)
+            messages.success(request, result)
+        except Exception as ex:
+            messages.error(request, str(ex))
+
+        url = reverse(table.index_url)
+        return shortcuts.redirect(url)
+
+
 class ReleaseFilterAction(tables.FilterAction):
     def filter(self, table, releases, filter_string):
         """Naive case-insensitive search."""
@@ -361,6 +393,7 @@ class ReleasesTable(tables.DataTable):
             DeployDelete,
             DeleteRelease,
             DeployAbort,
+            DeployActivateRollback,
         )
         table_actions = (
             ReleaseFilterAction,
