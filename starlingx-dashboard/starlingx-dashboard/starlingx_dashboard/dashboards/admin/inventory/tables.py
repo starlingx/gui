@@ -568,8 +568,6 @@ class DeployRollbackSoftware(tables.Action):
     verbose_name = _("Rollback Software")
 
     def allowed(self, request, host=None):
-        if host is None:
-            return True
 
         valid_states = {
             "rollback-deploying",
@@ -578,6 +576,9 @@ class DeployRollbackSoftware(tables.Action):
         }
         release_on = stx_api.usm.deploy_show_req(request)
         deploy_host = stx_api.usm.get_deploy_host(request, host.hostname)
+
+        if host is None:
+            return True
 
         if deploy_host is None or release_on is None or len(release_on) == 0:
             return False
@@ -588,8 +589,7 @@ class DeployRollbackSoftware(tables.Action):
             release_on[0]['state'] == 'host-rollback'
         )
 
-        return (host_locked(host) and is_valid_host_state and
-                is_valid_release_state)
+        return is_valid_host_state and is_valid_release_state
 
     def single(self, table, request, host_id):
 
