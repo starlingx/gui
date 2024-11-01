@@ -21,8 +21,6 @@ from openstack_dashboard.api import base
 
 LOG = logging.getLogger(__name__)
 
-
-STRATEGY_SW_PATCH = 'sw-patch'
 STRATEGY_SW_DEPLOY = 'sw-upgrade'
 
 
