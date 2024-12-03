@@ -6,23 +6,36 @@
       - stx-bandit-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-linters
-        - stx-gui-pylint
+        - gui-tox-linters
+        - gui-tox-pep8
+        - gui-tox-pylint
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-linters
-        - stx-gui-pylint
+        - gui-tox-linters
+        - gui-tox-pep8
+        - gui-tox-pylint
     post:
       jobs:
         - stx-gui-upload-git-mirror
 
+- job:
+    name: gui-tox-linters
+    parent: openstack-tox-linters
+    description: |
+      Run linters
+    nodeset: debian-bullseye
 
 - job:
-    name: stx-gui-pylint
+    name: gui-tox-pep8
+    parent: openstack-tox-pep8
+    description: |
+      Check conformance with pep8
+    nodeset: debian-bullseye
+
+- job:
+    name: gui-tox-pylint
     parent: openstack-tox-pylint
-    description: Run pylint for stx-gui
+    description: Run pylint for gui repo
     nodeset: debian-bullseye
     vars:
       tox_envlist: pylint
