@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2014-2023 Wind River Systems, Inc.
+# Copyright (c) 2014-2024 Wind River Systems, Inc.
 #
 
 import logging
@@ -20,11 +20,7 @@ from six.moves.urllib.parse import urlparse
 
 import requests
 
-from horizon import messages
-
 from openstack_dashboard.api import base
-from requests_toolbelt import MultipartEncoder
-
 
 LOG = logging.getLogger(__name__)
 
@@ -59,41 +55,9 @@ class Client(object):
         return self._make_request(self.token_id, "GET", self.version,
                                   "query?show=all")
 
-    def show_patch(self, patch_id):
-        return self._make_request(self.token_id, "GET", self.version,
-                                  "show/%s" % patch_id)
-
     def get_hosts(self):
         return self._make_request(self.token_id, "GET", self.version,
                                   "query_hosts")
-
-    def upload(self, patchfile):
-        encoder = MultipartEncoder(fields=patchfile)
-        return self._make_request(self.token_id, "POST", self.version,
-                                  "upload", encoder=encoder)
-
-    def apply(self, patch_ids):
-        patches = "/".join(patch_ids)
-        return self._make_request(self.token_id, "POST", self.version,
-                                  "apply/%s" % patches)
-
-    def remove(self, patch_ids):
-        patches = "/".join(patch_ids)
-        return self._make_request(self.token_id, "POST", self.version,
-                                  "remove/%s" % patches)
-
-    def delete(self, patch_ids):
-        patches = "/".join(patch_ids)
-        return self._make_request(self.token_id, "POST", self.version,
-                                  "delete/%s" % patches)
-
-    def host_install(self, host):
-        return self._make_request(self.token_id, "POST", self.version,
-                                  "host_install/%s" % host)
-
-    def host_install_async(self, host):
-        return self._make_request(self.token_id, "POST", self.version,
-                                  "host_install_async/%s" % host)
 
 
 def _patching_client(request):
@@ -181,33 +145,6 @@ def get_patches(request):
     return patches
 
 
-def get_patch(request, patch_id):
-    patches = get_patches(request)
-    patch = next((p for p in patches if p.patch_id == patch_id), None)
-
-    # add on patch contents
-    data = _patching_client(request).show_patch(patch_id)
-    # CentOS
-    if six.PY2:
-        patch.contents = [str(pkg) for pkg in data['contents'][patch_id]]
-    # Debian:
-    else:
-        patch.contents = {}
-        if "number_of_commits" in data['contents'][patch_id] and \
-                data['contents'][patch_id]['number_of_commits'] != "":
-            patch.contents["number_of_commits"] = \
-                data['contents'][patch_id]['number_of_commits']
-        if "base" in data['contents'][patch_id] and \
-                data['contents'][patch_id]['base']['commit'] != "":
-            patch.contents["base_commit"] = \
-                data['contents'][patch_id]["base"]['commit']
-        for i in range(int(data['contents'][patch_id]['number_of_commits'])):
-            patch.contents["commit%s" % (i + 1)] = \
-                data['contents'][patch_id]["commit%s" % (i + 1)]['commit']
-
-    return patch
-
-
 def get_hosts(request):
     hosts = []
     default_value = None
@@ -236,47 +173,3 @@ def get_host(request, hostname):
     phosts = get_hosts(request)
     return next((phost for phost in phosts if phost.hostname == hostname),
                 None)
-
-
-def get_message(request, data):
-    LOG.info("RESPONSE: %s", data)
-    if not data or ('error' in data and data["error"] != ""):
-        error_msg = data["error"] or "Invalid patch file"
-        messages.error(request, error_msg)
-        LOG.error(error_msg)
-    if 'warning' in data and data["warning"] != "":
-        return data["warning"]
-    if 'info' in data and data["info"] != "":
-        return data["info"]
-    return ""
-
-
-def upload_patch(request, patchfile, name):
-    _file = {'file': (name, patchfile,)}
-    resp = _patching_client(request).upload(_file)
-    return get_message(request, resp)
-
-
-def patch_apply_req(request, patch_id):
-    resp = _patching_client(request).apply(patch_id)
-    return get_message(request, resp)
-
-
-def patch_remove_req(request, patch_id):
-    resp = _patching_client(request).remove(patch_id)
-    return get_message(request, resp)
-
-
-def patch_delete_req(request, patch_id):
-    resp = _patching_client(request).delete(patch_id)
-    return get_message(request, resp)
-
-
-def host_install(request, hostname):
-    resp = _patching_client(request).host_install(hostname)
-    return get_message(request, resp)
-
-
-def host_install_async(request, hostname):
-    resp = _patching_client(request).host_install_async(hostname)
-    return get_message(request, resp)

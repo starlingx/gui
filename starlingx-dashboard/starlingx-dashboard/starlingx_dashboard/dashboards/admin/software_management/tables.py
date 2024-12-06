@@ -320,7 +320,6 @@ class UpdateReleaseRow(tables.Row):
 
 
 def get_state_display(release):
-
     if (release.state in ["deploying", "removing"] and
             hasattr(release, 'deploy_host_state')):
         return f"{release.state} ({release.deploy_host_state})"
@@ -404,205 +403,8 @@ class ReleasesTable(tables.DataTable):
         hidden_title = False
 
 
-class UploadPatch(tables.LinkAction):
-    name = "patchupload"
-    verbose_name = _("Upload Patches")
-    url = "horizon:admin:software_management:patchupload"
-    classes = ("ajax-modal", "btn-create")
-    icon = "plus"
-
-
-class ApplyPatch(tables.BatchAction):
-    name = "apply"
-
-    @staticmethod
-    def action_present(count):
-        return ungettext_lazy(
-            "Apply Patch",
-            "Apply Patches",
-            count
-        )
-
-    @staticmethod
-    def action_past(count):
-        return ungettext_lazy(
-            "Applied Patch",
-            "Applied Patches",
-            count
-        )
-
-    def allowed(self, request, patch=None):
-        if patch is None:
-            return True
-        return patch.repostate == "Available"
-
-    def handle(self, table, request, obj_ids):
-        try:
-            result = stx_api.patch.patch_apply_req(request, obj_ids)
-            messages.success(request, result)
-        except Exception as ex:
-            messages.error(request, str(ex))
-
-        url = reverse(table.index_url)
-        return shortcuts.redirect(url)
-
-
-class RemovePatch(tables.BatchAction):
-    name = "remove"
-    classes = ()
-
-    @staticmethod
-    def action_present(count):
-        return ungettext_lazy(
-            "Remove Patch",
-            "Remove Patches",
-            count
-        )
-
-    @staticmethod
-    def action_past(count):
-        return ungettext_lazy(
-            "Removed Patch",
-            "Removed Patches",
-            count
-        )
-
-    def allowed(self, request, patch=None):
-        if patch is None:
-            return True
-
-        if patch.unremovable == "Y":
-            if "disabled" not in self.classes:
-                self.classes = [c for c in self.classes] + ["disabled"]
-        else:
-            self.classes = [c for c in self.classes if c != "disabled"]
-
-        return patch.repostate == "Applied"
-
-    def handle(self, table, request, obj_ids):
-        try:
-            result = stx_api.patch.patch_remove_req(request, obj_ids)
-            messages.success(request, result)
-        except Exception as ex:
-            messages.error(request, str(ex))
-
-        url = reverse(table.index_url)
-        return shortcuts.redirect(url)
-
-
-class DeletePatch(tables.BatchAction):
-    name = "delete"
-    icon = 'trash'
-    action_type = 'danger'
-
-    @staticmethod
-    def action_present(count):
-        return ungettext_lazy(
-            "Delete Patch",
-            "Delete Patches",
-            count
-        )
-
-    @staticmethod
-    def action_past(count):
-        return ungettext_lazy(
-            "Deleted Patch",
-            "Deleted Patches",
-            count
-        )
-
-    def allowed(self, request, patch=None):
-        if patch is None:
-            return True
-        return patch.repostate == "Available"
-
-    def handle(self, table, request, obj_ids):
-        try:
-            result = stx_api.patch.patch_delete_req(request, obj_ids)
-            messages.success(request, result)
-        except Exception as ex:
-            messages.error(request, str(ex))
-
-        url = reverse(table.index_url)
-        return shortcuts.redirect(url)
-
-
-class UpdatePatchRow(tables.Row):
-    ajax = True
-
-    def get_data(self, request, patch_id):
-        patch = stx_api.patch.get_patch(request, patch_id)
-        return patch
-
-
-class PatchFilterAction(tables.FilterAction):
-    def filter(self, table, patches, filter_string):
-        """Naive case-insensitive search."""
-        q = filter_string.lower()
-
-        def comp(patch):
-            if q in patch.patch_id.lower():
-                return True
-            return False
-
-        return list(filter(comp, patches))
-
-
-class PatchesTable(tables.DataTable):
-    index_url = 'horizon:admin:software_management:index'
-    PATCH_STATE_CHOICES = (
-        (None, True),
-        ("", True),
-        ("none", True),
-        ("Available", True),
-        ("Partial-Apply", True),
-        ("Partial-Remove", True),
-        ("Applied", True),
-        ("Committed", True)
-    )
-
-    patch_id = tables.Column('patch_id',
-                             link="horizon:admin:software_management:"
-                                  "patchdetail",
-                             verbose_name=_('Patch ID'))
-    reboot_required = tables.Column('reboot_required',
-                                    verbose_name=_('RR'))
-    sw_version = tables.Column('sw_version',
-                               verbose_name=_('Release'))
-    patchstate = tables.Column('patchstate',
-                               verbose_name=_('Patch State'),
-                               status=True,
-                               status_choices=PATCH_STATE_CHOICES)
-    summary = tables.Column('summary',
-                            verbose_name=_('Summary'))
-
-    def get_object_id(self, obj):
-        return obj.patch_id
-
-    def get_object_display(self, obj):
-        return obj.patch_id
-
-    class Meta(object):
-        name = "patches"
-        multi_select = True
-        row_class = UpdatePatchRow
-        status_columns = ['patchstate']
-        row_actions = (ApplyPatch, RemovePatch, DeletePatch)
-        table_actions = (
-            PatchFilterAction, UploadPatch, ApplyPatch, RemovePatch,
-            DeletePatch)
-        verbose_name = _("Patches")
-        hidden_title = False
-
-
-# Patch Orchestration
 def get_cached_strategy(request, strategy_name, table):
-    if stx_api.vim.STRATEGY_SW_PATCH == strategy_name:
-        if 'patchstrategy' not in table.kwargs:
-            table.kwargs['patchstrategy'] = stx_api.vim.get_strategy(
-                request, strategy_name)
-        return table.kwargs['patchstrategy']
-    elif stx_api.vim.STRATEGY_SW_DEPLOY == strategy_name:
+    if stx_api.vim.STRATEGY_SW_DEPLOY == strategy_name:
         if 'softwaredeploystrategy' not in table.kwargs:
             table.kwargs['softwaredeploystrategy'] = stx_api.vim.get_strategy(
                 request, strategy_name)
@@ -616,14 +418,9 @@ class CreateStrategy(tables.LinkAction):
 
     def allowed(self, request, datum):
         try:
-            # Only a single strategy (patch or upgrade) can exist at a time.
             strategy = get_cached_strategy(request,
-                                           stx_api.vim.STRATEGY_SW_PATCH,
+                                           stx_api.vim.STRATEGY_SW_DEPLOY,
                                            self.table)
-            if not strategy:
-                strategy = get_cached_strategy(request,
-                                               stx_api.vim.STRATEGY_SW_DEPLOY,
-                                               self.table)
 
             classes = [c for c in self.classes if c != "disabled"]
             self.classes = classes
@@ -634,11 +431,6 @@ class CreateStrategy(tables.LinkAction):
         except Exception as ex:
             LOG.exception(ex)
         return True
-
-
-class CreatePatchStrategy(CreateStrategy):
-    name = "createpatchstrategy"
-    url = "horizon:admin:software_management:createpatchstrategy"
 
 
 class CreateSoftwareDeployStrategy(CreateStrategy):
@@ -689,11 +481,6 @@ class DeleteStrategy(tables.Action):
         return shortcuts.redirect(url)
 
 
-class DeletePatchStrategy(DeleteStrategy):
-    name = "delete_patch_strategy"
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
-
-
 class DeleteSoftwareDeployStrategy(DeleteStrategy):
     name = "delete_software_deploy_strategy"
     strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
@@ -740,11 +527,6 @@ class ApplyStrategy(tables.Action):
         return shortcuts.redirect(url)
 
 
-class ApplyPatchStrategy(ApplyStrategy):
-    name = "apply_patch_strategy"
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
-
-
 class ApplySoftwareDeployStrategy(ApplyStrategy):
     name = "apply_software_deploy_strategy"
     strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
@@ -789,11 +571,6 @@ class AbortStrategy(tables.Action):
             messages.error(request, str(ex))
         url = reverse('horizon:admin:software_management:index')
         return shortcuts.redirect(url)
-
-
-class AbortPatchStrategy(AbortStrategy):
-    name = "abort_patch_strategy"
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
 class AbortSoftwareDeployStrategy(AbortStrategy):
@@ -861,11 +638,6 @@ class ApplyStage(tables.BatchAction):
         return shortcuts.redirect(url)
 
 
-class ApplyPatchStage(ApplyStage):
-    name = "apply_patch_stage"
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
-
-
 class ApplySoftwareDeployStage(ApplyStage):
     name = "apply_software_deploy_stage"
     strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
@@ -923,11 +695,6 @@ class AbortStage(tables.BatchAction):
                 messages.error(request, str(ex))
         url = reverse('horizon:admin:software_management:index')
         return shortcuts.redirect(url)
-
-
-class AbortPatchStage(AbortStage):
-    name = "abort_patch_stage"
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
 
 
 class AbortSoftwareDeployStage(AbortStage):
@@ -1013,10 +780,6 @@ class UpdateStageRow(tables.Row):
         return stage
 
 
-class UpdatePatchStageRow(UpdateStageRow):
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
-
-
 class UpdateSoftwareDeployStageRow(UpdateStageRow):
     strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
@@ -1042,28 +805,6 @@ class StagesTable(tables.DataTable):
 
     def get_object_display(self, obj):
         return "Stage %s of %s Phase" % (obj.stage_id, obj.phase.phase_name)
-
-
-def get_patchstage_link_url(stage):
-    return reverse("horizon:admin:software_management:patchstagedetail",
-                   args=(stage.stage_id, stage.phase.phase_name))
-
-
-class PatchStagesTable(StagesTable):
-    stage_name = tables.Column('stage_name',
-                               link=get_patchstage_link_url,
-                               verbose_name=_('Stage Name'))
-
-    class Meta(object):
-        name = "patchstages"
-        multi_select = False
-        status_columns = ['status', ]
-        row_class = UpdatePatchStageRow
-        row_actions = (ApplyPatchStage, AbortPatchStage)
-        table_actions = (CreatePatchStrategy, ApplyPatchStrategy,
-                         AbortPatchStrategy, DeletePatchStrategy)
-        verbose_name = _("Stages")
-        hidden_title = False
 
 
 def get_softwaredeploystage_link_url(stage):
@@ -1109,10 +850,6 @@ class UpdateStepRow(tables.Row):
         return step
 
 
-class UpdatePatchStepRow(UpdateStepRow):
-    strategy_name = stx_api.vim.STRATEGY_SW_PATCH
-
-
 class UpdateSoftwareDeployStepRow(UpdateStepRow):
     strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
@@ -1132,15 +869,6 @@ class StepsTable(tables.DataTable):
 
     def get_object_id(self, obj):
         return "%s-%s-%s" % (obj.phase_name, obj.stage_id, obj.step_id)
-
-
-class PatchStepsTable(StepsTable):
-    class Meta(object):
-        name = "steps"
-        status_columns = ['result', ]
-        row_class = UpdatePatchStepRow
-        verbose_name = _("Steps")
-        hidden_title = False
 
 
 class SoftwareDeployStepsTable(StepsTable):

@@ -19,13 +19,11 @@
 		<dd>{{ release.reboot_required }}</dd>
 		<dt>{% trans "Release Status Code" %}</dt>
 		<dd>{{ release.status }}</dd>
-	    <dt>{% trans "Unremovable" %}</dt>
-	    <dd>{{ release.unremovable }}</dd>
 		<dt>{% trans "Required Releases" %}</dt>
 		<dd>{{ release.requires | linebreaks }}</dd>
-	    {% if release.unremovable == "Y" %}
+	    {% if release.unremovable %}
 		<dt>{% trans "Unremovable" %}</dt>
-		<dd>{% trans "This patch cannot be removed" %}</dd>
+		<dd>{% trans "This release cannot be removed" %}</dd>
 	    {% endif %}
 	   </dl>
 	   <dl>
