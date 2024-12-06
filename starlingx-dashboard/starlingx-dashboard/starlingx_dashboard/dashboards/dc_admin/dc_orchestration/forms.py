@@ -75,37 +75,40 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
 
     release_id = forms.ChoiceField(
         label=_("Release"),
-        required=True,
+        required=False,
         widget=forms.Select(
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
-                'data-strategy_types-sw-deploy': _("Release")
+                'data-strategy_types-sw-deploy': _("Release"),
+                'data-required-when-shown': 'true'
             }
         )
     )
 
     release = forms.ChoiceField(
         label=_("Release"),
-        required=True,
+        required=False,
         widget=forms.Select(
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
-                'data-strategy_types-prestage': _("Release")
+                'data-strategy_types-prestage': _("Release"),
+                'data-required-when-shown': 'true'
             }
         )
     )
 
     patch_id = forms.ChoiceField(
         label=_("Patch File"),
-        required=True,
+        required=False,
         help_text=_("The patch ID to upload/apply on the subcloud."),
         widget=forms.Select(
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
-                'data-strategy_types-patch': _("Patch")
+                'data-strategy_types-patch': _("Patch"),
+                'data-required-when-shown': 'true'
             }
         )
     )
@@ -279,14 +282,14 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
     )
 
     sysadmin_password = forms.CharField(
-        label=_("sysadmin password"),
+        label=_("Sysadmin Password"),
         required=False,
         widget=forms.PasswordInput(
             attrs={
                 'autocomplete': 'off',
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
-                'data-strategy_types-prestage': _("sysadmin password"),
+                'data-strategy_types-prestage': _("Sysadmin Password"),
                 'data-required-when-shown': 'true'
             }
         )
@@ -331,26 +334,8 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         self.fields['to_version'].choices = kube_versions
 
     def clean(self):
-        cleaned_data = super(CreateCloudStrategyForm, self).clean()
-        if cleaned_data['type'] != 'patch':
-            if 'patch_id' in self.errors:
-                del self.errors['patch_id']
-            cleaned_data.pop('patch-id', None)
-
-        if cleaned_data['type'] != 'sw-deploy':
-            cleaned_data.pop('release-id', None)
-
-        if cleaned_data['type'] == 'prestage':
-            if (('sysadmin_password' not in cleaned_data) or
-                    (not cleaned_data['sysadmin_password'])):
-                raise forms.ValidationError(
-                    {'sysadmin_password':
-                     forms.ValidationError('sysadmin password is required')})
-        else:
-            cleaned_data.pop('for-sw-deploy', None)
-            cleaned_data.pop('release', None)
-            cleaned_data.pop('sysadmin_password', None)
-        return cleaned_data
+        data = super().clean()
+        return data
 
     def handle(self, request, data):
         try:
