@@ -34,11 +34,7 @@ class ReleasesTable(AdminTables.ReleasesTable):
         row_class = AdminTables.UpdateReleaseRow
         status_columns = ['state']
         row_actions = (
-            AdminTables.DeployPrecheck,
-            AdminTables.DeployStart,
-            AdminTables.DeployActivate,
             AdminTables.DeleteRelease,
-            AdminTables.DeployDelete
         )
         table_actions = (
             AdminTables.ReleaseFilterAction,
