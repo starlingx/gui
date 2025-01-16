@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2024 Wind River Systems, Inc.
+# Copyright (c) 2013-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -53,7 +53,7 @@ class DeleteRelease(tables.BatchAction):
 
         valid_states = {
             "available",
-            "unavailable"
+            "unavailable",
             "committed"
         }
         if release is None:
@@ -328,28 +328,32 @@ def get_state_display(release):
 
 class ReleasesTable(tables.DataTable):
     index_url = 'horizon:admin:software_management:index'
+    # FAILURE_STATES
+    # Start-Failed, Host-Failed, Activate-Failed,
+    # Activate-Rollback-Failed, Host-Rollback-Failed
     RELEASE_STATE_CHOICES = (
         (None, True),
         ("", True),
         ("none", True),
         ("available", True),
+        ("unavailable", True),
         ("Deployed", True),
         ("Partial-Remove", True),
         ("Applied", True),
         ("Committed", True),
         ("Deploying", True),
         ("Deploying (Start-Done)", True),
-        ("Deploying (Start-Failed)", True),
+        ("Deploying (Start-Failed)", False),
         ("Deploying (Host-Done)", True),
-        ("Deploying (Host-Failed)", True),
+        ("Deploying (Host-Failed)", False),
         ("Deploying (Activate-Done)", True),
-        ("Deploying (Activate-Failed)", True),
+        ("Deploying (Activate-Failed)", False),
         ("Deploying (Completed)", True),
         ("Deploying (Activate-Rollback-Pending)", True),
-        ("Deploying (Activate-Rollback-Failed)", True),
+        ("Deploying (Activate-Rollback-Failed)", False),
         ("Deploying (Activate-Rollback-Done)", True),
         ("Deploying (Host-Rollback-Done)", True),
-        ("Deploying (Host-Rollback-Failed)", True),
+        ("Deploying (Host-Rollback-Failed)", False),
         ("Deploying (Host-Rollback)", True)
     )
     SERVICE_STATE_DISPLAY_CHOICES = (
