@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2024 Wind River Systems, Inc.
+# Copyright (c) 2018-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -171,11 +171,11 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             }
         )
     )
-    subcloud_group = forms.CharField(
+    subcloud_group = forms.ChoiceField(
         label=_("Subcloud Group"),
         required=False,
         help_text=_("Select subcloud group to apply strategy."),
-        widget=forms.TextInput(
+        widget=forms.Select(
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'subcloud_types',
@@ -318,6 +318,12 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         self.fields['cloud_name'].choices = subcloud_list
         if self.initial.get('cloud_name', None):
             self.fields['cloud_name'].widget.attrs['disabled'] = 'disabled'
+
+        subcloud_groups = api.dc_manager.list_subcloud_groups(self.request)
+        self.fields['subcloud_group'].choices = [
+            (subcloud_group.name, subcloud_group.name) for subcloud_group
+            in subcloud_groups
+        ]
 
         kube_versions = []
         version = []
