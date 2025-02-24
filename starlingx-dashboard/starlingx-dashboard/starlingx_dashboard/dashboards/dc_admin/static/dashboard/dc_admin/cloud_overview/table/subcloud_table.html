@@ -248,7 +248,17 @@
     Table-footer:
     This is where we display number of items and pagination controls.
   -->
-  <tfoot hz-table-footer items="table.isubClouds"></tfoot>
+  <tfoot update-filtered-count>
+    <tr>
+      <td colspan="100%">
+        Total {$ table.filteredCount !== table.subClouds.length
+        ? '(filtered)' : '' $} subclouds: {$ table.filteredCount $}
+      </td>
+    </tr>
+    <tr>
+      <td colspan="100%" hz-table-footer items="table.isubClouds"></td>
+    </tr>
+  </tfoot>
 
   </table>
 </hz-magic-search-context>

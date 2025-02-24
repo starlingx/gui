@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2023 Wind River Systems, Inc.
+ * Copyright (c) 2017-2025 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -35,6 +35,7 @@
     'horizon.framework.widgets.modal.deleteModalService',
     'horizon.app.core.openstack-service-api.dc_manager',
     'horizon.app.core.openstack-service-api.keystone',
+    '$filter'
   ];
 
   function dcOverviewCloudTableController(
@@ -50,7 +51,8 @@
     simpleModalService,
     deleteModal,
     dc_manager,
-    keystone
+    keystone,
+    $filter
   ){
 
     var ctrl = this;
@@ -59,6 +61,7 @@
     ctrl.GroupsNames = [];
     ctrl.isubClouds = [];
     ctrl.subCloudSummaries = [];
+    ctrl.filteredCount = 0;  // This value will be updated by update-filtered-count directive
 
     //ctrl.globalActions = globalActions;
 
