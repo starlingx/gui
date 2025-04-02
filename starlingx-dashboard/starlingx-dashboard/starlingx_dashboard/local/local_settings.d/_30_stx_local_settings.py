@@ -1,9 +1,10 @@
 #
-# Copyright (c) 2019-2024 Wind River Systems, Inc.
+# Copyright (c) 2019-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import logging
 import os
 
 from openstack_dashboard.settings import HORIZON_CONFIG
@@ -11,6 +12,25 @@ from openstack_dashboard.settings import ROOT_PATH
 from openstack_dashboard.settings import TEMPLATES
 from starlingx_dashboard import configss
 from tsconfig.tsconfig import distributed_cloud_role
+
+LOG = logging.getLogger(__name__)
+
+
+def get_region_name() -> str:
+    try:
+        with open("/etc/platform/openrc", "r", encoding="utf-8") as file:
+            for line in file:
+                if line.strip().startswith("export OS_REGION_NAME="):
+                    region_name = line.strip().split("=", 1)[1].strip("'\"")
+                    LOG.info(f"Read region from openrc: {region_name}")
+                    return region_name
+        LOG.warning(
+            "OS_REGION_NAME not found in openrc, using default: RegionOne"
+        )
+    except Exception as e:
+        LOG.error(f"Error reading openrc file: {e}")
+
+    return "RegionOne"
 
 
 # WEBROOT is the location relative to Webserver root
@@ -75,6 +95,7 @@ if distributed_cloud_role and distributed_cloud_role in ['systemcontroller',
         '*': 'SystemController',
     }
 
+REGION_ONE_NAME = get_region_name()
 
 HORIZON_CONFIG["user_home"] = \
     "starlingx_dashboard.utils.settings.get_user_home"

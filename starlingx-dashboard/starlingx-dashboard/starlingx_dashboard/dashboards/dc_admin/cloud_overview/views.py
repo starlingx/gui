@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2017-2024 Wind River Systems, Inc.
+# Copyright (c) 2017-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -7,6 +7,7 @@
 import ipaddress
 import uuid
 
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from horizon import exceptions
 from horizon import views
@@ -78,7 +79,9 @@ class IndexView(views.HorizonTemplateView):
                             self.request,
                             service["type"],
                             endpoint_type="admin",
-                            region="RegionOne"
+                            region=getattr(
+                                settings, "REGION_ONE_NAME", "RegionOne"
+                            ),
                         )
                         service["endpoints"].append(_build_endpoint(
                             endpoint,
@@ -87,3 +90,11 @@ class IndexView(views.HorizonTemplateView):
                         )
 
         return context
+
+    def render_to_response(self, context):
+        response = super().render_to_response(context)
+        response.set_cookie(
+            "region_one_name",
+            getattr(settings, "REGION_ONE_NAME", "RegionOne"),
+        )
+        return response

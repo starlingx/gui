@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2019 Wind River Systems, Inc.
+ * Copyright (c) 2017-2019, 2025 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -27,6 +27,7 @@
     '$timeout',
     '$interval',
     '$window',
+    '$cookies',
     'horizon.framework.widgets.toast.service',
     'horizon.framework.util.i18n.gettext',
     'horizon.app.core.openstack-service-api.sysinv',
@@ -39,6 +40,7 @@
     $timeout,
     $interval,
     $window,
+    $cookies,
     toast,
     gettext,
     sysinv,
@@ -105,11 +107,13 @@
     /////////////
 
     function goToCentralAlarmDetails(cloud) {
-      $window.location.href = "/auth/switch_services_region/RegionOne/?next=/admin/active_alarms/";
+      var regionName = $cookies.get('region_one_name') || "RegionOne";
+      $window.location.href = "/auth/switch_services_region/" + regionName + "/?next=/admin/active_alarms/";
     }
 
     function goToCentralHostDetails(cloud) {
-      $window.location.href = "/auth/switch_services_region/RegionOne/?next=/admin/";
+      var regionName = $cookies.get('region_one_name') || "RegionOne";
+      $window.location.href = "/auth/switch_services_region/" + regionName + "/?next=/admin/";
     }
 
   }

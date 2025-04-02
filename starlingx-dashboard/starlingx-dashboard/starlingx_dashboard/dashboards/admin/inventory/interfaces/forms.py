@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2024 Wind River Systems, Inc.
+# Copyright (c) 2013-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -442,8 +442,9 @@ class AddInterface(forms.SelfHandlingForm):
         datanet_choices = []
         datanet_filtered = []
         initial_datanet_name = []
-        if getattr(self.request.user, 'services_region', None) == 'RegionOne' \
-                and getattr(settings, 'DC_MODE', False):
+        if getattr(self.request.user, "services_region", None) == getattr(
+            settings, "REGION_ONE_NAME", "RegionOne"
+        ) and getattr(settings, "DC_MODE", False):
             nt_choices = self.fields['ifclass'].choices
             self.fields['ifclass'].choices = [i for i in nt_choices if
                                               i[0] != 'data']
@@ -791,8 +792,9 @@ class UpdateInterface(AddInterface):
 
         choices_list = flatten(choices_list)
 
-        if getattr(self.request.user, 'services_region', None) == 'RegionOne' \
-                and getattr(settings, 'DC_MODE', False):
+        if getattr(self.request.user, "services_region", None) == getattr(
+            settings, "REGION_ONE_NAME", "RegionOne"
+        ) and getattr(settings, "DC_MODE", False):
             # Data is not available when in RegionOne of SystemController
             choices_list.remove('data')
 
