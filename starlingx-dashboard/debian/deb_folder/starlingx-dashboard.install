@@ -6,3 +6,5 @@ usr/lib/python3/dist-packages/openstack_dashboard/overrides/*
 
 usr/lib/python3/dist-packages/starlingx_dashboard-*.egg-info/*
 usr/lib/python3/dist-packages/starlingx_dashboard/*
+
+/var/log/horizon
