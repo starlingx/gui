@@ -515,6 +515,7 @@ class SwactHost(tables.BatchAction):
 
 class DeploySoftwareAsync(tables.BatchAction):
     name = "deploy-software-async"
+    action_type = 'danger'
 
     @staticmethod
     def action_present(count):
