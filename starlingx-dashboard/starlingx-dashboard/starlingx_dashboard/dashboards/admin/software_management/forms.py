@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2024 Wind River Systems, Inc.
+# Copyright (c) 2016-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -274,5 +274,25 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
         except Exception:
             redirect = reverse(self.failure_url)
             exceptions.handle(request, "Strategy creation failed",
+                              redirect=redirect)
+        return True
+
+
+class ApplySoftwareDeployStrategyForm(forms.SelfHandlingForm):
+    failure_url = 'horizon:admin:software_management:index'
+    strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
+
+    def handle(self, request, data):
+        try:
+            result = stx_api.vim.apply_strategy(request, self.strategy_name)
+            if result:
+                messages.success(request, "Strategy apply in progress")
+            else:
+                messages.error(request, "Strategy apply failed")
+        except Exception as ex:
+            LOG.exception(ex)
+            redirect = reverse(self.failure_url)
+            msg = _('Strategy apply failed.')
+            exceptions.handle(request, msg,
                               redirect=redirect)
         return True
