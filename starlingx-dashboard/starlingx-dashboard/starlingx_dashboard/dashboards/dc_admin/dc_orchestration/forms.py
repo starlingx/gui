@@ -9,6 +9,7 @@ import logging
 
 from dcmanagerclient import exceptions as exc
 
+from django import forms as django_forms
 from django.urls import reverse  # noqa
 from django.utils.translation import ugettext_lazy as _
 
@@ -52,6 +53,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         ('sw-deploy', _("Software Deploy")),
         ('patch', _("Patch")),
         ('kubernetes', _("Kubernetes")),
+        ('kube-rootca-update', _("Kube Root-CA")),
         ('firmware', _("Firmware")),
         ('prestage', _("Prestage")),
     )
@@ -95,6 +97,61 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-prestage': _("Release"),
                 'data-required-when-shown': 'true'
+            }
+        )
+    )
+
+    subject = forms.CharField(
+        label=_("Subject"),
+        required=False,
+        help_text=_("A subject for a generated certificate."),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kube-rootca-update': _("Subject"),
+            }
+        )
+    )
+
+    expiry_date = django_forms.DateField(
+        required=False,
+        label=_("Expiry Date"),
+        help_text=_("Expiry date for a generated certificate."),
+        input_formats=("%Y-%m-%d",),
+        widget=django_forms.DateInput(
+            attrs={
+                'placeholder': 'YYYY-MM-DD',
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kube-rootca-update': _("Expiry Date"),
+            }
+        )
+    )
+
+    cert_file = forms.CharField(
+        label=_("Cert File"),
+        required=False,
+        help_text=_("Path to a certificate to upload."),
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kube-rootca-update': _("Cert File"),
+            }
+        )
+    )
+
+    force_kube_rootca = forms.BooleanField(
+        label=_("Force"),
+        initial=False,
+        required=False,
+        help_text=_("Allow update even with in-sync endpoint status."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kube-rootca-update': _("Force"),
             }
         )
     )
@@ -171,6 +228,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             }
         )
     )
+
     subcloud_group = forms.ChoiceField(
         label=_("Subcloud Group"),
         required=False,
@@ -209,10 +267,10 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         label=_("Maximum Parallel Subclouds"),
         initial=20,
         min_value=2,
-        max_value=500,
+        max_value=2500,
         required=True,
         error_messages={'invalid': _("Maximum Parallel Subclouds must be "
-                                     "between 2 and 500.")},
+                                     "between 2 and 2500.")},
         widget=forms.TextInput(
             attrs={
                 'class': 'switched',
@@ -234,21 +292,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-prestage': _("Force"),
-            }
-        )
-    )
-
-    force_kubernetes = forms.BooleanField(
-        label=_("Force"),
-        initial=False,
-        required=False,
-        help_text=_("Force Kube upgrade to a subcloud "
-                    "which is in-sync with System Controller"),
-        widget=forms.CheckboxInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-kubernetes': _("Force")
             }
         )
     )
@@ -365,15 +408,22 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                     del data['subcloud-apply-type']
             del data['target']
             data['stop-on-failure'] = str(data['stop-on-failure']).lower()
-            if data['type'] == 'kubernetes':
-                data['force'] = str(data['force-kubernetes']).lower()
-            else:
+
+            if data['type'] != 'kubernetes':
                 del data['to-version']
-            del data['force-kubernetes']
 
             if data['type'] == 'sw-deploy':
                 data['release_id'] = data['release-id']
             data.pop('release-id', None)
+
+            if data['type'] == 'kube-rootca-update':
+                data['subject'] = data['subject'].lower()
+                if data['expiry-date']:
+                    data['expiry-date'] = str(data['expiry-date'])
+                data['cert-file'] = data['cert-file'].lower()
+                data['force'] = str(data['force-kube-rootca']).lower()
+
+            data.pop('force-kube-rootca', None)
 
             if data['type'] == 'patch':
                 data['upload-only'] = str(data['upload-only']).lower()
@@ -389,9 +439,14 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                     data['sysadmin-password'].encode("utf-8")).decode("utf-8")
                 data['for_sw_deploy'] = str(data['for-sw-deploy']).lower()
                 data['force'] = str(data['force-prestage']).lower()
+
             data.pop('sysadmin-password', None)
             data.pop('for-sw-deploy', None)
             data.pop('force-prestage', None)
+
+            for key, value in data.copy().items():
+                if not value:
+                    data.pop(key, None)
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:
@@ -538,10 +593,10 @@ class CreateSubcloudGroupForm(forms.SelfHandlingForm):
         label=_("Maximum Parallel Subclouds"),
         initial=2,
         min_value=2,
-        max_value=500,
+        max_value=2500,
         required=True,
         error_messages={'invalid': _('Maximum Parallel Subclouds must be '
-                                     'between 2 and 500.')},
+                                     'between 2 and 2500.')},
         widget=forms.TextInput())
 
     def handle(self, request, data):
@@ -598,10 +653,10 @@ class UpdateSubcloudGroupForm(forms.SelfHandlingForm):
     max_parallel_subclouds = forms.IntegerField(
         label=_("Maximum Parallel Subclouds"),
         min_value=2,
-        max_value=500,
+        max_value=2500,
         required=True,
         error_messages={'invalid': _('Maximum Parallel Subclouds must be '
-                                     'between 2 and 500.')},
+                                     'between 2 and 2500.')},
         widget=forms.TextInput())
 
     def handle(self, request, data):
