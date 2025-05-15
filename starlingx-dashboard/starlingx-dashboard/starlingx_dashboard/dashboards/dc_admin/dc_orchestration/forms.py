@@ -51,7 +51,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
 
     STRATEGY_TYPES = (
         ('sw-deploy', _("Software Deploy")),
-        ('patch', _("Patch")),
         ('kubernetes', _("Kubernetes")),
         ('kube-rootca-update', _("Kube Root-CA")),
         ('firmware', _("Firmware")),
@@ -152,20 +151,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-kube-rootca-update': _("Force"),
-            }
-        )
-    )
-
-    patch_id = forms.ChoiceField(
-        label=_("Patch File"),
-        required=False,
-        help_text=_("The patch ID to upload/apply on the subcloud."),
-        widget=forms.Select(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-patch': _("Patch"),
-                'data-required-when-shown': 'true'
             }
         )
     )
@@ -296,34 +281,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
-    upload_only = forms.BooleanField(
-        label=_("Upload Only"),
-        initial=False,
-        required=False,
-        help_text=_("Stops strategy after uploading patches to subclouds"),
-        widget=forms.CheckboxInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-patch': _("Upload Only")
-            }
-        )
-    )
-
-    remove = forms.BooleanField(
-        label=_("Remove"),
-        initial=False,
-        required=False,
-        help_text=_("Remove the patch on the subcloud."),
-        widget=forms.CheckboxInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-patch': _("Remove")
-            }
-        )
-    )
-
     sysadmin_password = forms.CharField(
         label=_("Sysadmin Password"),
         required=False,
@@ -350,10 +307,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
             (".".join(release.sw_version.split(".")[0:2]),
              ".".join(release.sw_version.split(".")[0:2]))
             for release in releases if release.sw_version.endswith('.0')]
-
-        patches = api.patch.get_patches(request)
-        self.fields['patch_id'].choices = [
-            (patch.patch_id, patch.patch_id) for patch in patches]
 
         subcloud_list = [('default', 'All subclouds')]
         subclouds = api.dc_manager.subcloud_list(self.request)
@@ -424,15 +377,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 data['force'] = str(data['force-kube-rootca']).lower()
 
             data.pop('force-kube-rootca', None)
-
-            if data['type'] == 'patch':
-                data['upload-only'] = str(data['upload-only']).lower()
-                data['patch_id'] = data['patch-id']
-                data['remove'] = str(data['remove']).lower()
-            else:
-                del data['upload-only']
-                del data['remove']
-            data.pop('patch-id', None)
 
             if data['type'] == 'prestage':
                 data['sysadmin_password'] = base64.b64encode(

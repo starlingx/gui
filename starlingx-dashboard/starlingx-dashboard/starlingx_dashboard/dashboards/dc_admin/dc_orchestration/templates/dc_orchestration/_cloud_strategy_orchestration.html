@@ -28,11 +28,6 @@
               <dd>{{ strategy.extra_args | get_value:"expiry-date" }}</dd>
               <dt>{% trans "Cert File" %}</dt>
               <dd>{{ strategy.extra_args | get_value:"cert-file" }}</dd>
-            {% elif strategy.strategy_type == 'patch' %}
-              <dt>{% trans "Patch" %}</dt>
-              <dd>{{ strategy.extra_args|get_value:"patch_id" }}</dd>
-              <dt>{% trans "Upload Only" %}</dt>
-              <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
             {% elif strategy.strategy_type == 'prestage' %}
               <dt>{% trans "For Software Deploy" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"for_sw_deploy" }}</dd>
