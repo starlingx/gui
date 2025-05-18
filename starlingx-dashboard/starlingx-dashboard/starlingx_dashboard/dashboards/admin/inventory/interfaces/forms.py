@@ -627,8 +627,9 @@ class AddInterface(forms.SelfHandlingForm):
 
             if data['iftype'] == 'vf':
                 if not data['max_tx_rate']:
-                    data['max_tx_rate'] = 0
-                data['max_tx_rate'] = str(data['max_tx_rate'])
+                    del data['max_tx_rate']
+                else:
+                    data['max_tx_rate'] = str(data['max_tx_rate'])
             else:
                 del data['max_tx_rate']
 
@@ -956,8 +957,9 @@ class UpdateInterface(AddInterface):
 
             if data['iftype'] == 'vf':
                 if not data['max_tx_rate']:
-                    data['max_tx_rate'] = 0
-                data['max_tx_rate'] = str(data['max_tx_rate'])
+                    del data['max_tx_rate']
+                else:
+                    data['max_tx_rate'] = str(data['max_tx_rate'])
             else:
                 del data['max_tx_rate']
 
