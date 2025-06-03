@@ -381,20 +381,42 @@ class AddInterface(forms.SelfHandlingForm):
 
     max_tx_rate = forms.IntegerField(
         label=_("Max Tx Rate"),
-        initial=0,
         min_value=0,
         required=False,
         help_text=_('Allowed maximum transmit bandwidth, in Mbps, for the '
-                    'specified VF. Setting this parameter to 0 disables '
-                    'rate limiting.'),
+                    'specified VF, vlan, ethernet or ae type. '
+                    'Setting this parameter to 0 disables rate limiting.'),
         error_messages={'invalid': _('Max Tx Rate must be '
-                                     'equal or greater than 0.')},
+                                     'an integer value.')},
         widget=forms.TextInput(
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'interface_type',
                 'data-slug': 'max_tx_rate',
-                'data-interface_type-vf': 'Max Tx Rate'}))
+                'data-interface_type-vf': 'Max Tx Rate',
+                'data-interface_type-vlan': 'Max Tx Rate',
+                'data-interface_type-ethernet': 'Max Tx Rate',
+                'data-interface_type-ae': 'Max Tx Rate'
+            }))
+
+    max_rx_rate = forms.IntegerField(
+        label=_("Max Rx Rate"),
+        min_value=0,
+        required=False,
+        help_text=_('Allowed maximum receive bandwidth, in Mbps, for the '
+                    'specified vlan, ethernet or ae type. '
+                    'Setting this parameter to 0 disables rate limiting.'),
+        error_messages={'invalid': _('Max Rx Rate must be '
+                                     'an integer value.')},
+        widget=forms.TextInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'interface_type',
+                'data-slug': 'max_rx_rate',
+                'data-interface_type-ae': 'Max Rx Rate',
+                'data-interface_type-ethernet': 'Max Rx Rate',
+                'data-interface_type-vlan': 'Max Rx Rate'
+            }))
 
     failure_url = 'horizon:admin:inventory:detail'
 
@@ -625,13 +647,22 @@ class AddInterface(forms.SelfHandlingForm):
                 del data['sriov_numvfs']
                 del data['sriov_vf_driver']
 
-            if data['iftype'] == 'vf':
-                if not data['max_tx_rate']:
+            if data['ifclass'] == 'pci-sriov':
+                if data['iftype'] != 'vf':
                     del data['max_tx_rate']
-                else:
-                    data['max_tx_rate'] = str(data['max_tx_rate'])
+            elif data['ifclass'] == 'platform':
+                if (data['iftype'] not in ['ae', 'vlan', 'ethernet'] or
+                        data['max_tx_rate'] is None):
+                    del data['max_tx_rate']
             else:
                 del data['max_tx_rate']
+
+            if data['ifclass'] == 'platform':
+                if (data['iftype'] not in ['ae', 'vlan', 'ethernet'] or
+                        data['max_rx_rate'] is None):
+                    del data['max_rx_rate']
+            else:
+                del data['max_rx_rate']
 
             del data['datanetworks']
             del data['networks']
@@ -955,13 +986,22 @@ class UpdateInterface(AddInterface):
             if 'sriov_vf_driver' in data:
                 data['sriov_vf_driver'] = str(data['sriov_vf_driver'])
 
-            if data['iftype'] == 'vf':
-                if not data['max_tx_rate']:
+            if data['ifclass'] == 'pci-sriov':
+                if data['iftype'] != 'vf':
                     del data['max_tx_rate']
-                else:
-                    data['max_tx_rate'] = str(data['max_tx_rate'])
+            elif data['ifclass'] == 'platform':
+                if (data['iftype'] not in ['ae', 'vlan', 'ethernet'] or
+                        data['max_tx_rate'] is None):
+                    del data['max_tx_rate']
             else:
                 del data['max_tx_rate']
+
+            if data['ifclass'] == 'platform':
+                if (data['iftype'] not in ['ae', 'vlan', 'ethernet'] or
+                        data['max_rx_rate'] is None):
+                    del data['max_rx_rate']
+            else:
+                del data['max_rx_rate']
 
             # Explicitly set iftype when user selects pci-pt or pci-sriov
             ifclass = \
