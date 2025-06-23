@@ -303,10 +303,12 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         self.fields['release_id'].choices = [
             (release.release_id, release.release_id) for release in releases]
         # Match only major releases for prestage
-        self.fields['release'].choices = [
-            (".".join(release.sw_version.split(".")[0:2]),
-             ".".join(release.sw_version.split(".")[0:2]))
-            for release in releases if release.sw_version.endswith('.0')]
+        release_choices_dict = {
+            ".".join(release.sw_version.split(".")[0:2]):
+            ".".join(release.sw_version.split(".")[0:2])
+            for release in releases
+        }
+        self.fields['release'].choices = sorted(release_choices_dict.items())
 
         subcloud_list = [('default', 'All subclouds')]
         subclouds = api.dc_manager.subcloud_list(self.request)
