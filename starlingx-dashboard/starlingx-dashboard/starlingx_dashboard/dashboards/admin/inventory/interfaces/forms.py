@@ -932,7 +932,6 @@ class UpdateInterface(AddInterface):
         host_id = data['host_id']
         interface_id = data['id']
         host_uuid = data['ihost_uuid']
-
         try:
             if data['ports']:
                 del data['uses']
@@ -956,8 +955,6 @@ class UpdateInterface(AddInterface):
                 del data['vlan_id']
             else:
                 data['vlan_id'] = str(data['vlan_id'])
-
-            data['imtu'] = str(data['imtu'])
 
             if data['iftype'] != 'ae':
                 del data['txhashpolicy']
@@ -1049,9 +1046,17 @@ class UpdateInterface(AddInterface):
             del data['datanetworks_to_add']
             del data['interface_datanetworks_to_remove']
 
+            # Only params that were modified will be
+            # included in the update request.
+            patch_data = {}
+            for key, new_value in data.items():
+                if (key not in self.initial or
+                        str(self.initial[key]) != str(new_value)):
+                    patch_data[key] = new_value
+
             interface = sysinv.host_interface_update(request,
                                                      interface_id,
-                                                     **data)
+                                                     **patch_data)
             if networks_to_add:
                 for n in networks_to_add:
                     ifnet_data['network_uuid'] = n
