@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2013-2023 Wind River Systems, Inc.
+# Copyright (c) 2013-2023, 2025 Wind River Systems, Inc.
 #
 
 from __future__ import absolute_import
@@ -64,6 +64,8 @@ SENSORS_AC_POWEROFF = "poweroff"
 # Storage backend values
 STORAGE_BACKEND_LVM = "lvm"
 STORAGE_BACKEND_CEPH = "ceph"
+STORAGE_BACKEND_ROOK_CEPH_STORE = "ceph-rook-store"
+STORAGE_BACKEND_CEPH_STORE = "ceph-store"
 
 # Local Volume Group Values
 LVG_NOVA_LOCAL = "nova-local"
@@ -2467,8 +2469,25 @@ def get_ceph_storage_model(request):
     return cluster.deployment_model
 
 
+def get_storage_model(request, backend):
+    """Returns the deployment model based on the storage backend type."""
+    if backend.name == STORAGE_BACKEND_CEPH_STORE:
+        return get_ceph_storage_model(request)
+    if backend.name == STORAGE_BACKEND_ROOK_CEPH_STORE:
+        sb = cgtsclient(request).storage_backend.get(backend.uuid)
+        return sb.capabilities.get('deployment_model')
+
+    return None
+
+
 def is_host_with_storage(request, host_id):
-    storage_model = get_ceph_storage_model(request)
+    """Returns True if the host is expected to have storage."""
+    storage_backends = storage_backend_list(request)
+    if not storage_backends:
+        return False
+
+    storage_backend = storage_backends[0]
+    storage_model = get_storage_model(request, storage_backend)
 
     if storage_model == constants.CEPH_AIO_SX_MODEL:
         # We have a single host, no need to query further
@@ -2486,6 +2505,12 @@ def is_host_with_storage(request, host_id):
             return True
         else:
             return False
+    elif storage_model in [
+        constants.CEPH_ROOK_DEPLOYMENT_CONTROLLER,
+        constants.CEPH_ROOK_DEPLOYMENT_DEDICATED,
+        constants.CEPH_ROOK_DEPLOYMENT_OPEN
+    ]:
+        return True
     else:
         # Storage model is undefined
         return False
