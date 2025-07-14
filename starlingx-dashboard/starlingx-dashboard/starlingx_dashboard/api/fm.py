@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2021 Wind River Systems, Inc.
+# Copyright (c) 2018-2021, 2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -44,7 +44,7 @@ def fmclient(request):
     region = None
     if getattr(request.user, 'services_region', None) == 'SystemController' \
             and getattr(settings, 'DC_MODE', False):
-        region = "RegionOne"
+        region = getattr(settings, 'REGION_ONE_NAME', "RegionOne")
 
     endpoint = base.url_for(request, 'faultmanagement', region=region)
 

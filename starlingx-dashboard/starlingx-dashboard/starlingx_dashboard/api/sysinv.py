@@ -2006,7 +2006,8 @@ class Interface(base.APIResourceWrapper):
               'aemode', 'txhashpolicy', 'primary_reselect', 'vlan_id',
               'uses', 'used_by', 'ihost_uuid',
               'ipv4_mode', 'ipv6_mode', 'ipv4_pool', 'ipv6_pool',
-              'sriov_numvfs', 'sriov_vf_driver', 'max_tx_rate']
+              'sriov_numvfs', 'sriov_vf_driver', 'max_tx_rate',
+              'max_rx_rate']
 
     def __init__(self, apiresource):
         super(Interface, self).__init__(apiresource)

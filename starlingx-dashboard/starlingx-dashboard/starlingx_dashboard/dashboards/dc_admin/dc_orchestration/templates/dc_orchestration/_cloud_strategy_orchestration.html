@@ -21,11 +21,13 @@
             {% if strategy.strategy_type == 'sw-deploy' %}
               <dt>{% trans "Release" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"release_id" }}</dd>
-            {% elif strategy.strategy_type == 'patch' %}
-              <dt>{% trans "Patch" %}</dt>
-              <dd>{{ strategy.extra_args|get_value:"patch_id" }}</dd>
-              <dt>{% trans "Upload Only" %}</dt>
-              <dd>{{ strategy.extra_args|get_value:"upload-only" }}</dd>
+            {% elif strategy.strategy_type == 'kube-rootca-update' %}
+              <dt>{% trans "Subject" %}</dt>
+              <dd>{{ strategy.extra_args | get_value:"subject" }}</dd>
+              <dt>{% trans "Expiry Date" %}</dt>
+              <dd>{{ strategy.extra_args | get_value:"expiry-date" }}</dd>
+              <dt>{% trans "Cert File" %}</dt>
+              <dd>{{ strategy.extra_args | get_value:"cert-file" }}</dd>
             {% elif strategy.strategy_type == 'prestage' %}
               <dt>{% trans "For Software Deploy" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"for_sw_deploy" }}</dd>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2023 Wind River Systems, Inc.
+ * Copyright (c) 2017-2023, 2025 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -32,9 +32,11 @@
       //Finds the element where region name is displayed
       var region_element = document.querySelector('span.context-region');
 
+      var region_one_name = $cookies.get('region_one_name') || "RegionOne";
+
       if (region_element) {
         //Set the subcloud name only if it is a subcloud
-        if(services_region != 'RegionOne' && services_region != 'SystemController'){
+        if(services_region != region_one_name && services_region != 'SystemController'){
           var subcloud_name = $cookies.get('subcloud_' + services_region);
           region_element.textContent = subcloud_name;
         }
