@@ -227,6 +227,16 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-sw-deploy': _("Delete")}))
 
+    snapshot = forms.BooleanField(
+        label=_("Snapshot"),
+        initial=False,
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Snapshot")}))
+
     def __init__(self, request, *args, **kwargs):
         super().__init__(request, *args, **kwargs)
 
@@ -242,7 +252,13 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
         if system_type == stx_api.sysinv.SYSTEM_TYPE_AIO:
             del self.fields['controller_apply_type']
 
-        if stx_api.sysinv.is_system_mode_simplex(request):
+        is_system_simplex = stx_api.sysinv.is_system_mode_simplex(request)
+
+        if not (system_type == stx_api.sysinv.SYSTEM_TYPE_AIO and
+                is_system_simplex):
+            self.fields.pop('snapshot')
+
+        if is_system_simplex:
             self.fields['default_instance_action'].choices = \
                 self.SIMPLEX_INSTANCE_ACTIONS_TYPES
 
@@ -255,10 +271,12 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
             rollback = True
             release = None
             delete = None
+            snapshot = None
         else:
             rollback = False
             release = data.get('release')
             delete = data.get('delete')
+            snapshot = data.get('snapshot')
         try:
             response = stx_api.vim.create_strategy(
                 request, stx_api.vim.STRATEGY_SW_DEPLOY,
@@ -268,7 +286,8 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
                 data['max_parallel_worker_hosts'],
                 data['default_instance_action'],
                 data['alarm_restrictions'],
-                release=release, rollback=rollback, delete=delete)
+                release=release, rollback=rollback,
+                delete=delete, snapshot=snapshot)
             if not response:
                 messages.error(request, "Strategy creation failed")
         except Exception:
