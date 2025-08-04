@@ -21,6 +21,18 @@
             {% if strategy.strategy_type == 'sw-deploy' %}
               <dt>{% trans "Release" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"release_id" }}</dd>
+              <dt>{% trans "Snapshot" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"snapshot" }}</dd>
+              <dt>{% trans "Rollback" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"rollback_id" }}</dd>
+              <dt>{% trans "Delete mode" %}</dt>
+              {% if strategy.extra_args|get_value:"with_delete" %}
+                <dd>with_delete</dd>
+              {% elif strategy.extra_args|get_value:"delete_only" %}
+                <dd>delete_only</dd>
+              {% else %}
+                <dd>None</dd>
+              {% endif %}
             {% elif strategy.strategy_type == 'kube-rootca-update' %}
               <dt>{% trans "Subject" %}</dt>
               <dd>{{ strategy.extra_args | get_value:"subject" }}</dd>

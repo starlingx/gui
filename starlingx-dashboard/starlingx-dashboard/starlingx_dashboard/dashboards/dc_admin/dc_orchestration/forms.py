@@ -82,7 +82,63 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-sw-deploy': _("Release"),
-                'data-required-when-shown': 'true'
+            }
+        )
+    )
+
+    snapshot = forms.BooleanField(
+        label=_("Snapshot"),
+        initial=False,
+        required=False,
+        help_text=_("Create a snapshot before applying the strategy."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Snapshot"),
+            }
+        )
+    )
+
+    rollback = forms.BooleanField(
+        label=_("Rollback"),
+        initial=False,
+        required=False,
+        help_text=_("Rollback the current deployment."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Rollback"),
+            }
+        )
+    )
+
+    with_delete = forms.BooleanField(
+        label=_("With Delete"),
+        initial=False,
+        required=False,
+        help_text=_("Delete the deployment at the end of "
+                    "strategy application."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("With Delete"),
+            }
+        )
+    )
+
+    delete_only = forms.BooleanField(
+        label=_("Delete Only"),
+        initial=False,
+        required=False,
+        help_text=_("Run a strategy to just delete the software deployment."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Delete only"),
             }
         )
     )
@@ -300,8 +356,11 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
 
         releases = api.usm.get_releases(request)
         # Match all releases for sw-deploy
-        self.fields['release_id'].choices = [
-            (release.release_id, release.release_id) for release in releases]
+        sw_releases_list = [
+            (release.release_id, release.release_id) for release in releases
+        ]
+        sw_releases_list.insert(0, ('--', '--'))
+        self.fields['release_id'].choices = sw_releases_list
         # Match only major releases for prestage
         release_choices_dict = {
             ".".join(release.sw_version.split(".")[0:2]):
@@ -369,7 +428,13 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
 
             if data['type'] == 'sw-deploy':
                 data['release_id'] = data['release-id']
+                data['with_delete'] = data['with-delete']
+                data['delete_only'] = data['delete-only']
+                if data['release_id'] == '--':
+                    data['release_id'] = None
             data.pop('release-id', None)
+            data.pop('with-delete', None)
+            data.pop('delete-only', None)
 
             if data['type'] == 'kube-rootca-update':
                 data['subject'] = data['subject'].lower()
