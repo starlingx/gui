@@ -26,7 +26,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from openstack_dashboard.api import base
 
-import cgcs_patch.constants as patch_constants
 import sysinv.common.constants as constants
 
 SYSTEM_TYPE_STANDARD = constants.TIS_STD_BUILD
@@ -858,7 +857,7 @@ class Host(base.APIResourceWrapper):
               'bm_ip', 'bm_type', 'bm_username',
               'config_status', 'vim_progress_status', 'patch_current',
               'requires_reboot', 'boot_device', 'rootfs_device',
-              'install_output', 'console', 'ttys_dcd', 'patch_state',
+              'install_output', 'console', 'ttys_dcd',
               'allow_insvc_patching', 'install_state', 'install_state_info',
               'clock_synchronization', 'max_cpu_mhz_configured',
               'max_cpu_mhz_allowed']
@@ -898,16 +897,6 @@ class Host(base.APIResourceWrapper):
         ('up_to_date', _("up-to-date")),
         ('out_of_date', _("out-of-date")),
     )
-    PATCH_STATE_DISPLAY_CHOICES = (
-        (patch_constants.PATCH_AGENT_STATE_IDLE,
-         _("Idle")),
-        (patch_constants.PATCH_AGENT_STATE_INSTALLING,
-         _("Patch Installing")),
-        (patch_constants.PATCH_AGENT_STATE_INSTALL_FAILED,
-         _("Patch Install Failed")),
-        (patch_constants.PATCH_AGENT_STATE_INSTALL_REJECTED,
-         _("Patch Install Rejected")),
-    )
 
     INSTALL_STATE_DISPLAY_CHOICES = (
         (constants.INSTALL_STATE_PRE_INSTALL, _("Pre-install")),
@@ -938,7 +927,6 @@ class Host(base.APIResourceWrapper):
         self.patch_current = "N/A"
         self.requires_reboot = "N/A"
         self.allow_insvc_patching = True
-        self._patch_state = patch_constants.PATCH_AGENT_STATE_IDLE
         self._clock_synchronizations = self.clock_synchronization
 
         self._install_state = self.install_state
@@ -1045,11 +1033,6 @@ class Host(base.APIResourceWrapper):
     def clock_synchronization(self):
         return self._get_display_value(CLOCK_SYNCHRONIZATION_CHOICES,
                                        self._clock_synchronization)
-
-    @property
-    def patch_state(self):
-        return self._get_display_value(self.PATCH_STATE_DISPLAY_CHOICES,
-                                       self._patch_state)
 
     @property
     def install_state(self):

@@ -11,7 +11,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-# Copyright (c) 2017-2024 Wind River Systems, Inc.
+# Copyright (c) 2017-2025 Wind River Systems, Inc.
 #
 
 from starlingx_dashboard.api import base
@@ -19,7 +19,6 @@ from starlingx_dashboard.api import ceph
 from starlingx_dashboard.api import dc_manager
 from starlingx_dashboard.api import fm
 from starlingx_dashboard.api import neutron
-from starlingx_dashboard.api import patch
 from starlingx_dashboard.api import sysinv
 from starlingx_dashboard.api import usm
 from starlingx_dashboard.api import vim
@@ -31,7 +30,6 @@ __all__ = [
     "dc_manager",
     "fm",
     "neutron",
-    "patch",
     "sysinv",
     "usm",
     "vim",
