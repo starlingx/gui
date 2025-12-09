@@ -33,6 +33,8 @@
               {% else %}
                 <dd>None</dd>
               {% endif %}
+              <dt>{% trans "With prestage" %}</dt>
+              <dd>{{ strategy.extra_args|get_value:"with_prestage" }}</dd>
             {% elif strategy.strategy_type == 'kube-rootca-update' %}
               <dt>{% trans "Subject" %}</dt>
               <dd>{{ strategy.extra_args | get_value:"subject" }}</dd>

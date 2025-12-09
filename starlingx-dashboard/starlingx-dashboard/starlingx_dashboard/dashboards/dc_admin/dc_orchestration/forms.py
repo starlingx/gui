@@ -143,6 +143,34 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
+    with_prestage = forms.BooleanField(
+        label=_("With Prestage"),
+        initial=False,
+        required=False,
+        help_text=_("Run a strategy with prestaging before "
+                    "the software application."),
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("With Prestage"),
+            }
+        )
+    )
+
+    sysadmin_password_sw_deploy = forms.CharField(
+        label=_("Sysadmin Password"),
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                'autocomplete': 'off',
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-sw-deploy': _("Sysadmin Password"),
+            }
+        )
+    )
+
     release = forms.ChoiceField(
         label=_("Release"),
         required=False,
@@ -430,11 +458,17 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 data['release_id'] = data['release-id']
                 data['with_delete'] = data['with-delete']
                 data['delete_only'] = data['delete-only']
+                data['with_prestage'] = data['with-prestage']
+                data['sysadmin_password'] = base64.b64encode(
+                    data['sysadmin-password-sw-deploy'].encode("utf-8")
+                ).decode("utf-8")
                 if data['release_id'] == '--':
                     data['release_id'] = None
             data.pop('release-id', None)
             data.pop('with-delete', None)
             data.pop('delete-only', None)
+            data.pop('with-prestage', None)
+            data.pop('sysadmin-password-sw-deploy', None)
 
             if data['type'] == 'kube-rootca-update':
                 data['subject'] = data['subject'].lower()
