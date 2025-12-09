@@ -20,21 +20,25 @@
 
 - job:
     name: gui-tox-linters
-    parent: openstack-tox-linters
+    parent: tox
     description: |
       Run linters
     nodeset: debian-bullseye
+    vars:
+      tox_envlist: linters
 
 - job:
     name: gui-tox-pep8
-    parent: openstack-tox-pep8
+    parent: tox
     description: |
       Check conformance with pep8
     nodeset: debian-bullseye
+    vars:
+      tox_envlist: pep8
 
 - job:
     name: gui-tox-pylint
-    parent: openstack-tox-pylint
+    parent: tox
     description: Run pylint for gui repo
     nodeset: debian-bullseye
     vars:
