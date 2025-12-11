@@ -40,8 +40,6 @@
               <dd>{{ strategy.extra_args | get_value:"subject" }}</dd>
               <dt>{% trans "Expiry Date" %}</dt>
               <dd>{{ strategy.extra_args | get_value:"expiry-date" }}</dd>
-              <dt>{% trans "Cert File" %}</dt>
-              <dd>{{ strategy.extra_args | get_value:"cert-file" }}</dd>
             {% elif strategy.strategy_type == 'prestage' %}
               <dt>{% trans "For Software Deploy" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"for_sw_deploy" }}</dd>
