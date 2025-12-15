@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2025 Wind River Systems, Inc.
+# Copyright (c) 2013-2024 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -54,8 +54,10 @@ class HostsTab(tabs.TableTab):
     slug = "hosts"
     template_name = ("admin/inventory/_hosts.html")
 
-    # for optimization, the complete hosts list is in class scope.
+    # for optimization, the complete hosts list, and phosts list from
+    # patching service, are in class scope.
     all_hosts = []
+    all_phosts = []
 
     def get_all_hosts_data(self):
         request = self.request
@@ -77,9 +79,17 @@ class HostsTab(tabs.TableTab):
         except Exception:
             exceptions.handle(request,
                               _('Unable to retrieve host list.'))
+        self.all_phosts = []
+        try:
+            self.all_phosts = stx_api.patch.get_hosts(request)
+        except Exception:
+            exceptions.handle(request,
+                              _('Unable to retrieve host list from'
+                                ' patching service.'))
 
     def get_hosts_data(self, personality):
         hosts = self.all_hosts
+        phosts = self.all_phosts
 
         if personality == stx_api.sysinv.PERSONALITY_CONTROLLER:
             hosts = [h for h in hosts if h._personality and
@@ -90,6 +100,20 @@ class HostsTab(tabs.TableTab):
         else:
             hosts = [h for h in hosts if h._personality and
                      h._personality.lower() == personality]
+
+        # Add patching status data to hosts
+        for h in hosts:
+            for ph in phosts:
+                if h.hostname == ph.hostname:
+                    if ph.interim_state is True:
+                        h.patch_current = "Pending"
+                    elif ph.patch_failed is True:
+                        h.patch_current = "Failed"
+                    else:
+                        h.patch_current = ph.patch_current
+                    h.requires_reboot = ph.requires_reboot
+                    h._patch_state = ph.state
+                    h.allow_insvc_patching = ph.allow_insvc_patching
 
         # Sort hosts by hostname
         hosts.sort(key=lambda f: f.hostname if f.hostname else '')

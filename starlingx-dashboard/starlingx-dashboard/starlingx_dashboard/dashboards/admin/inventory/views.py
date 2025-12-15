@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2025 Wind River Systems, Inc.
+# Copyright (c) 2013-2023 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -182,6 +182,20 @@ class DetailView(tabs.TabbedTableView):
                 # Get K8s labels
                 host.labels = stx_api.sysinv.host_label_list(self.request,
                                                              host.uuid)
+
+                # Add patching status data to hosts
+                phost = stx_api.patch.get_host(self.request, host.hostname)
+                if phost is not None:
+                    if phost.interim_state is True:
+                        host.patch_current = "Pending"
+                    elif phost.patch_failed is True:
+                        host.patch_current = "Failed"
+                    else:
+                        host.patch_current = phost.patch_current
+                    host.requires_reboot = "Yes" if phost.requires_reboot \
+                        else "No"
+                    host._patch_state = phost.state
+                    host.allow_insvc_patching = phost.allow_insvc_patching
 
             except Exception:
                 redirect = reverse('horizon:admin:inventory:index')

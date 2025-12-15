@@ -54,6 +54,7 @@
       - starlingx/ha
       - starlingx/nfv
       - starlingx/root
+      - starlingx/update
       - starlingx/utilities
 
 - job:
