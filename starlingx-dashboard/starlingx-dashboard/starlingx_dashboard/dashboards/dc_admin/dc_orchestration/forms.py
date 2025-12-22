@@ -212,19 +212,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         )
     )
 
-    cert_file = forms.CharField(
-        label=_("Cert File"),
-        required=False,
-        help_text=_("Path to a certificate to upload."),
-        widget=forms.TextInput(
-            attrs={
-                'class': 'switched',
-                'data-switch-on': 'strategy_types',
-                'data-strategy_types-kube-rootca-update': _("Cert File"),
-            }
-        )
-    )
-
     force_kube_rootca = forms.BooleanField(
         label=_("Force"),
         initial=False,
@@ -474,7 +461,6 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 data['subject'] = data['subject'].lower()
                 if data['expiry-date']:
                     data['expiry-date'] = str(data['expiry-date'])
-                data['cert-file'] = data['cert-file'].lower()
                 data['force'] = str(data['force-kube-rootca']).lower()
 
             data.pop('force-kube-rootca', None)
