@@ -379,7 +379,7 @@
         "description": cloud.description,
         "location": cloud.location,
         "group_id": cloud.group_name,
-        };
+      };
 
       var config = {
         title: gettext('Edit Subcloud'),
@@ -390,14 +390,25 @@
 
       var cur_cloud_name = model.name;
 
-      return modalFormService.open(config).then(function(){
-        // Avoids sending the name param when the subcloud name
-        // is the same as the previous one.
-        if(cur_cloud_name == model.name){
-          delete model.name;
-        }
-        return dc_manager.editSubcloud(cloud.subcloud_id, model);
-      });
+      return modalFormService.open(config).then(function () {
+
+        var confirmConfig = {
+          title: gettext('Confirm Subcloud Update'),
+          body: gettext('Do you really want to update the subcloud?'),
+          submit: gettext('Yes'),
+          cancel: gettext('No')
+        };
+
+        simpleModalService.modal(confirmConfig).result.then(function () {
+          // Avoids sending the name param when the subcloud name
+          // is the same as the previous one.
+          if (cur_cloud_name == model.name) {
+            delete model.name;
+          }
+
+          return dc_manager.editSubcloud(cloud.subcloud_id, model);
+        });
+      })
     }
 
     /////////////

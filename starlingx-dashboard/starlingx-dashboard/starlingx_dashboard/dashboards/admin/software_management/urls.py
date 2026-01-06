@@ -1,11 +1,13 @@
 #
-# Copyright (c) 2013-2024 Wind River Systems, Inc.
+# Copyright (c) 2013-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 from django.conf.urls import url
 
+from starlingx_dashboard.dashboards.admin.software_management.views import \
+    ApplySoftwareDeployStrategyView
 from starlingx_dashboard.dashboards.admin.software_management.views import \
     CreateSoftwareDeployStrategyView
 from starlingx_dashboard.dashboards.admin.software_management.views import \
@@ -30,5 +32,8 @@ urlpatterns = [
         name='softwaredeploystagedetail'),
     url(r'^createsoftwaredeploystrategy/$',
         CreateSoftwareDeployStrategyView.as_view(),
-        name='create_software_deploy_strategy')
+        name='create_software_deploy_strategy'),
+    url(r'^applysoftwaredeploystrategy/$',
+        ApplySoftwareDeployStrategyView.as_view(),
+        name='apply_software_deploy_strategy')
 ]

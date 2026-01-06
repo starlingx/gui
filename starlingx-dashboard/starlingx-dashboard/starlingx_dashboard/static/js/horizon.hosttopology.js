@@ -42,6 +42,14 @@ horizon.host_topology = {
     host_name_max_size:20,
     name_suffix:'..'
   },
+  escapeHtml:function(unsafe){
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  },
   init:function() {
     var self = this;
     self.$container = $(self.svg_container);
@@ -329,7 +337,7 @@ horizon.host_topology = {
             .attr('href',"#")
             .attr('class',"list-group-item list-group-item-action")
             .attr("id","net-" + network.name)
-            .append(network.name)
+            .append(self.escapeHtml(network.name))
             .on('click',function(d){
               self.zoom_to(d,network);
               self.select_network(network);

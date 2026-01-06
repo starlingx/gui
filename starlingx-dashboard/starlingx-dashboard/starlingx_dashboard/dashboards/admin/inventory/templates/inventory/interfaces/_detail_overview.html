@@ -37,6 +37,8 @@
     <dt>{% trans "Virtual Function Driver" %}</dt>
     <dd>{{ interface.sriov_vf_driver|default:_("None") }}</dd>
     <dt>{% trans "Max Tx Rate" %}</dt>
-    <dd>{{ interface.max_tx_rate|default:_("None") }}</dd>
+    <dd>{{ interface.max_tx_rate|default_if_none:_("None") }}</dd>
+    <dt>{% trans "Max Rx Rate" %}</dt>
+    <dd>{{ interface.max_rx_rate|default_if_none:_("None") }}</dd>
   </dl>
 </div>

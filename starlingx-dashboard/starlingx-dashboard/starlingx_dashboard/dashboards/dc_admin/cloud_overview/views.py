@@ -70,7 +70,6 @@ class IndexView(views.HorizonTemplateView):
                 "identity",
                 "nfv",
                 "usm",
-                "patching"
             ]
             for subcloud in subclouds:
                 for service in self.request.user.service_catalog:

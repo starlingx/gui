@@ -230,6 +230,7 @@ class UpdateView(forms.ModalFormView):
                 'sriov_vf_driver': interface.sriov_vf_driver,
                 'imtu': interface.imtu,
                 'max_tx_rate': interface.max_tx_rate,
+                'max_rx_rate': interface.max_rx_rate,
                 'ipv4_mode': getattr(interface, 'ipv4_mode', 'disabled'),
                 'ipv4_pool': getattr(interface, 'ipv4_pool', None),
                 'ipv6_mode': getattr(interface, 'ipv6_mode', 'disabled'),

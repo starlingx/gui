@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2024 Wind River Systems, Inc.
+# Copyright (c) 2013-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -17,6 +17,8 @@ from horizon import tables
 from horizon import tabs
 from horizon import views
 from starlingx_dashboard import api as stx_api
+from starlingx_dashboard.dashboards.admin.software_management.forms import \
+    ApplySoftwareDeployStrategyForm
 from starlingx_dashboard.dashboards.admin.software_management.forms import \
     CreateSoftwareDeployStrategyForm
 from starlingx_dashboard.dashboards.admin.software_management.forms import \
@@ -88,6 +90,13 @@ class CreateSoftwareDeployStrategyView(forms.ModalFormView):
         context['alarms'] = len(alarms)
         context['affecting'] = affecting
         return context
+
+
+class ApplySoftwareDeployStrategyView(forms.ModalFormView):
+    form_class = ApplySoftwareDeployStrategyForm
+    template_name = 'admin/software_management/apply_cloud_strategy.html'
+    context_object_name = 'strategy'
+    success_url = reverse_lazy("horizon:admin:software_management:index")
 
 
 class DetailStageView(tables.DataTableView):

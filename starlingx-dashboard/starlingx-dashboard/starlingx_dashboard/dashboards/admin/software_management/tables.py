@@ -490,10 +490,12 @@ class DeleteSoftwareDeployStrategy(DeleteStrategy):
     strategy_name = stx_api.vim.STRATEGY_SW_DEPLOY
 
 
-class ApplyStrategy(tables.Action):
-    requires_input = False
-    disabled = False
+class ApplyStrategy(tables.LinkAction):
+    url = "horizon:admin:software_management:apply_software_deploy_strategy"
     verbose_name = _("Apply Strategy")
+    classes = ("ajax-modal", "btn-confirm")
+    disabled = False
+    requires_input = False
 
     def allowed(self, request, datum):
         try:
@@ -515,20 +517,6 @@ class ApplyStrategy(tables.Action):
             return super(ApplyStrategy, self).get_default_classes()
         except Exception as ex:
             LOG.exception(ex)
-
-    def single(self, table, request, obj_id):
-        try:
-            result = stx_api.vim.apply_strategy(request, self.strategy_name)
-            if result:
-                messages.success(request, "Strategy apply in progress")
-            else:
-                messages.error(request, "Strategy apply failed")
-        except Exception as ex:
-            LOG.exception(ex)
-            messages.error(request, str(ex))
-
-        url = reverse('horizon:admin:software_management:index')
-        return shortcuts.redirect(url)
 
 
 class ApplySoftwareDeployStrategy(ApplyStrategy):

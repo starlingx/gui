@@ -33,9 +33,15 @@ LOG = logging.getLogger(__name__)
 
 
 class CreateDataNetwork(forms.SelfHandlingForm):
-    name = forms.CharField(max_length=255,
-                           label=_("Name"),
-                           required=True)
+    name = forms.RegexField(
+        label=_("Name"),
+        max_length=255,
+        required=True,
+        regex=r'^[\w\.\-]+$',
+        error_messages={
+            'invalid': _('Name may only '
+                         'contain letters, numbers, underscores, '
+                         'periods and hyphens.')})
     description = forms.CharField(max_length=255,
                                   label=_("Description"),
                                   required=False)
@@ -133,9 +139,6 @@ class CreateDataNetwork(forms.SelfHandlingForm):
 
     def clean(self):
         cleaned_data = super(CreateDataNetwork, self).clean()
-        if len(cleaned_data['name'].lstrip()) == 0:
-            raise forms.ValidationError('invalid data network name')
-
         return cleaned_data
 
     def handle(self, request, data):

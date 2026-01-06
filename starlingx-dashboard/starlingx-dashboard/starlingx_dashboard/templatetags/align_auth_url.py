@@ -1,8 +1,10 @@
 #
-# Copyright (c) 2020-2024 Wind River Systems, Inc.
+# Copyright (c) 2020-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
+
+import netaddr
 
 from dcmanagerclient.api.v1 import client
 from django import template
@@ -39,7 +41,10 @@ def align_subcloud_auth_url(context, auth_url):
                                    dcmanager_url=endpoint)
         result = dc_manager.subcloud_manager.\
             subcloud_additional_details(subcloud_name)
-        subcloud_oam_floating_ip = result[0].oam_floating_ip
+        ip = result[0].oam_floating_ip
+        subcloud_oam_floating_ip = (
+            f"[{ip}]" if netaddr.IPAddress(ip).version == 6 else ip
+        )
         return align_ip_port(auth_url, subcloud_oam_floating_ip)
     except Exception:
         return auth_url

@@ -12,6 +12,7 @@ export STX_THEMES_DIR=$(ROOT)/usr/share/openstack-dashboard/themes/starlingx
 export LOCAL_SETTINGS_DIR=$(ROOT)/etc/openstack-dashboard/local_settings.d
 export STX_TEMPLATES_DIR=$(OS_DIR)/starlingx_templates
 export OVERRIDES_DIR=$(OS_DIR)/overrides
+export LOGS_DIR=$(ROOT)/var/log/horizon
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
@@ -39,6 +40,8 @@ override_dh_install:
 
 	install -d -m 755 $(OVERRIDES_DIR)
 	install -p -D -m 755 starlingx_dashboard/overrides/* $(OVERRIDES_DIR)
+
+	install -d -m 755 $(LOGS_DIR)
 
 	dh_install
 
