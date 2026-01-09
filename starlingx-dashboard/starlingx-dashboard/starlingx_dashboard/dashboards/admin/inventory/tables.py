@@ -1,11 +1,10 @@
 #
-# Copyright (c) 2013-2024 Wind River Systems, Inc.
+# Copyright (c) 2013-2025 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 
-import cgcs_patch.constants as patch_constants
 import logging
 
 from django import shortcuts
@@ -610,27 +609,6 @@ class DeployRollbackSoftware(tables.Action):
         LOG.info("End of deploy-rollback-software")
 
 
-class UpdateRow(tables.Row):
-    ajax = True
-
-    def get_data(self, request, host_id):
-        host = stx_api.sysinv.host_get(request, host_id)
-
-        phost = stx_api.patch.get_host(request, host.hostname)
-        if phost is not None:
-            if phost.interim_state is True:
-                host.patch_current = "Pending"
-            elif phost.patch_failed is True:
-                host.patch_current = "Failed"
-            else:
-                host.patch_current = phost.patch_current
-            host.requires_reboot = phost.requires_reboot
-            host._patch_state = phost.state
-            host.allow_insvc_patching = phost.allow_insvc_patching
-
-        return host
-
-
 class HostsStorageFilterAction(tables.FilterAction):
     def filter(self, table, hosts, filter_string):
         """Naive case-insensitive search."""
@@ -714,13 +692,6 @@ def get_task_or_status(host):
         reboot_required = ""
     elif host.patch_current is False:
         patch_current = "Not Patch Current"
-
-    if host._patch_state != patch_constants.PATCH_AGENT_STATE_IDLE:
-        patch_state = str(host.patch_state)
-        if host._patch_state == patch_constants.PATCH_AGENT_STATE_INSTALLING:
-            # Clear the other patch status fields
-            patch_current = ""
-            reboot_required = ""
 
     # Unset duplicate
     if patch_current == patch_state:
@@ -806,7 +777,6 @@ class HostsController(Hosts):
         name = "hostscontroller"
         verbose_name = _("Controller Hosts")
         status_columns = ["task"]
-        row_class = UpdateRow
         multi_select = True
         row_actions = (
             EditHost, LockHost, ForceLockHost, UnlockHost, ForceUnlockHost,
@@ -827,7 +797,6 @@ class HostsStorage(Hosts):
         name = "hostsstorage"
         verbose_name = _("Storage Hosts")
         status_columns = ["task"]
-        row_class = UpdateRow
         multi_select = True
         columns = ('hostname', 'peers', 'admin', 'oper', 'avail',
                    'uptime', 'task')
@@ -848,7 +817,6 @@ class HostsWorker(Hosts):
         name = "hostsworker"
         verbose_name = _("Worker Hosts")
         status_columns = ["task"]
-        row_class = UpdateRow
         multi_select = True
         row_actions = (
             EditHost, LockHost, ForceLockHost, UnlockHost, ForceUnlockHost,
@@ -867,7 +835,6 @@ class HostsUnProvisioned(Hosts):
         name = "hostsunprovisioned"
         verbose_name = _("UnProvisioned Hosts")
         status_columns = ["task"]
-        row_class = UpdateRow
         multi_select = True
         row_actions = (
             EditHost, LockHost, ForceLockHost, UnlockHost, SwactHost,
