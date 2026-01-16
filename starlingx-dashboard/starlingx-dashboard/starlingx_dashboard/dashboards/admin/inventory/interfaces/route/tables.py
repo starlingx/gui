@@ -1,4 +1,4 @@
-# Copyright 2015-2020 Wind River Systems, Inc
+# Copyright 2015-2020, 2026 Wind River Systems, Inc
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -15,8 +15,8 @@
 import logging
 
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import tables
@@ -29,7 +29,7 @@ LOG = logging.getLogger(__name__)
 class DeleteRoute(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Route",
             "Delete Routes",
             count
@@ -37,7 +37,7 @@ class DeleteRoute(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Route",
             "Deleted Routes",
             count

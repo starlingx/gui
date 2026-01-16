@@ -1,11 +1,11 @@
 #
-# Copyright (c) 2016-2019 Wind River Systems, Inc.
+# Copyright (c) 2016-2019, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 
-from django.conf.urls import url
+from django.urls import re_path as url
 
 from starlingx_dashboard.dashboards.admin.host_topology import views
 

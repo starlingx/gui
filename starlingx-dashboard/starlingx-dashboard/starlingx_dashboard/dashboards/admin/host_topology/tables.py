@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2019 Wind River Systems, Inc.
+# Copyright (c) 2016-2019, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,8 +8,8 @@ from horizon import tables
 from horizon.utils import filters as utils_filters
 import logging
 
+from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy
-from django.utils.translation import ugettext_lazy as _
 
 from starlingx_dashboard.dashboards.admin.datanets.datanets.ranges \
     import tables as sr_tables

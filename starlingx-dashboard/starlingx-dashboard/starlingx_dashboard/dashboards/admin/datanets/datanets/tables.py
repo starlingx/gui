@@ -12,15 +12,15 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2019, 2026 Wind River Systems, Inc.
 #
 
 
 import logging
 
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext_lazy as _  # noqa
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _  # noqa
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import tables
@@ -35,7 +35,7 @@ LOG = logging.getLogger(__name__)
 class DeleteDataNetwork(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Data Network",
             "Delete Data Networks",
             count
@@ -43,7 +43,7 @@ class DeleteDataNetwork(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Data Network",
             "Deleted Data Networks",
             count

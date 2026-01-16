@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2022 Wind River Systems, Inc.
+# Copyright (c) 2013-2022, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -9,8 +9,8 @@ import logging
 from django import template
 from django.urls import reverse  # noqa
 from django.utils.text import format_lazy
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import tables
@@ -106,7 +106,7 @@ class SuppressSensorGroup(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Suppress SensorGroup",
             "Suppress SensorGroups",
             count
@@ -114,7 +114,7 @@ class SuppressSensorGroup(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Suppressed SensorGroup",
             "Suppressed SensorGroups",
             count
@@ -141,7 +141,7 @@ class UnSuppressSensorGroup(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "UnSuppress SensorGroup",
             "UnSuppress SensorGroups",
             count
@@ -149,7 +149,7 @@ class UnSuppressSensorGroup(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "UnSuppressed SensorGroup",
             "UnSuppressed SensorGroups",
             count
@@ -293,7 +293,7 @@ class SuppressSensor(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Suppress Sensor",
             "Suppress Sensors",
             count
@@ -301,7 +301,7 @@ class SuppressSensor(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Suppressed Sensor",
             "Suppressed Sensors",
             count
@@ -327,7 +327,7 @@ class UnSuppressSensor(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "UnSuppress Sensor",
             "UnSuppress Sensors",
             count
@@ -335,7 +335,7 @@ class UnSuppressSensor(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "UnSuppressed Sensor",
             "UnSuppressed Sensors",
             count

@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2025 Wind River Systems, Inc.
+# Copyright (c) 2013-2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -10,8 +10,8 @@ import logging
 from django import shortcuts
 from django.template.defaultfilters import safe  # noqa
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import messages
@@ -129,7 +129,7 @@ class EditHost(tables.LinkAction):
 class DeleteHost(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Host",
             "Delete Hosts",
             count
@@ -137,7 +137,7 @@ class DeleteHost(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Host",
             "Deleted Hosts",
             count
@@ -159,7 +159,7 @@ class LockHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Lock Host",
             "Lock Hosts",
             count
@@ -167,7 +167,7 @@ class LockHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Locking Host",
             "Locking Hosts",
             count
@@ -192,7 +192,7 @@ class ForceLockHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Force Lock Host",
             "Force Lock Hosts",
             count
@@ -200,7 +200,7 @@ class ForceLockHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Forced Lock Host",
             "Forced Lock Hosts",
             count
@@ -259,7 +259,7 @@ class UnlockHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Unlock Host",
             "Unlock Hosts",
             count
@@ -267,7 +267,7 @@ class UnlockHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Unlocked Host",
             "Unlocked Hosts",
             count
@@ -293,7 +293,7 @@ class ForceUnlockHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Force Unlock Host",
             "Force Unlock Hosts",
             count
@@ -301,7 +301,7 @@ class ForceUnlockHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Forced Unlock Host",
             "Forced Unlock Hosts",
             count
@@ -332,7 +332,7 @@ class PowerOnHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Power On Host",
             "Power On Hosts",
             count
@@ -340,7 +340,7 @@ class PowerOnHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Powered On Host",
             "Powered On Hosts",
             count
@@ -363,7 +363,7 @@ class PowerOffHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Power Off Host",
             "Power Off Hosts",
             count
@@ -371,7 +371,7 @@ class PowerOffHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Powered Off Host",
             "Powered Off Hosts",
             count
@@ -395,7 +395,7 @@ class ResetHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Reset Host",
             "Reset Hosts",
             count
@@ -403,7 +403,7 @@ class ResetHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Reset Host",
             "Reset Hosts",
             count
@@ -426,7 +426,7 @@ class RebootHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Reboot Host",
             "Reboot Hosts",
             count
@@ -434,7 +434,7 @@ class RebootHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Rebooted Host",
             "Rebooted Hosts",
             count
@@ -456,7 +456,7 @@ class ReinstallHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Reinstall Host",
             "Reinstall Hosts",
             count
@@ -464,7 +464,7 @@ class ReinstallHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Reinstalled Host",
             "Reinstalled Hosts",
             count
@@ -486,7 +486,7 @@ class SwactHost(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Swact Host",
             "Swact Hosts",
             count
@@ -494,7 +494,7 @@ class SwactHost(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Swact Initiated Host",
             "Swact Initiated Hosts",
             count
@@ -518,7 +518,7 @@ class DeploySoftwareAsync(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deploy Software",
             "Deploy Software",
             count
@@ -526,7 +526,7 @@ class DeploySoftwareAsync(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deployed Software",
             "Deployed Software",
             count

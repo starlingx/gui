@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2022 Wind River Systems, Inc.
+# Copyright (c) 2013-2022, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,9 +8,9 @@ import logging
 
 from cgtsclient import exc
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext as __
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext as __
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import tables
 
@@ -341,7 +341,7 @@ class iStoragePoolsTable(tables.DataTable):
 class DeleteSDNController(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete SDN Controller",
             "Delete SDN Controllers",
             count
@@ -349,7 +349,7 @@ class DeleteSDNController(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted SDN Controller",
             "Deleted SDN Controllers",
             count

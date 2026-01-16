@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2022 Wind River Systems, Inc.
+# Copyright (c) 2013-2022, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -10,8 +10,8 @@ import re
 from django import template
 from django.urls import reverse  # noqa
 from django.utils.text import format_lazy
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import tables
@@ -83,7 +83,7 @@ class CreatePartition(tables.LinkAction):
 class DeletePartition(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Partition",
             "Delete Partitions",
             count
@@ -91,7 +91,7 @@ class DeletePartition(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Partition",
             "Deleted Partitions",
             count
@@ -290,7 +290,7 @@ class EditStor(tables.LinkAction):
 class DeleteStor(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Journal",
             "Delete Journals",
             count
@@ -298,7 +298,7 @@ class DeleteStor(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Journal",
             "Deleted Journals",
             count
@@ -406,7 +406,7 @@ class AddLocalVolumeGroup(tables.LinkAction):
 class RemoveLocalVolumeGroup(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Local Volume Group",
             "Delete Local Volume Groups",
             count
@@ -414,7 +414,7 @@ class RemoveLocalVolumeGroup(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Local Volume Group",
             "Deleted Local Volume Groups",
             count
@@ -523,7 +523,7 @@ class AddPhysicalVolume(tables.LinkAction):
 class RemovePhysicalVolume(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Physical Volume",
             "Delete Physical Volumes",
             count
@@ -531,7 +531,7 @@ class RemovePhysicalVolume(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Physical Volume",
             "Deleted Physical Volumes",
             count

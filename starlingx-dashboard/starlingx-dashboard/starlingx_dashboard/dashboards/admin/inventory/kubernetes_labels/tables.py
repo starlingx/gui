@@ -1,15 +1,15 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
-# Copyright (c) 2019 Wind River Systems, Inc.
+# Copyright (c) 2019, 2026 Wind River Systems, Inc.
 # Copyright (C) 2019 Intel Corporation
 #
 
 import logging
 
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import tables
@@ -42,7 +42,7 @@ class AssignKubeLabel(tables.LinkAction):
 class RemoveLabel(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Label",
             "Delete Labels",
             count
@@ -50,7 +50,7 @@ class RemoveLabel(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Label",
             "Deleted Labels",
             count

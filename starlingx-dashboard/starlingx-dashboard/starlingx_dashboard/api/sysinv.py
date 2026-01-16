@@ -10,7 +10,7 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 #
-# Copyright (c) 2013-2023, 2025 Wind River Systems, Inc.
+# Copyright (c) 2013-2023, 2025-2026 Wind River Systems, Inc.
 #
 
 from __future__ import absolute_import
@@ -22,7 +22,7 @@ import math
 from cgtsclient.v1 import client as cgts_client
 from django.conf import settings
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from openstack_dashboard.api import base
 

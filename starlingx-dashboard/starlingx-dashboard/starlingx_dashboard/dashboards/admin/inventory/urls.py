@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2021 Wind River Systems, Inc.
+# Copyright (c) 2013-2021, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -7,7 +7,7 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
 from django.conf.urls import include  # noqa
-from django.conf.urls import url
+from django.urls import re_path as url
 
 from starlingx_dashboard.dashboards.admin.inventory.cpu_functions import \
     views as cpu_functions_views

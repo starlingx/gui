@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2025 Wind River Systems, Inc.
+# Copyright (c) 2013-2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -10,8 +10,8 @@ import logging
 from django import shortcuts
 from django.template.defaultfilters import title  # noqa
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import messages
 from horizon import tables
@@ -35,7 +35,7 @@ class DeleteRelease(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Release",
             "Delete Releases",
             count
@@ -43,7 +43,7 @@ class DeleteRelease(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Release",
             "Deleted Releases",
             count
@@ -76,7 +76,7 @@ class CommitRelease(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Commit Release",
             "Commit Releases",
             count
@@ -84,7 +84,7 @@ class CommitRelease(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Committed Release",
             "Committed Releases",
             count
@@ -573,7 +573,7 @@ class AbortSoftwareDeployStrategy(AbortStrategy):
 class ApplyStage(tables.BatchAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Apply Stage",
             "Apply Stages",
             count
@@ -581,7 +581,7 @@ class ApplyStage(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Applied Stage",
             "Applied Stages",
             count
@@ -641,7 +641,7 @@ class AbortStage(tables.BatchAction):
 
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Abort Stage",
             "Abort Stages",
             count
@@ -649,7 +649,7 @@ class AbortStage(tables.BatchAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Aborted Stage",
             "Aborted Stages",
             count

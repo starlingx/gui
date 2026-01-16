@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018-2024 Wind River Systems, Inc.
+# Copyright (c) 2018-2024, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -9,8 +9,8 @@ import logging
 from django import shortcuts
 from django.template.defaultfilters import safe
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext_lazy
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext_lazy
 
 from horizon import exceptions
 from horizon import messages
@@ -264,7 +264,7 @@ class EditSubcloudStrategyConfig(tables.LinkAction):
 class DeleteSubcloudStrategyConfig(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete Subcloud Strategy Configuration",
             "Delete Subcloud Strategy Configuration",
             count
@@ -272,7 +272,7 @@ class DeleteSubcloudStrategyConfig(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted Subcloud Strategy Configuration",
             "Deleted Subcloud Strategy Configuration",
             count
@@ -336,7 +336,7 @@ class EditSubcloudGroup(tables.LinkAction):
 class DeleteSubcloudGroup(tables.DeleteAction):
     @staticmethod
     def action_present(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Delete SubCloud Group",
             "Delete SubCloud Groups",
             count
@@ -344,7 +344,7 @@ class DeleteSubcloudGroup(tables.DeleteAction):
 
     @staticmethod
     def action_past(count):
-        return ungettext_lazy(
+        return ngettext_lazy(
             "Deleted SubCloud Group",
             "Deleted SubCloud Groups",
             count

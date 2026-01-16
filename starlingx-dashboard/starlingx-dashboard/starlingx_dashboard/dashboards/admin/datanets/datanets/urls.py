@@ -12,12 +12,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 #
-# Copyright (c) 2013-2019 Wind River Systems, Inc.
+# Copyright (c) 2013-2019, 2026 Wind River Systems, Inc.
 #
 
 
 from django.conf.urls import include  # noqa
-from django.conf.urls import url  # noqa
+from django.urls import re_path as url  # noqa
 
 from starlingx_dashboard.dashboards.admin.datanets.datanets.ranges \
     import urls as range_urls

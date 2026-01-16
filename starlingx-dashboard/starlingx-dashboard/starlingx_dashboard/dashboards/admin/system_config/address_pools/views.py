@@ -1,4 +1,4 @@
-# Copyright 2015 Wind River Systems, Inc
+# Copyright 2015, 2026 Wind River Systems, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -16,7 +16,7 @@
 import logging
 
 from django.urls import reverse  # noqa
-from django.utils.translation import ugettext_lazy as _  # noqa
+from django.utils.translation import gettext_lazy as _  # noqa
 
 from horizon import exceptions
 from horizon import forms

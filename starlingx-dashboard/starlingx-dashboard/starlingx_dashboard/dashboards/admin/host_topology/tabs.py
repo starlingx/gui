@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 Wind River Systems, Inc.
+# Copyright (c) 2016-2019, 2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -8,7 +8,7 @@ from collections import OrderedDict
 import logging
 
 from django.urls import reverse_lazy  # noqa
-from django.utils.translation import ugettext_lazy as _  # noqa
+from django.utils.translation import gettext_lazy as _  # noqa
 
 from horizon import exceptions
 from horizon import tabs
