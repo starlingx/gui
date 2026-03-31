@@ -24,11 +24,16 @@
     height: 100%;
     width: 100%;
     display: table;
-
     #content_body {
       width: 100%;
       display: table-cell;
       padding-left: 0px;
       vertical-align: top;
+    }
+}
+
+@media (min-width: 768px) {
+    #main_content #content_body {
+        padding-left: 220px;
     }
 }
