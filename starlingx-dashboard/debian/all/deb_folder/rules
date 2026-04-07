@@ -9,6 +9,7 @@ export OS_DIR=$(DATA_DIR)/openstack_dashboard
 
 export ENABLED_DIR=$(OS_DIR)/enabled
 export STX_THEMES_DIR=$(ROOT)/usr/share/openstack-dashboard/themes/starlingx
+export BASIC_THEMES_DIR=$(ROOT)/usr/share/openstack-dashboard/themes/basic
 export LOCAL_SETTINGS_DIR=$(ROOT)/etc/openstack-dashboard/local_settings.d
 export STX_TEMPLATES_DIR=$(OS_DIR)/starlingx_templates
 export OVERRIDES_DIR=$(OS_DIR)/overrides
@@ -30,6 +31,10 @@ override_dh_install:
 	install -d -m 755 $(STX_THEMES_DIR)
 	cp -R starlingx_dashboard/themes/starlingx/* $(STX_THEMES_DIR)
 	chmod -R 755 $(STX_THEMES_DIR)/*
+
+	install -d -m 755 $(BASIC_THEMES_DIR)
+	cp -R starlingx_dashboard/themes/basic/* $(BASIC_THEMES_DIR)
+	chmod -R 755 $(BASIC_THEMES_DIR)/*
 
 	install -d -m 755 $(LOCAL_SETTINGS_DIR)
 	install -p -D -m 755 starlingx_dashboard/local/local_settings.d/* $(LOCAL_SETTINGS_DIR)

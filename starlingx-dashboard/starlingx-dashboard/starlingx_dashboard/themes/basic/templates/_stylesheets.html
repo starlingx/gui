@@ -1,0 +1,22 @@
+<!-- Favicon and stylesheets (do not remove the CSS/compress blocks) -->
+{% load compress %}
+{% load themes %}
+
+{% compress css %}
+<link href='{{ STATIC_URL }}horizon/lib/bootstrap_datepicker/datepicker3.css' type='text/css' media='screen' rel='stylesheet' />
+<link href='{{ STATIC_URL }}horizon/lib/rickshaw/rickshaw.css' type='text/css' media='screen' rel='stylesheet' />
+{% endcompress %}
+
+
+{% current_theme as current_theme %}
+{% theme_dir as theme_dir %}
+
+{% with THEME=current_theme THEME_DIR=theme_dir %}
+{% compress css %}
+  <style type="text/scss">
+    {% include 'themes/themes.scss' %}
+  </style>
+{% endcompress %}
+{% endwith %}
+
+<link rel="shortcut icon" href="{% themable_asset 'img/favicon.png' %}"/>

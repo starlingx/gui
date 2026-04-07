@@ -1,0 +1,16 @@
+/* Custom branding styles
+ *
+ * This file is required in the tarball even if empty.
+ * Use this for CSS overrides that go beyond variable changes.
+ */
+/* Top-left navbar logo (logo.png)
+ * Navbar height is controlled by $navbar-height in _variables.scss (default: 36px)
+ * Use width: auto to preserve aspect ratio
+ */
+ /*.navbar-brand .openstack-logo { height: 26px; width: auto; } */ 
+/* Login/splash page logo (logo-splash.png)
+ * Use width/height to set actual size
+ * Use max-width to cap size relative to login panel (default: 65%)
+ * Use height: auto to preserve aspect ratio
+ */
+/*.login .splash-logo { width: 200px; height: auto; max-width: 65%; } */

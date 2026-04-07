@@ -1,5 +1,6 @@
 usr/lib/python3/dist-packages/openstack_dashboard/enabled
 usr/share/openstack-dashboard/themes/starlingx
+usr/share/openstack-dashboard/themes/basic
 etc/openstack-dashboard/local_settings.d
 usr/lib/python3/dist-packages/openstack_dashboard/starlingx_templates/*
 usr/lib/python3/dist-packages/openstack_dashboard/overrides/*

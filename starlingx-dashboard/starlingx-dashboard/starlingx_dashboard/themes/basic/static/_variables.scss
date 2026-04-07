@@ -1,0 +1,44 @@
+@import "../default/variables";
+
+/* Common custom theme variables
+ *
+ * This file is required in the tarball even if empty.
+ * Override Bootstrap/Horizon selected variables by uncommenting and adjusting values.
+ *
+ * Note: Use SCSS syntax ($variable, semicolons required).
+ * For more customization options, check full variable reference: /usr/share/openstack-dashboard/themes/default/_variables.scss
+ */
+
+/* Brand colors (buttons, links, alerts) */
+/* $brand-primary: #428bca; */
+/* $brand-success: #5cb85c; */
+/* $brand-info: #5bc0de; */
+/* $brand-warning: #f0ad4e; */
+/* $brand-danger: #d9534f; */
+
+/* Page background and text */
+/* $body-bg: #fff; */
+/* $text-color: #333; */
+/* $link-color: $brand-primary; */
+
+/* Navbar */
+/* $navbar-height: 36px; */
+/* $navbar-default-bg: #eee; */
+/* $navbar-default-color: #333; */
+/* $navbar-default-border: #ccc; */
+
+/* Sidebar */
+/* $navbar-inverse-bg: #222; */
+/* $navbar-inverse-link-color: #999; */
+
+/* Font sizes */
+/* $font-size-base: 13px; */
+/* $font-size-large: 16px; */
+/* $font-size-small: 11px; */
+
+/* Spacing */
+/* $padding-base-vertical: 6px; */
+/* $padding-base-horizontal: 12px; */
+
+/* Border radius */
+/* $border-radius-base: 4px; */
