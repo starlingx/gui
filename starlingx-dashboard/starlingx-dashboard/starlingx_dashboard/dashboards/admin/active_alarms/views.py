@@ -36,7 +36,8 @@ class BannerView(views.HorizonTemplateView):
 
         context = super(BannerView, self).get_context_data(**kwargs)
 
-        if not self.request.is_ajax():
+        if not self.request.headers.get('x-requested-with') \
+                == 'XMLHttpRequest':
             raise exceptions.NotFound()
 
         if not self.request.user.is_authenticated:
