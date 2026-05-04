@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) 2018-2019 Wind River Systems, Inc.
+ *  Copyright (c) 2018-2019, 2026  Wind River Systems, Inc.
  *
  *  SPDX-License-Identifier: Apache-2.0
  *
@@ -39,7 +39,7 @@
 
     function getAlarmSummary() {
       return apiService.get('/api/fm/alarm_summary/')
-        .error(function () {
+        .catch(function () {
           toastService.clearErrors();
           toastService.add('error', gettext("Unable to retrieve alarm summary."));
         });
@@ -48,7 +48,7 @@
     function getAlarms() {
       var results = apiService.get('/api/fm/alarm_list/')
       return results
-        .error(function () {
+        .catch(function () {
           toastService.clearErrors();
           toastService.add('error', gettext("Unable to retrieve alarms."));
         });
@@ -57,7 +57,7 @@
     function getAlarm(uuid) {
       var results =  apiService.get('/api/fm/alarm_get/' + uuid)
       return results
-        .error(function() {
+        .catch(function() {
           var msg = gettext("Unable to retrieve alarm with uuid: %(uuid)s.");
           toastService.add('error', interpolate(msg, {uuid: uuid}, true));
         });
@@ -69,7 +69,7 @@
     function getEvents() {
       var results = apiService.get('/api/fm/event_log_list/')
       return results
-        .error(function () {
+        .catch(function () {
           toastService.clearErrors();
           toastService.add('error', gettext("Unable to retrieve events."));
         });
@@ -78,7 +78,7 @@
     function getEvent(uuid) {
       var results =  apiService.get('/api/fm/event_log_get/' + uuid)
       return results
-        .error(function() {
+        .catch(function() {
           var msg = gettext("Unable to retrieve event with uuid: %(uuid)s.");
           toastService.add('error', interpolate(msg, {uuid: uuid}, true));
         });
@@ -96,7 +96,7 @@
       var results = apiService.get(query_string);
 
       return results
-        .error(function () {
+        .catch(function () {
           toastService.clearErrors();
           toastService.add('error', gettext("Unable to retrieve events suppression."));
         });
