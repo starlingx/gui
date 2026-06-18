@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2025 Wind River Systems, Inc.
+ * Copyright (c) 2017-2026 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -169,9 +169,9 @@
     function getData() {
       // Fetch subcloud data to populate the table
       $q.all([
-        dc_manager.getSubCloudGroups().success(getSubCloudGroupsSuccess),
-        dc_manager.getSubClouds().success(getSubCloudsSuccess),
-        dc_manager.getSummaries().success(getSummariesSuccess)
+        dc_manager.getSubCloudGroups().then(function(response) { getSubCloudGroupsSuccess(response.data); }),
+        dc_manager.getSubClouds().then(function(response) { getSubCloudsSuccess(response.data); }),
+        dc_manager.getSummaries().then(function(response) { getSummariesSuccess(response.data); })
       ]).then(function(){
         map_subclouds();
       })
@@ -430,7 +430,7 @@
         return;
       }
 
-      keystone.getCurrentUserSession().success(function(session){
+      keystone.getCurrentUserSession().then(function(session){
         session.available_services_regions.indexOf(cloud.region_name)
         if (session.available_services_regions.indexOf(cloud.region_name) > -1) {
           $cookies.put("subcloud_" + cloud.region_name, cloud.name);
@@ -439,7 +439,8 @@
           toast.add('error', ctrl.endpointErrorMsg);
           // TODO(tsmith) should we force a logout here with an reason message?
         }
-      }).error(function(error) {
+      }).catch(function(response) {
+        var error = response.data;
         toast.add('error',
             gettext("Could not retrieve current user's session."));
       });
@@ -458,14 +459,15 @@
         return;
       }
 
-      keystone.getCurrentUserSession().success(function(session){
+      keystone.getCurrentUserSession().then(function(session){
         if (session.available_services_regions.indexOf(cloud.region_name) > -1) {
           $cookies.put("subcloud_" + cloud.region_name, cloud.name);
           $window.location.href = "/auth/switch_services_region/"+ cloud.region_name + "/?next=/admin/";
         } else {
           toast.add('error', ctrl.endpointErrorMsg);
         }
-      }).error(function(error) {
+      }).catch(function(response) {
+        var error = response.data;
         toast.add('error',
             gettext("Could not retrieve current user's session."));
       });

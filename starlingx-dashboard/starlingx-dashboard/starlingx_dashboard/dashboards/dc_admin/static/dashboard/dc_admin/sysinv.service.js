@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 Wind River Systems, Inc.
+ * Copyright (c) 2017-2026 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -38,7 +38,7 @@
 
     function getSystem() {
       return apiService.get('/api/sysinv/system/')
-        .error(function () {
+        .catch(function () {
           toastService.clearErrors();
           toastService.add('error', gettext("Unable to retrieve the System Controller's system."));
         });

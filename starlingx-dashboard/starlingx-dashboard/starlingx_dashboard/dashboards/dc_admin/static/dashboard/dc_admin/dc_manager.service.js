@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2021 Wind River Systems, Inc.
+ * Copyright (c) 2017-2026 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -44,7 +44,8 @@
 
     function getSummaries() {
       return apiService.get('/api/dc_manager/alarm_summaries/')
-        .error(function (error) {
+        .catch(function (response) {
+        var error = response.data;
 
           toastService.clearErrors();
 
@@ -77,7 +78,9 @@
           data: model,
         }
       )
-      .error(function (error, status) {
+      .catch(function (response) {
+        var error = response.data;
+        var status = response.status;
         var msg;
         if (error.indexOf("<html") !== -1 || error.indexOf("<?xml") !== -1) {
           msg = "HTTP Error Code: " + status;
@@ -89,7 +92,7 @@
         toastService.clearErrors();
         toastService.add('error', gettext(msg));
       })
-      .success(function () {
+      .then(function () {
         toastService.clearErrors();
         toastService.add('success', gettext('Subcloud created succesfully.'));
       });
@@ -110,7 +113,9 @@
           updated: updated
         }
       )
-      .error(function (error, status) {
+      .catch(function (response) {
+        var error = response.data;
+        var status = response.status;
         var msg;
         if (error.indexOf("<html") !== -1 || error.indexOf("<?xml") !== -1) {
           msg = "HTTP Error Code: " + status;
@@ -121,14 +126,15 @@
         toastService.clearErrors();
         toastService.add('error', gettext(msg));
       })
-      .success(function () {
+      .then(function () {
         toastService.add('success', gettext('Subcloud edited succesfully.'));
       });
     }
 
     function getSubClouds() {
       return apiService.get('/api/dc_manager/subclouds/')
-        .error(function (error) {
+        .catch(function (response) {
+        var error = response.data;
           toastService.clearErrors();
 
           // We do this check to prevent the user from seeing a popup with this
@@ -156,7 +162,9 @@
      */
     function deleteSubcloud(subcloud_id, suppressError) {
       return apiService.delete('/api/dc_manager/subclouds/' + subcloud_id)
-      .error(function (error, status) {
+      .catch(function (response) {
+        var error = response.data;
+        var status = response.status;
         toastService.clearErrors();
         toastService.add('error', gettext(error));
       });
@@ -173,7 +181,9 @@
      */
     function generateConfig(subcloud_id, data) {
       var response = apiService.get('/api/dc_manager/subclouds/' + subcloud_id + '/generate-config/', {params: data})
-      .error(function (error, status) {
+      .catch(function (response) {
+        var error = response.data;
+        var status = response.status;
         var msg;
         if (error.indexOf("<html") !== -1 || error.indexOf("<?xml") !== -1) {
           msg = "HTTP Error Code: " + status;
@@ -194,7 +204,8 @@
 
     function getSubCloudGroups() {
       return apiService.get('/api/dc_manager/subcloud-groups/')
-        .error(function (error) {
+        .catch(function (response) {
+        var error = response.data;
           toastService.clearErrors();
         });
     }
