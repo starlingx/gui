@@ -344,7 +344,8 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switchable switched',
                 'data-slug': 'ipv4_mode',
                 'data-switch-on': 'ifclass',
-                'data-ifclass-data': 'IPv4 Addressing Mode'}))
+                'data-ifclass-data': 'IPv4 Addressing Mode',
+                'data-ifclass-platform': 'IPv4 Addressing Mode'}))
 
     ipv4_pool = forms.ChoiceField(
         label=_("IPv4 Address Pool"),
@@ -367,6 +368,7 @@ class AddInterface(forms.SelfHandlingForm):
                 'data-slug': 'ipv6_mode',
                 'data-switch-on': 'ifclass',
                 'data-ifclass-data': 'IPv6 Addressing Mode',
+                'data-ifclass-platform': 'IPv6 Addressing Mode',
                 'data-ifclass-control': 'IPv6 Addressing Mode'}))
 
     ipv6_pool = forms.ChoiceField(
@@ -538,7 +540,7 @@ class AddInterface(forms.SelfHandlingForm):
         if ifclass != 'platform':
             cleaned_data['networks'] = []
 
-        if ifclass != 'data':
+        if ifclass not in ['data', 'platform']:
             cleaned_data.pop('ipv4_mode', None)
             cleaned_data.pop('ipv6_mode', None)
 
