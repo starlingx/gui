@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019-2025 Wind River Systems, Inc.
+# Copyright (c) 2019-2026 Wind River Systems, Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -189,6 +189,30 @@ try:
 except Exception:
     pass
 
+
+# WebSSO Configuration for OIDC/DEX federation
+WEBSSO_ENABLED = True
+
+WEBSSO_CHOICES = (
+    ("credentials", "Keystone Credentials"),
+    ("oidc", "Login with DEX SSO"),
+)
+
+WEBSSO_INITIAL_CHOICE = "credentials"
+
+WEBSSO_IDP_MAPPING = {
+    "oidc": ("dex", "openid"),
+}
+
+OPENSTACK_KEYSTONE_FEDERATION_MANAGEMENT = True
+
+WEBSSO_KEYSTONE_URL = "https://%s:5000/v3" % OPENSTACK_HOST
+
+WEBSSO_DEFAULT_REDIRECT_LOGOUT = (
+    "https://%s:5000/oauth2/sign_out"
+    "?rd=https://%s:8443/auth/login/"
+    % (OPENSTACK_HOST, OPENSTACK_HOST)
+)
 
 # Override LOGGING settings
 LOGGING['formatters']['standard'] = {  # noqa
