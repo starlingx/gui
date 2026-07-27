@@ -206,14 +206,6 @@ WEBSSO_IDP_MAPPING = {
 
 OPENSTACK_KEYSTONE_FEDERATION_MANAGEMENT = True
 
-WEBSSO_KEYSTONE_URL = "https://%s:5000/v3" % OPENSTACK_HOST
-
-WEBSSO_DEFAULT_REDIRECT_LOGOUT = (
-    "https://%s:5000/oauth2/sign_out"
-    "?rd=https://%s:8443/auth/login/"
-    % (OPENSTACK_HOST, OPENSTACK_HOST)
-)
-
 # Override LOGGING settings
 LOGGING['formatters']['standard'] = {  # noqa
     'format':
