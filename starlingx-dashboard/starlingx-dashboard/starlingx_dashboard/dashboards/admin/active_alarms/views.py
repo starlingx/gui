@@ -42,20 +42,27 @@ class BannerView(views.HorizonTemplateView):
 
         if not self.request.user.is_authenticated:
             context["alarmbanner"] = False
-        elif 'dc_admin' in self.request.META.get('HTTP_REFERER'):
-            summaries = self.get_subcloud_data()
-            central_summary = self.get_data()
-            summaries.append(central_summary)
-            context["dc_admin"] = True
-            context["alarmbanner"] = True
-            context["OK"] = len(
-                [s for s in summaries if s.status == 'OK'])
-            context["degraded"] = len(
-                [s for s in summaries if s.status == 'degraded'])
-            context["critical"] = len(
-                [s for s in summaries if s.status == 'critical'])
-            context["disabled"] = len(
-                [s for s in summaries if s.status == 'disabled'])
+        elif 'dc_admin' in self.request.META.get('HTTP_REFERER', ''):
+            try:
+                summaries = self.get_subcloud_data()
+                central_summary = self.get_data()
+                summaries.append(central_summary)
+                context["dc_admin"] = True
+                context["alarmbanner"] = True
+                context["OK"] = len(
+                    [s for s in summaries if s.status == 'OK'])
+                context["degraded"] = len(
+                    [s for s in summaries if s.status == 'degraded'])
+                context["critical"] = len(
+                    [s for s in summaries if s.status == 'critical'])
+                context["disabled"] = len(
+                    [s for s in summaries if s.status == 'disabled'])
+            except exceptions.ServiceCatalogException:
+                # dcmanager is only present in the SystemController scope;
+                # HTTP_REFERER can still mention dc_admin right after a
+                # region switch to a regular region.
+                context["summary"] = self.get_data()
+                context["alarmbanner"] = True
         elif (is_service_enabled(self.request, 'platform') or
                 self.request.user.is_authenticated):
             context["summary"] = self.get_data()
