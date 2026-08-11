@@ -50,6 +50,19 @@ horizon.host_topology = {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
   },
+  _getCookie:function(name){
+    var match = document.cookie.match(new RegExp(
+      '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+    if (!match) { return null; }
+    try {
+      return JSON.parse(decodeURIComponent(match[1]));
+    } catch (e) {
+      return null;
+    }
+  },
+  _setCookie:function(name, value){
+    document.cookie = name + '=' + encodeURIComponent(JSON.stringify(value)) + ';path=/';
+  },
   init:function() {
     var self = this;
     self.$container = $(self.svg_container);
@@ -70,12 +83,12 @@ horizon.host_topology = {
     svg.on("mousewheel.zoom", null);
 
     // Initialize label toggle button
-    var labels = horizon.cookies.get('host_topo_labels');
+    var labels = horizon.host_topology._getCookie('host_topo_labels');
     if (labels && (labels === "visible" || labels === "hidden")) {
       self.labels = labels;
     } else {
       self.labels = "visible";
-      horizon.cookies.put('host_topo_labels',self.labels);
+      horizon.host_topology._setCookie('host_topo_labels',self.labels);
     }
     $('#toggleLabels > .btn').each(function(){
       var $this = $(this);
@@ -96,7 +109,7 @@ horizon.host_topology = {
         self.labels = "visible"
       }
       $('.port_text, .lldp_text').attr("visibility", self.labels);
-      horizon.cookies.put('host_topo_labels',self.labels);
+      horizon.host_topology._setCookie('host_topo_labels',self.labels);
 
       $('#toggleLabels > .btn').each(function(){
         var $this = $(this);
@@ -483,7 +496,7 @@ horizon.host_topology = {
 
     self.load_detail(true);
 
-    horizon.cookies.put('host_topo_selected', "#host_list a#host-"+host.hostname);
+    horizon.host_topology._setCookie('host_topo_selected', "#host_list a#host-"+host.hostname);
   },
   select_network:function(network, scroll) { // pick a network from it's list
     scroll = typeof b !== 'undefined' ? b : false;
@@ -509,7 +522,7 @@ horizon.host_topology = {
     });
     self.load_detail(true);
 
-    horizon.cookies.put('host_topo_selected', "#network_list a#net-"+network.name);
+    horizon.host_topology._setCookie('host_topo_selected', "#network_list a#net-"+network.name);
   },
   zoom_to:function(d, entity) {
     var self = this;
@@ -571,7 +584,7 @@ horizon.host_topology = {
     d3.selectAll('svg#topology_canvas .network-name').transition().duration(700)
           .attr('y',-new_y + 20);
 
-    horizon.cookies.put('host_topo_position', translate);
+    horizon.host_topology._setCookie('host_topo_position', translate);
   },
   zoomed:function(given_translate) {
     if (typeof given_translate !== 'undefined')
@@ -595,7 +608,7 @@ horizon.host_topology = {
       this.$svg_canvas.find('.network-name').attr('y', -5);
     }
 
-    horizon.cookies.put('host_topo_position', translate);
+    horizon.host_topology._setCookie('host_topo_position', translate);
   },
   add_glow:function(entity) {
     if (entity.hostname){
@@ -894,8 +907,8 @@ horizon.host_topology = {
     $('.port_text, .lldp_text').attr("visibility", self.labels);
 
     // Load any saved entity or zoom position or update the zoom to the starting location
-    var translate = horizon.cookies.get('host_topo_position');
-    var selected = horizon.cookies.get('host_topo_selected');
+    var translate = horizon.host_topology._getCookie('host_topo_position');
+    var selected = horizon.host_topology._getCookie('host_topo_selected');
     if (selected && self.selected_entity == null) {
       $(selected).click();
     }
