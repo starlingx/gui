@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-2019, 2025 Wind River Systems, Inc.
+ * Copyright (c) 2017-2019, 2025-2026 Wind River Systems, Inc.
 *
 * SPDX-License-Identifier: Apache-2.0
 *
@@ -67,8 +67,8 @@
     function getData() {
       // Fetch central cloud data to populate the table
       $q.all([
-        sysinv.getSystem().success(getSystemSuccess),
-        fm.getAlarmSummary().success(getAlarmSummarySuccess)
+        sysinv.getSystem().then(function(response) { getSystemSuccess(response.data); }),
+        fm.getAlarmSummary().then(function(response) { getAlarmSummarySuccess(response.data); })
       ]).then(function(){
         angular.extend(ctrl.centralClouds[0], ctrl.alarmSummary);
       })
