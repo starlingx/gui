@@ -187,7 +187,7 @@
       // attribute is_managed.
       function modifyItem(item) {
         var group = ctrl.subCloudGroups.find(element => element.group_id === item.group_id)
-        item.group_name = group.name
+        item.group_name = group ? group.name : '';
          if (item.management_state == 'managed') {
             item.is_managed = true;
           }
