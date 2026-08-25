@@ -431,8 +431,7 @@
       }
 
       keystone.getCurrentUserSession().then(function(session){
-        session.available_services_regions.indexOf(cloud.region_name)
-        if (session.available_services_regions.indexOf(cloud.region_name) > -1) {
+        if (session.data.available_services_regions.indexOf(cloud.region_name) > -1) {
           $cookies.put("subcloud_" + cloud.region_name, cloud.name);
           $window.location.href = "/auth/switch_services_region/"+ cloud.region_name + "/?next=/admin/active_alarms/";
         } else {
@@ -460,7 +459,7 @@
       }
 
       keystone.getCurrentUserSession().then(function(session){
-        if (session.available_services_regions.indexOf(cloud.region_name) > -1) {
+        if (session.data.available_services_regions.indexOf(cloud.region_name) > -1) {
           $cookies.put("subcloud_" + cloud.region_name, cloud.name);
           $window.location.href = "/auth/switch_services_region/"+ cloud.region_name + "/?next=/admin/";
         } else {
