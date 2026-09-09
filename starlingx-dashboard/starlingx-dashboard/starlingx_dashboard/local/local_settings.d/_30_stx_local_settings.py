@@ -112,8 +112,10 @@ FILE_UPLOAD_TEMP_DIR = "/scratch/horizon"
 # Override openstack-dashboard NG_CACHE_TEMPLATE_AGE
 NG_TEMPLATE_CACHE_AGE = 300
 
-# Conf file location on CentOS
-POLICY_FILES_PATH = "/etc/openstack-dashboard"
+# Policy files location. The python3-django-horizon package installs both
+# the top-level *_policy.yaml files and the default_policies/ directory
+# (read by Horizon 25.3.0/Epoxy) under /etc/openstack-dashboard/policy.
+POLICY_FILES_PATH = "/etc/openstack-dashboard/policy"
 
 # Settings for OperationLogMiddleware
 OPERATION_LOG_ENABLED = True
