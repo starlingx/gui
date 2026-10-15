@@ -9,7 +9,9 @@ Build-Depends: debhelper-compat (= 13),
  python3-pbr,
  python3-wheel,
  python3-pip,
- openstack-dashboard
+ openstack-dashboard,
+ python3-babel,
+ gettext
 Standards-Version: 4.1.2
 Homepage: https://www.starlingx.io
 
