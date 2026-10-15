@@ -163,7 +163,8 @@ class CreateProviderNetworkRange(forms.SelfHandlingForm):
     def clean(self):
         cleaned_data = super(CreateProviderNetworkRange, self).clean()
         if not cleaned_data["shared"] and not cleaned_data["tenant_id"]:
-            msg = "Project must be specified for non-shared Segmentation Range"
+            msg = _("Project must be specified for"
+                    " non-shared Segmentation Range")
             raise forms.ValidationError(msg)
         if cleaned_data["shared"]:
             cleaned_data["tenant_id"] = ""

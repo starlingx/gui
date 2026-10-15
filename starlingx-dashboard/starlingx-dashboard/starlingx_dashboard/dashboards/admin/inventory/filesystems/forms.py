@@ -72,7 +72,7 @@ class UpdateFilesystems(forms.SelfHandlingForm):
         min_value=0)
 
     failure_url = 'horizon:admin:inventory:detail'
-    failure_message = 'Failed to update host filesystems configuration.'
+    failure_message = _('Failed to update host filesystems configuration.')
 
     def __init__(self, request, *args, **kwargs):
         super(UpdateFilesystems, self).__init__(request, *args, **kwargs)

@@ -148,9 +148,9 @@ def check_core_functions(personality, icpus):
     # No limiations for shared_vcpu cores
     error_string = ""
     if platform_cores == 0:
-        error_string = "There must be at least one" \
-                       " core for %s." % PLATFORM_CPU_TYPE_FORMAT
+        error_string = _("There must be at least one"
+                         " core for %s.") % PLATFORM_CPU_TYPE_FORMAT
     elif 'worker' in personality and vm_cores == 0:
-        error_string = "There must be at least one" \
-                       " core for %s." % APPLICATION_CPU_TYPE_FORMAT
+        error_string = _("There must be at least one"
+                         " core for %s.") % APPLICATION_CPU_TYPE_FORMAT
     return error_string

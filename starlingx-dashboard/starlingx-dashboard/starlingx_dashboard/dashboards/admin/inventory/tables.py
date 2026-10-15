@@ -683,15 +683,15 @@ def get_task_or_status(host):
             task_or_status = host.vim_progress_status
 
     if host.requires_reboot is True:
-        reboot_required = "Reboot Required"
+        reboot_required = _("Reboot Required")
     if host.patch_current == "Failed":
-        patch_current = "Patch Install Failed"
+        patch_current = _("Patch Install Failed")
     elif host.patch_current == "Pending":
-        patch_current = "Checking Patch State..."
+        patch_current = _("Checking Patch State...")
         # Clear the reboot_required for the Pending state
         reboot_required = ""
     elif host.patch_current is False:
-        patch_current = "Not Patch Current"
+        patch_current = _("Not Patch Current")
 
     # Unset duplicate
     if patch_current == patch_state:

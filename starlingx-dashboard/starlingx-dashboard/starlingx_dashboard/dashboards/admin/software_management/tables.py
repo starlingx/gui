@@ -474,9 +474,9 @@ class DeleteStrategy(tables.Action):
             result = stx_api.vim.delete_strategy(request, self.strategy_name,
                                                  self.force)
             if result:
-                messages.success(request, "Strategy Deleted")
+                messages.success(request, _("Strategy Deleted"))
             else:
-                messages.error(request, "Strategy delete failed")
+                messages.error(request, _("Strategy delete failed"))
         except Exception as ex:
             LOG.exception(ex)
             messages.error(request, str(ex))
@@ -529,8 +529,8 @@ class AbortStrategy(tables.Action):
     disabled = False
     action_type = 'danger'
     verbose_name = _("Abort Strategy")
-    confirm_message = "You have selected Abort Strategy. " \
-                      "Please confirm your selection"
+    confirm_message = _("You have selected Abort Strategy. "
+                        "Please confirm your selection")
 
     def allowed(self, request, datum):
         try:
@@ -555,9 +555,9 @@ class AbortStrategy(tables.Action):
         try:
             result = stx_api.vim.abort_strategy(request, self.strategy_name)
             if result:
-                messages.success(request, "Strategy abort in progress")
+                messages.success(request, _("Strategy abort in progress"))
             else:
-                messages.error(request, "Strategy abort failed")
+                messages.error(request, _("Strategy abort failed"))
         except Exception as ex:
             LOG.exception(ex)
             messages.error(request, str(ex))
@@ -616,11 +616,12 @@ class ApplyStage(tables.BatchAction):
                                                     self.strategy_name,
                                                     stage_id)
                 if result is None:
-                    messages.error(request, "Strategy stage %s apply failed" %
+                    messages.error(request,
+                                   _("Strategy stage %s apply failed") %
                                    stage_id)
                 else:
                     messages.success(request,
-                                     "Strategy stage %s apply in progress" %
+                                     _("Strategy stage %s apply in progress") %
                                      stage_id)
             except Exception as ex:
                 LOG.exception(ex)
@@ -677,10 +678,10 @@ class AbortStage(tables.BatchAction):
                                                     stage_id)
                 if result is None:
                     messages.error(request,
-                                   "Strategy stage %s abort in progress" %
+                                   _("Strategy stage %s abort in progress") %
                                    stage_id)
                 else:
-                    messages.success(request, "Strategy stage %s aborted" %
+                    messages.success(request, _("Strategy stage %s aborted") %
                                      stage_id)
             except Exception as ex:
                 LOG.exception(ex)

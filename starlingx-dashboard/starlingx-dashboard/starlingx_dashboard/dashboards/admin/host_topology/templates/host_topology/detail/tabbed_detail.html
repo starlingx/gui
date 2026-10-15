@@ -2,9 +2,9 @@
 
 
 {% if host %}
-<h4>Selected Entity: <a href="{% url 'horizon:admin:inventory:detail' host.id %}" >{{host.hostname}}</a></h4>
+<h4>{% trans "Selected Entity:" %} <a href="{% url 'horizon:admin:inventory:detail' host.id %}" >{{host.hostname}}</a></h4>
 {% else %}
-<h4>Selected Entity: <a href="{% url 'horizon:admin:datanets:datanets:detail' datanet.id %}" >{{datanet.name}}</a></h4>
+<h4>{% trans "Selected Entity:" %} <a href="{% url 'horizon:admin:datanets:datanets:detail' datanet.id %}" >{{datanet.name}}</a></h4>
 {% endif %}
 
 {% block main %}

@@ -392,7 +392,9 @@ horizon.host_topology = {
               this.responseText.indexOf('login-title') !== -1) {
             // We've been redirected to a fallback url (full page or login)
             self.$loading_detail_template.hide();
-            $(self.detail_container).html("Error retrieving details from url " + self.detail_url + " Status: " + this.status);
+            $(self.detail_container).html(interpolate(
+              gettext("Error retrieving details from url %(url)s Status: %(status)s"),
+              { url: self.detail_url, status: this.status }, true));
           } else {
             self.detail_callback(self, this.responseText);
             self.$loading_detail_template.hide();
@@ -400,7 +402,9 @@ horizon.host_topology = {
           return;
         };
         self.$loading_detail_template.hide();
-        $(self.detail_container).html("Error retrieving details from url " + self.detail_url + " Status: " + this.status);
+        $(self.detail_container).html(interpolate(
+          gettext("Error retrieving details from url %(url)s Status: %(status)s"),
+          { url: self.detail_url, status: this.status }, true));
       }
     }
     tab = $('#detail_view .nav-tabs li.active a').attr('href');
@@ -740,7 +744,7 @@ horizon.host_topology = {
       });
     host
       .select('.name')
-      .text(function(d) { return d.hostname ? self.string_truncate(d.hostname, element_properties.host_name_max_size) : "Unconfigured";
+      .text(function(d) { return d.hostname ? self.string_truncate(d.hostname, element_properties.host_name_max_size) : gettext("Unconfigured");
       })
       .attr('y',function(d) {
         return element_properties.type_y + d.height - element_properties.default_height + element_properties.hostname_offset;

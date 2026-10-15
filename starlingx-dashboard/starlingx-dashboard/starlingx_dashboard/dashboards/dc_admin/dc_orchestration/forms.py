@@ -29,9 +29,9 @@ class ApplyCloudStrategyForm(forms.SelfHandlingForm):
         try:
             result = api.dc_manager.strategy_apply(request)
             if result:
-                messages.success(request, "Strategy apply in progress")
+                messages.success(request, _("Strategy apply in progress"))
             else:
-                messages.error(request, "Strategy apply failed")
+                messages.error(request, _("Strategy apply failed"))
         except Exception as ex:
             LOG.exception(ex)
             redirect = reverse(self.failure_url)
@@ -481,7 +481,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
 
             response = api.dc_manager.strategy_create(request, data)
             if not response:
-                messages.error(request, "Strategy creation failed")
+                messages.error(request, _("Strategy creation failed"))
         except Exception as ex:
             LOG.exception(ex)
             redirect = reverse(self.failure_url)
@@ -582,8 +582,8 @@ class CreateSubcloudConfigForm(forms.SelfHandlingForm):
 
             response = api.dc_manager.config_update(request, subcloud, data)
             if not response:
-                messages.error(request, "Subcloud Strategy Configuration "
-                                        "creation failed")
+                messages.error(request, _("Subcloud Strategy Configuration "
+                                          "creation failed"))
 
         except exc.APIException as e:
             LOG.error(e.error_message)
@@ -637,8 +637,8 @@ class CreateSubcloudGroupForm(forms.SelfHandlingForm):
 
             response = api.dc_manager.subcloud_group_create(request, **data)
             if not response:
-                messages.error(request, "Subcloud Group "
-                                        "creation failed")
+                messages.error(request, _("Subcloud Group "
+                                          "creation failed"))
             else:
                 msg = (_('Subcloud Group %s was successfully created.') %
                        data['name'])
@@ -699,8 +699,8 @@ class UpdateSubcloudGroupForm(forms.SelfHandlingForm):
             response = api.dc_manager.subcloud_group_update(
                 request, data['group_id'], **data)
             if not response:
-                messages.error(request, "Subcloud Group "
-                                        "update failed")
+                messages.error(request, _("Subcloud Group "
+                                          "update failed"))
             else:
                 msg = (_('Subcloud Group %s was successfully updated.') %
                        group_name)

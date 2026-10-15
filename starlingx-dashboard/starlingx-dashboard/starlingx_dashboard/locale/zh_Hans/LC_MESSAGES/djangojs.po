@@ -1,0 +1,723 @@
+# Chinese (Simplified) translations for starlingx-dashboard.
+# Copyright (C) 2026 StarlingX / OpenStack Foundation
+# This file is distributed under the same license as the starlingx-dashboard
+# project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
+"Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
+"POT-Creation-Date: 2026-10-20 16:34+0000\n"
+"PO-Revision-Date: 2026-10-15 11:03-0300\n"
+"Last-Translator: \n"
+"Language: zh_Hans\n"
+"Language-Team: zh_Hans <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/dc_manager.service.js:57
+msgid "Unable to retrieve the subcloud alarm summaries."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/dc_manager.service.js:97
+msgid "Subcloud created succesfully."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/dc_manager.service.js:130
+msgid "Subcloud edited succesfully."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/dc_manager.service.js:145
+msgid "Unable to retrieve the subclouds."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/sysinv.service.js:43
+msgid "Unable to retrieve the System Controller's system."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/add_subcloud.service.js:36
+#, python-format
+msgid "Subcloud %s was successfully created."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/add_subcloud.service.js:50
+msgid "Create"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:10
+msgid "System Name"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:11
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:137
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:28
+msgid "Alarm Status"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:12
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:314
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:370
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:30
+msgid "Location"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:13
+msgid "Switch to RegionOne"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:40
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:94
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:124
+msgid "Toggle Dropdown"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:61
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:194
+msgid "Alarm Summary"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:66
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:199
+msgid "Critical"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:71
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:204
+msgid "Major"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:76
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:209
+msgid "Minor"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:81
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:214
+msgid "Warning"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:90
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:311
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:367
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:162
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:88
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:107
+msgid "Description"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:92
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:227
+msgid "Software Version"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:94
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:229
+msgid "Created At"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:96
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:231
+msgid "Updated At"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:83
+msgid ""
+"This subcloud's endpoints are not yet accessible by horizon.  Please log "
+"out and log back in to access this subcloud."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:87
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:308
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:364
+msgid "Name"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:92
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:25
+msgid "Management State"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:96
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:160
+msgid "unmanaged"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:97
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:161
+msgid "managed"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:101
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:26
+msgid "Availability Status"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:105
+msgid "online"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:106
+msgid "offline"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:110
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:27
+msgid "Deploy Status"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:114
+msgid "not-deployed"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:115
+msgid "pre-install"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:116
+msgid "pre-install-failed"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:117
+msgid "installing"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:118
+msgid "install-failed"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:119
+msgid "bootstrapping"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:120
+msgid "bootstrap-failed"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:121
+msgid "deploying"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:122
+msgid "deploy-failed"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:123
+msgid "complete"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:127
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:29
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:185
+msgid "Sync Status"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:131
+msgid "unknown"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:132
+msgid "in-sync"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:133
+msgid "out-of-sync"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:141
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:117
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:138
+msgid "critical"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:142
+msgid "degraded"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:143
+msgid "disabled"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:144
+msgid "OK"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:148
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:223
+msgid "Subcloud ID"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:153
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:225
+msgid "Subcloud Group Name"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:255
+msgid "Confirm Subcloud Unmanage"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:257
+#, python-format
+msgid "Are you sure you want to unmanage subcloud %(name)s?"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:259
+msgid "Unmanage"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:260
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/suppress_event.service.js:48
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/unsuppress_event.service.js:48
+msgid "Cancel"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:277
+msgid "Confirm Subcloud Delete"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:278
+#, python-format
+msgid "This will delete subcloud %s, are you sure you want to continue?"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:279
+msgid "Delete"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:280
+msgid "Subcloud delete successful."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:317
+msgid "Management Subnet"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:320
+msgid "Management Start IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:323
+msgid "Management End IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:326
+msgid "Management Gateway IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:329
+msgid "System Controller Gateway IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:345
+msgid "Add Subcloud"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:373
+msgid "Group Name"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:387
+msgid "Edit Subcloud"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:398
+msgid "Confirm Subcloud Update"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:399
+msgid "Do you really want to update the subcloud?"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:400
+msgid "Yes"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:401
+msgid "No"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:426
+msgid ""
+"The subcloud must be in the managed state before you can access detailed "
+"views."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:431
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:459
+msgid "The subcloud must be online before you can access detailed views."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:446
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:473
+msgid "Could not retrieve current user's session."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:454
+msgid ""
+"The subcloud must be in the managed management state before you can "
+"access detailed views."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:24
+msgid "Cloud Name"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:31
+msgid "Switch to Subcloud Region"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:32
+msgid "Actions"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:169
+msgid "Management Network"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:170
+msgid "Subnet"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:172
+msgid "Start IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:174
+msgid "End IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:176
+msgid "Gateway IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:180
+msgid "SystemController Gateway IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:237
+msgid "Subcloud Errors"
+msgstr ""
+
+#: starlingx_dashboard/static/app/core/fault_management/fm.service.js:44
+msgid "Unable to retrieve alarm summary."
+msgstr ""
+
+#: starlingx_dashboard/static/app/core/fault_management/fm.service.js:53
+msgid "Unable to retrieve alarms."
+msgstr ""
+
+#: starlingx_dashboard/static/app/core/fault_management/fm.service.js:61
+#, python-format
+msgid "Unable to retrieve alarm with uuid: %(uuid)s."
+msgstr ""
+
+#: starlingx_dashboard/static/app/core/fault_management/fm.service.js:74
+msgid "Unable to retrieve events."
+msgstr ""
+
+#: starlingx_dashboard/static/app/core/fault_management/fm.service.js:82
+#, python-format
+msgid "Unable to retrieve event with uuid: %(uuid)s."
+msgstr ""
+
+#: starlingx_dashboard/static/app/core/fault_management/fm.service.js:101
+msgid "Unable to retrieve events suppression."
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/hz-resource-table-auto-refresh.controller.js:188
+msgid "Failed to load resources. Please try again."
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:50
+msgid "Active Alarm"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:50
+msgid "Active Alarms"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:98
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:147
+msgid "Alarm ID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:103
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:149
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:114
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:162
+msgid "Entity Instance ID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:108
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:148
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:119
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:161
+msgid "Reason Text"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:113
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:150
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:134
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:163
+msgid "Severity"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:118
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:139
+msgid "major"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:119
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:140
+msgid "minor"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:120
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:141
+msgid "warning"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:124
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:151
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:146
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:164
+msgid "Timestamp"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:129
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:152
+msgid "Management Affecting"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:133
+msgid "True"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:134
+msgid "False"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:138
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:151
+msgid "UUID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:146
+msgid "Alarm UUID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:153
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.service.js:120
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:165
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.service.js:120
+msgid "Suppression Status"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:154
+msgid "Alarm State"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:155
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:168
+msgid "Service Affecting"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:156
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:169
+msgid "Alarm Type"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:157
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:170
+msgid "Probable Cause"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:158
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:171
+msgid "Entity Type ID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:159
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:172
+msgid "Proposed Repair Action"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.module.js:160
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:111
+msgid "IsSuppressed"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.service.js:125
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.service.js:125
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:97
+msgid "suppressed"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/active_alarms.service.js:126
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.service.js:126
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:98
+msgid "unsuppressed"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/panel.html:6
+msgid "Download Active Alarms Data"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/panel.html:7
+#: starlingx_dashboard/static/dashboard/fault_management/events/panel.html:7
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/panel.html:7
+msgid "Export CSV Report"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/active_alarms/details/details.module.js:55
+msgid "Overview"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:48
+msgid "Event"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:48
+msgid "Events"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:100
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:173
+msgid "Event Type"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:104
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:129
+msgid "log"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:105
+msgid "alarm"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:109
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:160
+msgid "ID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:124
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:167
+msgid "State"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:128
+msgid "clear"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:130
+msgid "set"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:142
+msgid "not-applicable"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:159
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:108
+msgid "Event UUID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:166
+msgid "Suppression"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:174
+msgid "_suppression_status"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/events.service.js:127
+msgid "None"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events/panel.html:6
+msgid "Download Event Data"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:52
+msgid "Events Suppression"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:83
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:106
+msgid "Event ID"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:93
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:109
+msgid "Status"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/events_suppression.module.js:110
+msgid "Links"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/panel.html:6
+msgid "Download Events Suppression Data"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/actions.module.js:61
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/suppress_event.service.js:32
+msgid "Suppress Event"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/actions.module.js:71
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/unsuppress_event.service.js:32
+msgid "Unsuppress Event"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/suppress_event.service.js:42
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/unsuppress_event.service.js:42
+#, python-format
+msgid "Confirm %(action)s"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/suppress_event.service.js:44
+#, python-format
+msgid ""
+"You have selected: \"%(alarm_id)s\". Please confirm your selection. "
+"Events with selected Alarm ID will be suppressed."
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/suppress_event.service.js:66
+#, python-format
+msgid "Events %(suppressed)s for Alarm ID: %(alarm_id)s"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/suppress_event.service.js:72
+#, python-format
+msgid "Failed to %(suppressed)s events for Alarm ID: %(alarm_id)s"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/unsuppress_event.service.js:44
+#, python-format
+msgid ""
+"You have selected: \"%(alarm_id)s\". Please confirm your selection. "
+"Events with selected Alarm ID will be unsuppressed."
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/unsuppress_event.service.js:66
+#, python-format
+msgid "Events %(unsuppressed)s for Alarm ID: %(alarm_id)s"
+msgstr ""
+
+#: starlingx_dashboard/static/dashboard/fault_management/events_suppression/actions/unsuppress_event.service.js:72
+#, python-format
+msgid "Failed to %(unsuppressed)s events for Alarm ID: %(alarm_id)s"
+msgstr ""
+
+#: starlingx_dashboard/static/js/horizon.hosttopology.js:396
+#: starlingx_dashboard/static/js/horizon.hosttopology.js:406
+#, python-format
+msgid "Error retrieving details from url %(url)s Status: %(status)s"
+msgstr ""
+
+#: starlingx_dashboard/static/js/horizon.hosttopology.js:747
+msgid "Unconfigured"
+msgstr ""

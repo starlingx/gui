@@ -240,7 +240,7 @@ class UpdatecNTP(forms.SelfHandlingForm):
                                                "leave blank."))
 
     failure_url = 'horizon:admin:system_config:index'
-    failure_message = 'Failed to update NTP configurations.'
+    failure_message = _('Failed to update NTP configurations.')
 
     def __init__(self, request, *args, **kwargs):
         super(UpdatecNTP, self).__init__(request, *args, **kwargs)
@@ -397,7 +397,7 @@ class UpdatecEXT_OAM(forms.SelfHandlingForm):
         mask=False)
 
     failure_url = 'horizon:admin:system_config:index'
-    failure_message = 'Failed to update OAM configuration.'
+    failure_message = _('Failed to update OAM configuration.')
 
     def __init__(self, request, *args, **kwargs):
         super(UpdatecEXT_OAM, self).__init__(request, *args, **kwargs)
@@ -569,7 +569,7 @@ class UpdateiStorage(forms.SelfHandlingForm):
         min_value=0)
 
     failure_url = 'horizon:admin:system_config:index'
-    failure_message = 'Failed to update filesystem configuration.'
+    failure_message = _('Failed to update filesystem configuration.')
 
     def __init__(self, request, *args, **kwargs):
         super(UpdateiStorage, self).__init__(request, *args, **kwargs)
@@ -633,9 +633,9 @@ class UpdateiStoragePools(forms.SelfHandlingForm):
     uuid = forms.CharField(widget=forms.widgets.HiddenInput)
 
     failure_url = 'horizon:admin:system_config:index'
-    failure_message = ('Failed to update size of ceph pools.'
-                       ' Ceph cluster may be down, check cluster status'
-                       ' and try again')
+    failure_message = _('Failed to update size of ceph pools.'
+                        ' Ceph cluster may be down, check cluster status'
+                        ' and try again')
 
     def __init__(self, request, *args, **kwargs):
         super(UpdateiStoragePools, self).__init__(request, *args, **kwargs)

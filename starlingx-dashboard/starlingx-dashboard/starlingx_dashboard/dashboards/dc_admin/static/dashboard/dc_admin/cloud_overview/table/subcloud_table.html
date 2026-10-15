@@ -166,7 +166,7 @@
         <div class="row">
           <dl class="col-sm-4">
             <dl class="dl-horizontal">
-            <h4>Management Network</h4>
+            <h4 translate>Management Network</h4>
             <dt translate>Subnet</dt>
             <dd>{$ cloud.management_subnet $}</dd>
             <dt translate>Start IP</dt>
@@ -182,7 +182,7 @@
           </dl>
 
           <dl class="col-sm-4 dl-horizontal">
-            <h4>Sync Status</h4>
+            <h4 translate>Sync Status</h4>
             <dt ng-repeat-start="status in cloud.endpoint_sync_status | orderBy:'endpoint_type' " class="text-capitalize">{$ status.endpoint_type $}</dt>
             <dd ng-repeat-end>
               <span ng-show="status.sync_status==='out-of-sync'" class="fa fa-circle status-danger"></span>
@@ -191,7 +191,7 @@
               {$ status.sync_status $}
             </dd>
 
-            <h4>Alarm Summary</h4>
+            <h4 translate>Alarm Summary</h4>
             <div ng-show="cloud.status=='disabled'">
               <dd>N/A</dd>
             </div>
@@ -234,7 +234,7 @@
         </div>
         <div class="row">
           <dl class="col-sm-12 dl-horizontal">
-            <h4>Subcloud Errors</h4>
+            <h4 translate>Subcloud Errors</h4>
             <p style="white-space:pre-wrap;">{$ cloud.error_description $}</p>
           </dl>
         </div>
