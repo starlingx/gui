@@ -17,6 +17,7 @@ Homepage: https://www.starlingx.io
 Package: starlingx-dashboard
 Architecture: all
 Depends: ${python3:Depends}, ${misc:Depends},
+ fonts-wqy-zenhei,
  openstack-dashboard
 Description: Stx Horizon plugins
  StarlingX specific Horizon plugins
