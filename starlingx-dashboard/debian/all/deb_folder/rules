@@ -15,11 +15,37 @@ export STX_TEMPLATES_DIR=$(OS_DIR)/starlingx_templates
 export OVERRIDES_DIR=$(OS_DIR)/overrides
 export LOGS_DIR=$(ROOT)/var/log/horizon
 
+# starlingx_dashboard app catalog install location (where Django resolves the
+# installed app's catalogs: <app_package_dir>/locale/<locale>/LC_MESSAGES/<domain>.mo)
+export APP_DIR=$(DATA_DIR)/starlingx_dashboard
+export LOCALE_DIR=$(APP_DIR)/locale
+export LC_DIR=$(LOCALE_DIR)/zh_Hans/LC_MESSAGES
+
 %:
 	dh $@ --with python3 --buildsystem=pybuild
 
 override_dh_install:
 	python3 setup.py install --install-layout=deb --root $(ROOT)
+
+	# Compile the starlingx_dashboard gettext catalogs (domains django and
+	# djangojs, locale zh_Hans) into the installed app tree so the .mo ship in
+	# the .deb (air-gapped: no gettext/Babel on the controller). msgfmt --check
+	# validates each catalog and the build fails loudly, naming the failing
+	# domain; no error is masked (no || true).
+	set -e; \
+	for d in django djangojs; do \
+		src=starlingx_dashboard/locale/zh_Hans/LC_MESSAGES/$$d.po; \
+		if [ ! -f "$$src" ]; then \
+			echo "ERROR: missing zh_Hans catalog for domain '$$d': $$src" >&2; exit 1; \
+		fi; \
+		if ! grep -q '^"Plural-Forms: nplurals=1; plural=0;' "$$src"; then \
+			echo "ERROR: domain '$$d' zh_Hans Plural-Forms header is not 'nplurals=1; plural=0;' in $$src" >&2; exit 1; \
+		fi; \
+		install -d -m 755 $(LC_DIR); \
+		if ! msgfmt --check -o $(LC_DIR)/$$d.mo "$$src"; then \
+			echo "ERROR: msgfmt --check failed for domain '$$d' (catalog $$src)" >&2; exit 1; \
+		fi; \
+	done
 
 	python3 setup.py bdist_wheel \
 		--universal \
