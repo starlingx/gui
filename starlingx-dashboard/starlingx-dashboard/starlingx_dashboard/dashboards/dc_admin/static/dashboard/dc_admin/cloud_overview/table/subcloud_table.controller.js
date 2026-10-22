@@ -252,10 +252,12 @@
 
     function unmanageSubcloud(cloud) {
       var options = {
-        title: 'Confirm Subcloud Unmanage',
-        body: 'Are you sure you want to unmanage subcloud '+cloud.name+'?',
-        submit: 'Unmanage',
-        cancel: 'Cancel'
+        title: gettext('Confirm Subcloud Unmanage'),
+        body: interpolate(
+          gettext('Are you sure you want to unmanage subcloud %(name)s?'),
+          { name: cloud.name }, true),
+        submit: gettext('Unmanage'),
+        cancel: gettext('Cancel')
       };
 
       simpleModalService.modal(options).result.then(function() {
@@ -303,28 +305,28 @@
       properties: {
         "name": {
           type: "string",
-          title: "Name"},
+          title: gettext("Name")},
         "description": {
           type: "string",
-          title: "Description"},
+          title: gettext("Description")},
         "location": {
           type: "string",
-          title: "Location"},
+          title: gettext("Location")},
         "management-subnet": {
           type: "string",
-          title: "Management Subnet"},
+          title: gettext("Management Subnet")},
         "management-start-ip": {
           type: "string",
-          title: "Management Start IP"},
+          title: gettext("Management Start IP")},
         "management-end-ip": {
           type: "string",
-          title: "Management End IP"},
+          title: gettext("Management End IP")},
         "management-gateway-ip": {
           type: "string",
-          title: "Management Gateway IP"},
+          title: gettext("Management Gateway IP")},
         "systemcontroller-gateway-ip": {
           type: "string",
-          title: "System Controller Gateway IP"},
+          title: gettext("System Controller Gateway IP")},
       },
       required: ["name", "management-subnet", "management-start-ip", "management-end-ip", "management-gateway-ip", "systemcontroller-gateway-ip"],
     };
@@ -359,16 +361,16 @@
       properties: {
         "name": {
           type: "string",
-          title: "Name"},
+          title: gettext("Name")},
         "description": {
           type: "string",
-          title: "Description"},
+          title: gettext("Description")},
         "location": {
           type: "string",
-          title: "Location"},
+          title: gettext("Location")},
         "group_id": {
           type: "string",
-          title: "Group Name",
+          title: gettext("Group Name"),
           enum: ctrl.GroupsNames},
       }
     };

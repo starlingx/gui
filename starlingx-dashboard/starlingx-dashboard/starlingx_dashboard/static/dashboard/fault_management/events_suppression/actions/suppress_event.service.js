@@ -29,7 +29,7 @@
       allowed: allowed
     };
 
-    var suppressedText = "Suppress Event";
+    var suppressedText = gettext("Suppress Event");
     var suppressed = "suppressed";
 
     return service;
@@ -39,12 +39,13 @@
       var alarm_id = selected.alarm_id;
 
       var options = {
-        title: 'Confirm ' + suppressedText,
-        body: 'You have selected: "' + alarm_id +
-              '". Please confirm your selection. Events with selected Alarm ID will be ' +
-              suppressed + '.',
+        title: interpolate(gettext('Confirm %(action)s'), { action: suppressedText }, true),
+        body: interpolate(
+          gettext('You have selected: "%(alarm_id)s". Please confirm your selection. ' +
+                  'Events with selected Alarm ID will be suppressed.'),
+          { alarm_id: alarm_id }, true),
         submit: suppressedText,
-        cancel: 'Cancel'
+        cancel: gettext('Cancel')
       };
 
       selected = angular.isArray(selected) ? selected : [selected];

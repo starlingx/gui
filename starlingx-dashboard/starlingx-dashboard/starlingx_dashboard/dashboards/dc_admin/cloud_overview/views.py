@@ -48,7 +48,7 @@ def _build_endpoint(endpoint_url, subcloud_ip, region_name):
 
 class IndexView(views.HorizonTemplateView):
     template_name = 'dc_admin/cloud_overview/index.html'
-    page_title = 'Cloud Overview'
+    page_title = _('Cloud Overview')
 
     def get_subclouds(self):
         try:

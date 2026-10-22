@@ -43,7 +43,7 @@ class IndexView(tabs.TabbedTableView):
 class DetailReleaseView(views.HorizonTemplateView):
     template_name = 'admin/software_management/_detail_releases.html'
     failure_url = 'horizon:admin:software_management:index'
-    page_title = 'Release Detail'
+    page_title = _('Release Detail')
 
     def get_context_data(self, **kwargs):
         context = super(DetailReleaseView, self).get_context_data(**kwargs)
@@ -101,7 +101,7 @@ class ApplySoftwareDeployStrategyView(forms.ModalFormView):
 
 class DetailStageView(tables.DataTableView):
     template_name = 'admin/software_management/_detail_stage.html'
-    page_title = 'Stage Detail'
+    page_title = _('Stage Detail')
 
     def get_context_data(self, **kwargs):
         context = super(DetailStageView, self).get_context_data(**kwargs)

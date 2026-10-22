@@ -289,10 +289,10 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
                 release=release, rollback=rollback,
                 delete=delete, snapshot=snapshot)
             if not response:
-                messages.error(request, "Strategy creation failed")
+                messages.error(request, _("Strategy creation failed"))
         except Exception:
             redirect = reverse(self.failure_url)
-            exceptions.handle(request, "Strategy creation failed",
+            exceptions.handle(request, _("Strategy creation failed"),
                               redirect=redirect)
         return True
 
@@ -305,9 +305,9 @@ class ApplySoftwareDeployStrategyForm(forms.SelfHandlingForm):
         try:
             result = stx_api.vim.apply_strategy(request, self.strategy_name)
             if result:
-                messages.success(request, "Strategy apply in progress")
+                messages.success(request, _("Strategy apply in progress"))
             else:
-                messages.error(request, "Strategy apply failed")
+                messages.error(request, _("Strategy apply failed"))
         except Exception as ex:
             LOG.exception(ex)
             redirect = reverse(self.failure_url)

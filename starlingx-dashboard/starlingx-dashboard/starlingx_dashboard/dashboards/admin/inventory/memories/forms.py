@@ -88,7 +88,7 @@ class UpdateMemory(forms.SelfHandlingForm):
         label=_("Application Huge Pages 1G/2M Setting Type"),
         required=False,
         choices=APP_HP_SETTING_CHOICES,
-        help_text="Take Application Hugepages as a Percentage or Integer.",
+        help_text=_("Take Application Hugepages as a Percentage or Integer."),
         widget=forms.ThemableSelectWidget(
             attrs={
                 'class': 'switchable',
@@ -357,10 +357,10 @@ class UpdateMemory(forms.SelfHandlingForm):
                     vm_1G_field = field_set['vm_hugepages_nr_1G']
                     vm_1g_supported = m.vm_hugepages_use_1G != 'False'
                     if vm_1g_supported:
-                        help_msg = 'Maximum 1G pages: ' + \
-                                   str(m.vm_hugepages_possible_1G)
+                        help_msg = _('Maximum 1G pages: %s') % \
+                            m.vm_hugepages_possible_1G
                     else:
-                        help_msg = 'This node does not support 1G hugepages'
+                        help_msg = _('This node does not support 1G hugepages')
 
                     vm_1G_field.help_text = help_msg
 

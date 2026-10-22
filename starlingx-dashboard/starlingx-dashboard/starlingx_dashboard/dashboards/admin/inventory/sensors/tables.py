@@ -197,12 +197,12 @@ class RelearnSensorModel(tables.Action):
     icon = "refresh"
     action_type = 'danger'
     verbose_name = _("Relearn Sensor Model")
-    confirm_message = "This operation will delete this sensor model." \
-                      "All alarm assertions against this model will be " \
-                      "cleared. Any sensor suppression settings at the " \
-                      "group or sensor levels will be lost. " \
-                      "Will attempt to preserve customized group actions " \
-                      "and monitor interval in new model."
+    confirm_message = _("This operation will delete this sensor model."
+                        "All alarm assertions against this model will be "
+                        "cleared. Any sensor suppression settings at the "
+                        "group or sensor levels will be lost. "
+                        "Will attempt to preserve customized group actions "
+                        "and monitor interval in new model.")
 
     def allowed(self, request, datum):
         bm_type = self.table.kwargs['host'].bm_type

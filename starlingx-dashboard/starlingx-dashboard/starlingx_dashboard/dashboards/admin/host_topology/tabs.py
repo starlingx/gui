@@ -65,7 +65,7 @@ class OverviewTab(tabs.TableTab):
     table_classes = (tables.ProviderNetworkRangeTable,
                      pn_tables.ProviderNetworkTenantNetworkTable)
     template_name = 'admin/host_topology/detail/datanet.html'
-    name = "Data Network Detail"
+    name = _("Data Network Detail")
     slug = 'datanet_details_overview'
     failure_url = reverse_lazy('horizon:admin:host_topology:index')
 

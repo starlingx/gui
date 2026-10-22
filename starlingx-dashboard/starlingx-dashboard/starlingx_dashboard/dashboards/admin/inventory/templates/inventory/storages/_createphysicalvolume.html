@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block modal-footer %}
-  <a class="btn btn-default cancel" data-dismiss="modal">Cancel</a>
+  <a class="btn btn-default cancel" data-dismiss="modal">{% trans "Cancel" %}</a>
   <input class="btn btn-primary pull-right" type="submit" onclick="return confirm_pv_device()" value="{% trans "Create Physical Volume" %}" />
 {% endblock %}
 
