@@ -9,11 +9,13 @@
         - gui-tox-linters
         - gui-tox-pep8
         - gui-tox-pylint
+        - gui-tox-i18n
     gate:
       jobs:
         - gui-tox-linters
         - gui-tox-pep8
         - gui-tox-pylint
+        - gui-tox-i18n
     post:
       jobs:
         - stx-gui-upload-git-mirror
@@ -56,6 +58,19 @@
       - starlingx/root
       - starlingx/utilities
 
+- job:
+    name: gui-tox-i18n
+    parent: tox
+    description: |
+      Run the i18n message-extraction check and the translation
+      infrastructure unit tests. Uses the plugin's own tox.ini with its own
+      pinned deps (Babel, Django 4.2, horizon 25.3.0, setuptools<81), so it
+      must not receive the repo-wide upper-constraints file.
+    nodeset: debian-trixie-8GB
+    pre-run: playbooks/install-i18n-deps.yaml
+    vars:
+      tox_envlist: i18n-check,i18n-test
+      zuul_work_dir: '{{ zuul.project.src_dir }}/starlingx-dashboard/starlingx-dashboard'  # yamllint disable-line rule:line-length
 - job:
     name: stx-gui-upload-git-mirror
     parent: upload-git-mirror

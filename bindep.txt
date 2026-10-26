@@ -4,3 +4,4 @@
 libsasl2-dev [pylint platform:dpkg]
 libldap2-dev [pylint platform:dpkg]
 libssl-dev [pylint platform:dpkg]
+gettext [i18n platform:dpkg]
