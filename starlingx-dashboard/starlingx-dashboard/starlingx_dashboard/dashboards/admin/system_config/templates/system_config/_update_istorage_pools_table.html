@@ -57,7 +57,7 @@
   <p>{% trans "A quota value of 0 will allow the storage associated with that pool to consume all available space in the tier." %}</p>
   {% if tier_name == 'storage'  %}
       <p>{% trans "A quota value of 0 is not allowed for the cinder, glance or kube pool." %}</p>
-      <p>{% trans "The sum of the desired quotas must equal 100% of the cluster size." %}</p>
+      <p>{% trans "The sum of the desired quotas must equal 100 percent of the cluster size." %}</p>
   {% else  %}
       <p>{% trans "A quota value of 0 is allowed for the cinder or kube pool." %}</p>
   {% endif  %}

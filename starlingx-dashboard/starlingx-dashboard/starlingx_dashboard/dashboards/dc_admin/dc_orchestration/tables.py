@@ -287,8 +287,8 @@ class DeleteSubcloudStrategyConfig(tables.DeleteAction):
         try:
             api.dc_manager.config_delete(request, config)
         except Exception:
-            msg = _('Failed to delete configuration for subcloud %(cloud)') % \
-                {'cloud': config, }
+            msg = (_('Failed to delete configuration for subcloud %(cloud)s')
+                   % {'cloud': config})
             redirect = reverse('horizon:dc_admin:dc_orchestration:index')
             exceptions.handle(request, msg, redirect=redirect)
 
@@ -359,7 +359,7 @@ class DeleteSubcloudGroup(tables.DeleteAction):
         try:
             api.dc_manager.subcloud_group_delete(request, group)
         except Exception:
-            msg = _('Failed to delete group %(name)') % \
+            msg = _('Failed to delete group %(name)s') % \
                 {'name': group, }
             redirect = reverse('horizon:dc_admin:dc_orchestration:index')
             exceptions.handle(request, msg, redirect=redirect)

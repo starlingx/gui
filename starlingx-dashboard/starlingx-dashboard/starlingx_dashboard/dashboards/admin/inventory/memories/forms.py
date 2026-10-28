@@ -98,7 +98,7 @@ class UpdateMemory(forms.SelfHandlingForm):
     )
 
     vm_hugepages_nr_2M = forms.CharField(
-        label=_("% of Application 2M Hugepages Node 0"),
+        label=_("Percentage of Application 2M Hugepages Node 0 (%)"),
         required=False,
         widget=forms.TextInput(
             attrs={

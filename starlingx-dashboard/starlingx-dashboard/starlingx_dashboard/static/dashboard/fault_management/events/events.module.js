@@ -171,7 +171,7 @@
       entity_type_id: { label: gettext('Entity Type ID'), filters: ['noValue'] },
       proposed_repair_action: { label: gettext('Proposed Repair Action'), filters: ['noValue'] },
       event_type: { label: gettext('Event Type'), filters: ['noValue'] },
-      _suppression_status: { label: gettext('_suppression_status'), filters: ['noValue'] }
+      _suppression_status: { label: gettext('Suppressed'), filters: ['noValue'] }
     };
   }
 
