@@ -1,0 +1,11 @@
+---
+# The zuul-jobs "tox" parent job does not run bindep, so gettext (msgfmt,
+# needed by the i18n-test env) must be installed explicitly.
+- hosts: all
+  become: true
+  tasks:
+    - name: Install gettext for msgfmt
+      apt:
+        name: gettext
+        state: present
+        update_cache: true
