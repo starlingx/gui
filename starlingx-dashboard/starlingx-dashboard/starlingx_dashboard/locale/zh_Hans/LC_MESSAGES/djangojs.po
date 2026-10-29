@@ -43,7 +43,7 @@ msgstr ""
 msgid "Subcloud %s was successfully created."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/add_subcloud.service.js:50
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/add_subcloud.service.js:49
 msgid "Create"
 msgstr ""
 
