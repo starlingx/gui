@@ -6051,6 +6051,14 @@ msgstr ""
 msgid "Fault Management"
 msgstr ""
 
+#: starlingx_dashboard/local/local_settings.d/_30_stx_local_settings.py:200
+msgid "Keystone Credentials"
+msgstr ""
+
+#: starlingx_dashboard/local/local_settings.d/_30_stx_local_settings.py:201
+msgid "Login with DEX SSO"
+msgstr ""
+
 #: starlingx_dashboard/themes/starlingx/templates/500.html:23
 msgid "Server error"
 msgstr ""

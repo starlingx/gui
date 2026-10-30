@@ -7,6 +7,7 @@
 import logging
 import os
 
+from django.utils.translation import gettext_lazy as _
 from openstack_dashboard.settings import HORIZON_CONFIG
 from openstack_dashboard.settings import ROOT_PATH
 from openstack_dashboard.settings import TEMPLATES
@@ -196,8 +197,8 @@ except Exception:
 WEBSSO_ENABLED = True
 
 WEBSSO_CHOICES = (
-    ("credentials", "Keystone Credentials"),
-    ("oidc", "Login with DEX SSO"),
+    ("credentials", _("Keystone Credentials")),
+    ("oidc", _("Login with DEX SSO")),
 )
 
 WEBSSO_INITIAL_CHOICE = "credentials"
