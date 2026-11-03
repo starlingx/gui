@@ -8,7 +8,6 @@ import logging
 
 from cgtsclient import exc
 from django.urls import reverse  # noqa
-from django.utils.translation import gettext as __
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import ngettext_lazy
 
@@ -197,45 +196,45 @@ class UpdateOAMRow(tables.Row):
 class cOAMTable(tables.DataTable):
     region_config = tables.Column(
         'region_config',
-        verbose_name=__('OAM Region Config'),
+        verbose_name=_('OAM Region Config'),
         hidden=True)
 
     oam_subnet = tables.Column(
         'oam_subnet',
         # link="horizon:admin:system_config:detail_cdns",
-        verbose_name=__('OAM Subnet'))
+        verbose_name=_('OAM Subnet'))
 
     oam_floating_ip = tables.Column(
         'oam_floating_ip',
         # link="horizon:admin:system_config:detail_cdns",
-        verbose_name=__('OAM Floating IP'))
+        verbose_name=_('OAM Floating IP'))
 
     oam_gateway_ip = tables.Column(
         'oam_gateway_ip',
         # link="horizon:admin:system_config:detail_cdns",
-        verbose_name=__('OAM Gateway IP'))
+        verbose_name=_('OAM Gateway IP'))
 
     oam_c0_ip = tables.Column(
         'oam_c0_ip',
         # link="horizon:admin:system_config:detail_cdns",
-        verbose_name=__('OAM controller-0 IP'))
+        verbose_name=_('OAM controller-0 IP'))
 
     oam_c1_ip = tables.Column(
         'oam_c1_ip',
-        verbose_name=__('OAM controller-1 IP'))
+        verbose_name=_('OAM controller-1 IP'))
 
     # This is optional for non region config
     oam_start_ip = tables.Column(
         'oam_start_ip',
         # hidden=(region_config.transform.strip() == "True"),
         hidden=True,
-        verbose_name=__('OAM Start IP'))
+        verbose_name=_('OAM Start IP'))
 
     oam_end_ip = tables.Column(
         'oam_end_ip',
         # hidden=(region_config.transform.strip() != "True"),
         hidden=True,
-        verbose_name=__('OAM End IP'))
+        verbose_name=_('OAM End IP'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
@@ -247,7 +246,7 @@ class cOAMTable(tables.DataTable):
         super(cOAMTable, self).__init__(request, *args, **kwargs)
 
         if stx_api.sysinv.is_system_mode_simplex(request):
-            self.columns['oam_floating_ip'].verbose_name = __('OAM IP')
+            self.columns['oam_floating_ip'].verbose_name = _('OAM IP')
             del self.columns['oam_c0_ip']
             del self.columns['oam_c1_ip']
 
