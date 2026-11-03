@@ -40,6 +40,10 @@
               <dd>{{ strategy.extra_args | get_value:"subject" }}</dd>
               <dt>{% trans "Expiry Date" %}</dt>
               <dd>{{ strategy.extra_args | get_value:"expiry-date" }}</dd>
+              <dt>{% trans "Algorithm" %}</dt>
+              <dd>{{ strategy.extra_args | get_value:"algorithm" }}</dd>
+              <dt>{% trans "Key Size" %}</dt>
+              <dd>{{ strategy.extra_args | get_value:"key-size" }}</dd>
             {% elif strategy.strategy_type == 'prestage' %}
               <dt>{% trans "For Software Deploy" %}</dt>
               <dd>{{ strategy.extra_args|get_value:"for_sw_deploy" }}</dd>
