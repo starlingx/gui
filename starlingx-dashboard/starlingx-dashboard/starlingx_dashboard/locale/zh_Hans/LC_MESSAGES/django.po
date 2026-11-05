@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
-"POT-Creation-Date: 2026-10-20 16:34+0000\n"
+"POT-Creation-Date: 2026-11-03 13:30+0000\n"
 "PO-Revision-Date: 2026-10-15 11:03-0300\n"
 "Last-Translator: \n"
-"Language: zh_Hans\n"
 "Language-Team: zh_Hans <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "Generated-By: Babel 2.18.0\n"
 
 #: starlingx_dashboard/api/sysinv.py:105
@@ -185,7 +185,7 @@ msgid "Degraded"
 msgstr ""
 
 #: starlingx_dashboard/api/sysinv.py:889
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:34
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:33
 msgid "Failed"
 msgstr ""
 
@@ -339,8 +339,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/system_config/address_pools/forms.py:44
 #: starlingx_dashboard/dashboards/admin/system_config/address_pools/tables.py:85
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:29
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:52
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:396
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:51
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:395
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_detail_sdn_controller_table.html:7
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:607
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:668
@@ -353,7 +353,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:93
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:169
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:34
-msgid "Name may only contain letters, numbers, underscores, periods and hyphens."
+msgid ""
+"Name may only contain letters, numbers, underscores, periods and hyphens."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:46
@@ -388,7 +389,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:36
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_detail_releases.html:34
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:38
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:61
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:60
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_create_sdn_controller_table.html:17
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cdns_table.html:17
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cntp_table.html:17
@@ -416,11 +417,11 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:55
 msgid ""
-"Specifies the maximum MTU value of any associated tenant network.  Worker"
-" node data interface MTU values must be large enough to support the "
-"tenant MTU plus any additional provider encapsulation headers.  For "
-"example, VXLAN provider MTU of 1500 requires a minimum data interface MTU"
-" of 1574 bytes (1600 bytes is recommended."
+"Specifies the maximum MTU value of any associated tenant network.  Worker "
+"node data interface MTU values must be large enough to support the tenant "
+"MTU plus any additional provider encapsulation headers.  For example, VXLAN "
+"provider MTU of 1500 requires a minimum data interface MTU of 1574 bytes "
+"(1600 bytes is recommended."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:62
@@ -511,7 +512,8 @@ msgid "Failed to create data network %s"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:189
-msgid "Specifies the minimum interface MTU required to support this data network "
+msgid ""
+"Specifies the minimum interface MTU required to support this data network "
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:204
@@ -718,8 +720,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/templates/datanets/datanets/_create.html:18
 msgid ""
-"You can create a provider network and later segment this network for "
-"access by one or more tenant networks."
+"You can create a provider network and later segment this network for access "
+"by one or more tenant networks."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/templates/datanets/datanets/_create.html:23
@@ -748,13 +750,12 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:42
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/lvg/_edit.html:41
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_apply_cloud_strategy.html:27
-#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_create_software_deploy_strategy.html:33
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_upload_release.html:25
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_create_sdn_controller_table.html:23
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cdns_table.html:23
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cntp_table.html:25
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_coam_table.html:25
-#: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:76
+#: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:75
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:37
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:43
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_sdn_controller_table.html:27
@@ -993,8 +994,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/host_topology/templates/host_topology/index.html:25
 msgid ""
-"Select a host or datanet to view its details.  The current view can be "
-"moved by clicking and dragging."
+"Select a host or datanet to view its details.  The current view can be moved "
+"by clicking and dragging."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/host_topology/templates/host_topology/detail/tabbed_detail.html:5
@@ -1075,12 +1076,12 @@ msgstr[0] ""
 #: starlingx_dashboard/dashboards/admin/inventory/tables.py:221
 #, python-format
 msgid ""
-"<b>WARNING</b>: This will cause an uncontrolled switch of services on "
-"host '%s'.\n"
+"<b>WARNING</b>: This will cause an uncontrolled switch of services on host "
+"'%s'.\n"
 "\n"
-"To avoid service outages, click 'Cancel' and use 'Lock Host' to "
-"gracefully migrate resources away from this host. ONLY use 'Force Lock "
-"Host' if 'Lock Host' is unsuccessful and this host MUST be locked.\n"
+"To avoid service outages, click 'Cancel' and use 'Lock Host' to gracefully "
+"migrate resources away from this host. ONLY use 'Force Lock Host' if 'Lock "
+"Host' is unsuccessful and this host MUST be locked.\n"
 "\n"
 "If you proceed, then this action will be logged and cannot be undone."
 msgstr ""
@@ -1091,9 +1092,9 @@ msgid ""
 "<b>WARNING</b>: This will cause a service OUTAGE for all Applications "
 "currently using resources on '%s'.\n"
 "\n"
-"To avoid service outages, click 'Cancel' and use 'Lock Host' to "
-"gracefully migrate resources away from this host. ONLY use 'Force Lock "
-"Host' if 'Lock Host' is unsuccessful and this host MUST be locked.\n"
+"To avoid service outages, click 'Cancel' and use 'Lock Host' to gracefully "
+"migrate resources away from this host. ONLY use 'Force Lock Host' if 'Lock "
+"Host' is unsuccessful and this host MUST be locked.\n"
 "\n"
 "If you proceed, then this action will be logged and cannot be undone."
 msgstr ""
@@ -1101,12 +1102,12 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/tables.py:243
 #, python-format
 msgid ""
-"<b>WARNING</b>: This will cause an uncontrolled loss of storage services "
-"on host '%s'.\n"
+"<b>WARNING</b>: This will cause an uncontrolled loss of storage services on "
+"host '%s'.\n"
 "\n"
-"To avoid service outages, click 'Cancel' and use 'Lock Host' to "
-"gracefully migrate resources away from this host. ONLY use 'Force Lock "
-"Host' if 'Lock Host' is unsuccessful and this host MUST be locked.\n"
+"To avoid service outages, click 'Cancel' and use 'Lock Host' to gracefully "
+"migrate resources away from this host. ONLY use 'Force Lock Host' if 'Lock "
+"Host' is unsuccessful and this host MUST be locked.\n"
 "\n"
 "If you proceed, then this action will be logged and cannot be undone."
 msgstr ""
@@ -1137,8 +1138,8 @@ msgid ""
 "<b>WARNING</b>: This will render '%s' in a bad state which may require a "
 "reinstall or wipedisk.\n"
 "\n"
-"To avoid it, click 'Cancel' and use 'Unlock Host'. ONLY use 'Force Unlock"
-" Host' if 'Unlock Host' is unsuccessful and this host MUST be unlocked.\n"
+"To avoid it, click 'Cancel' and use 'Unlock Host'. ONLY use 'Force Unlock "
+"Host' if 'Unlock Host' is unsuccessful and this host MUST be unlocked.\n"
 "\n"
 "If you proceed, then this action will be logged and cannot be undone."
 msgstr ""
@@ -1476,9 +1477,9 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:217
 msgid ""
-"Enable serial line data carrier detection. When selected, dropping "
-"carrier detect on the serial port revoke any active session and a new "
-"login process is initiated when a new connection is detected."
+"Enable serial line data carrier detection. When selected, dropping carrier "
+"detect on the serial port revoke any active session and a new login process "
+"is initiated when a new connection is detected."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:33
@@ -1489,8 +1490,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:230
 msgid ""
 "From here you can update the configuration of the current host.\n"
-"Note: this will not affect the resources allocated to any existing "
-"instances using this host until the host is rebooted."
+"Note: this will not affect the resources allocated to any existing instances "
+"using this host until the host is rebooted."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:285
@@ -1543,7 +1544,8 @@ msgid "Installation Parameters"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:381
-msgid "From here you can update the installation parameters of the current host."
+msgid ""
+"From here you can update the installation parameters of the current host."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:88
@@ -1592,8 +1594,7 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:527
 msgid ""
-"From here you can add the configuration for the board management "
-"controller."
+"From here you can add the configuration for the board management controller."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:536
@@ -1627,7 +1628,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cdns_table.html:24
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cntp_table.html:29
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_coam_table.html:29
-#: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:77
+#: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:76
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:41
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:50
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_system.html:24
@@ -1780,7 +1781,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/devices/tables.py:77
 #: starlingx_dashboard/dashboards/admin/storage_overview/tables.py:13
 #: starlingx_dashboard/dashboards/admin/storage_overview/tables.py:30
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:402
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:401
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_detail_sdn_controller_table.html:9
 msgid "Host"
 msgstr ""
@@ -1919,7 +1920,7 @@ msgid "Update Filesystems"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/filesystems/tables.py:35
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:276
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:275
 msgid "Size (GiB)"
 msgstr ""
 
@@ -2179,8 +2180,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:408
 msgid ""
-"Allowed maximum receive bandwidth, in Mbps, for the specified vlan, "
-"ethernet or ae type. Setting this parameter to 0 disables rate limiting."
+"Allowed maximum receive bandwidth, in Mbps, for the specified vlan, ethernet "
+"or ae type. Setting this parameter to 0 disables rate limiting."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:411
@@ -2206,7 +2207,8 @@ msgid "Maximum Virtual Functions"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:1014
-msgid "pci-passthrough or pci-sriov can only be set on ethernet or VF interfaces"
+msgid ""
+"pci-passthrough or pci-sriov can only be set on ethernet or VF interfaces"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:1071
@@ -2361,7 +2363,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/route/forms.py:72
 #, python-format
-msgid "Route to %(network)s/%(prefix)s via %(gateway)s was successfully created"
+msgid ""
+"Route to %(network)s/%(prefix)s via %(gateway)s was successfully created"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/route/tables.py:33
@@ -2567,8 +2570,7 @@ msgid "Take Application Hugepages as a Percentage or Integer."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:101
-#, python-format
-msgid "% of Application 2M Hugepages Node 0"
+msgid "Application 2M Hugepages Node 0 (%)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:113
@@ -2902,8 +2904,8 @@ msgstr[0] ""
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:124
 #, python-format
 msgid ""
-"<b>WARNING</b>: This operation will suppress actions for sensorgroup "
-"'%s'.  This will affect all sensors in this sensorgroup."
+"<b>WARNING</b>: This operation will suppress actions for sensorgroup '%s'.  "
+"This will affect all sensors in this sensorgroup."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:145
@@ -2922,10 +2924,10 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:200
 msgid ""
-"This operation will delete this sensor model.All alarm assertions against"
-" this model will be cleared. Any sensor suppression settings at the group"
-" or sensor levels will be lost. Will attempt to preserve customized group"
-" actions and monitor interval in new model."
+"This operation will delete this sensor model.All alarm assertions against "
+"this model will be cleared. Any sensor suppression settings at the group or "
+"sensor levels will be lost. Will attempt to preserve customized group "
+"actions and monitor interval in new model."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:228
@@ -3585,7 +3587,7 @@ msgid "Updated TimeStamp"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:45
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:400
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:399
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_detail_sdn_controller_table.html:15
 msgid "Administrative State"
 msgstr ""
@@ -3753,8 +3755,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_update.html:19
 msgid ""
-"Note: this will not affect the resources allocated to any existing "
-"instances using this host."
+"Note: this will not affect the resources allocated to any existing instances "
+"using this host."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/banner.html:5
@@ -3766,7 +3768,8 @@ msgid "Inventory Details"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/cpu_functions/_update.html:17
-msgid "From here you can update the configuration of the current CPU Assignments."
+msgid ""
+"From here you can update the configuration of the current CPU Assignments."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/devices/_detail_overview.html:3
@@ -3860,7 +3863,7 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/filesystems/update_filesystems_table.html:3
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/filesystems/update_filesystems_table.html:6
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:102
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:101
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_istorage_table.html:6
 msgid "Edit Filesystem"
 msgstr ""
@@ -3916,14 +3919,14 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/interfaces/address/_create.html:18
 msgid ""
 "You can create an IP address for a data interface.  The address must not "
-"overlap with any other address on this same host that are part of the "
-"same IP subnet."
+"overlap with any other address on this same host that are part of the same "
+"IP subnet."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/interfaces/route/_create.html:18
 msgid ""
-"You can create an IP route for a data interface.  The gateway address "
-"must be reachable via one of the local interface addresses."
+"You can create an IP route for a data interface.  The gateway address must "
+"be reachable via one of the local interface addresses."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/kubelabels/_assignkubelabel.html:7
@@ -4665,7 +4668,7 @@ msgid "Release Details"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_detail_releases.html:16
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:64
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:63
 #: starlingx_dashboard/dashboards/dc_admin/dc_software_management/templates/dc_software_management/_detail_releases.html:16
 msgid "Version"
 msgstr ""
@@ -4729,8 +4732,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_upload_release.html:18
 #: starlingx_dashboard/dashboards/dc_admin/dc_software_management/templates/dc_software_management/_upload_release.html:18
 msgid ""
-"Specify a pair of installation .iso and .sig files for a major release "
-"(GA or patched), and/or one or more files containing a patch release for "
+"Specify a pair of installation .iso and .sig files for a major release (GA "
+"or patched), and/or one or more files containing a patch release for "
 "software deployment."
 msgstr ""
 
@@ -4819,30 +4822,33 @@ msgid "DNS Name Server 2"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:81
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:127
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:126
 msgid "DNS Server 1 IP"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:84
-msgid "IP address of NameServer 1. If you use no DNS NameServer 1, leave blank. "
+msgid ""
+"IP address of NameServer 1. If you use no DNS NameServer 1, leave blank. "
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:90
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:131
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:130
 msgid "DNS Server 2 IP"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:93
-msgid "IP address of NameServer 2. If you use no DNS NameServer 2, leave blank. "
+msgid ""
+"IP address of NameServer 2. If you use no DNS NameServer 2, leave blank. "
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:99
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:135
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:134
 msgid "DNS Server 3 IP"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:102
-msgid "IP address of NameServer 3. If you use no DNS NameServer 3, leave blank. "
+msgid ""
+"IP address of NameServer 3. If you use no DNS NameServer 3, leave blank. "
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:188
@@ -4858,7 +4864,7 @@ msgid "Failed to update DNS Server."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:221
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:164
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:163
 msgid "NTP Server 1 Address"
 msgstr ""
 
@@ -4867,7 +4873,7 @@ msgid "NTP Server IP or FQDN. If you use no NTP Server 1, leave blank."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:228
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:169
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:168
 msgid "NTP Server 2 Address"
 msgstr ""
 
@@ -4876,7 +4882,7 @@ msgid "NTP Server IP or FQDN.If you use no NTP Server 2, leave blank."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:235
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:174
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:173
 msgid "NTP Server 3 Address"
 msgstr ""
 
@@ -5035,8 +5041,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:636
 msgid ""
-"Failed to update size of ceph pools. Ceph cluster may be down, check "
-"cluster status and try again"
+"Failed to update size of ceph pools. Ceph cluster may be down, check cluster "
+"status and try again"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:651
@@ -5163,152 +5169,185 @@ msgstr ""
 msgid "System Configuration"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:30
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:29
 msgid "Created"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:31
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:30
 msgid "Modified"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:32
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:31
 msgid "Applying"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:33
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:32
 msgid "Applied"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:35
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:34
 msgid "Aborted"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:45
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:44
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_system.html:8
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_system.html:3
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_system.html:6
 msgid "Edit System"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:55
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:54
 msgid "System Type"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:58
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:57
 msgid "System Mode"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:74
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:73
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:26
 msgid "Systems"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:81
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:80
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cdns_table.html:8
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_cdns_table.html:3
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_cdns_table.html:6
 msgid "Edit DNS"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:88
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:87
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cntp_table.html:8
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_cntp_table.html:3
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_cntp_table.html:6
 msgid "Edit NTP"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:95
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:94
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_coam_table.html:8
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_coam_table.html:3
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/update_coam_table.html:6
 msgid "Edit OAM IP"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:109
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:108
 msgid "Edit pool quotas"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:146
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:145
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:61
 msgid "DNS"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:184
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:183
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:96
 msgid "NTP"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:256
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:199
+msgid "OAM Region Config"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:205
+msgid "OAM Subnet"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:210
+msgid "OAM Floating IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:215
+msgid "OAM Gateway IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:220
+msgid "OAM controller-0 IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:224
+msgid "OAM controller-1 IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:231
+msgid "OAM Start IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:237
+msgid "OAM End IP"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:249
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:255
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:131
 msgid "OAM IP"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:272
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:271
 msgid "Storage Name"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:289
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:288
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:152
 msgid "Controller Filesystem"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:298
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:297
 msgid "Ceph Storage Tier"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:302
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:301
 msgid "Cinder Volume Storage (GiB)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:306
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:305
 msgid "Kubernetes Storage (GiB)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:310
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:309
 msgid "Glance Image Storage (GiB)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:314
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:313
 msgid "Nova Ephemeral Disk Storage (GiB)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:318
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:317
 msgid "Object Storage (GiB)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:322
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:321
 msgid "Ceph total space (GiB)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:332
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:331
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:172
 msgid "Ceph Storage Pools"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:345
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:344
 msgid "Delete SDN Controller"
 msgid_plural "Delete SDN Controllers"
 msgstr[0] ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:353
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:352
 msgid "Deleted SDN Controller"
 msgid_plural "Deleted SDN Controllers"
 msgstr[0] ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:375
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:374
 msgid "Create SDN Controller"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:382
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:381
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_sdn_controller_table.html:7
 msgid "Edit SDN Controller"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:404
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:403
 msgid "Remote Port"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/system_config/tables.py:414
+#: starlingx_dashboard/dashboards/admin/system_config/tables.py:413
 #: starlingx_dashboard/dashboards/admin/system_config/tabs.py:202
 msgid "SDN Controllers"
 msgstr ""
@@ -5388,8 +5427,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/address_pools/forms.py:52
 msgid ""
-"Network IP interface address in CIDR format (e.g. 192.168.0.0/24, "
-"2001:DB8::/48"
+"Network IP interface address in CIDR format (e.g. 192.168.0.0/24, 2001:"
+"DB8::/48"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/address_pools/forms.py:58
@@ -5484,15 +5523,15 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cntp_table.html:19
 msgid ""
-"WARNING: Completion of NTP configuration change will require lock and "
-"unlock of affected hosts."
+"WARNING: Completion of NTP configuration change will require lock and unlock "
+"of affected hosts."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cntp_table.html:20
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_coam_table.html:20
 msgid ""
-"Major Alarms will be raised against the affected hosts until the lock "
-"unlock operation is successfully completed."
+"Major Alarms will be raised against the affected hosts until the lock unlock "
+"operation is successfully completed."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_coam_table.html:18
@@ -5501,8 +5540,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_coam_table.html:19
 msgid ""
-"WARNING: Completion of OAM configuration change will require lock and "
-"unlock of affected hosts."
+"WARNING: Completion of OAM configuration change will require lock and unlock "
+"of affected hosts."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:8
@@ -5513,8 +5552,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:56
 msgid ""
-"From here you can update the quota allocated to the pools associated with"
-" this Ceph storage tier."
+"From here you can update the quota allocated to the pools associated with "
+"this Ceph storage tier."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:57
@@ -5528,12 +5567,19 @@ msgid "A quota value of 0 is not allowed for the cinder, glance or kube pool."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:60
-#, python-format
-msgid "The sum of the desired quotas must equal 100% of the cluster size."
+msgid ""
+"The sum of the desired quotas must equal 100 percent of the cluster size."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:62
 msgid "A quota value of 0 is allowed for the cinder or kube pool."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_pools_table.html:68
+#, python-format
+msgid ""
+"<span id=\"total_quota\">%(configured_quota)s</span> GiB out of <span "
+"id=\"total_tier_size\">%(tier_total)s</span> GiB configured"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:8
@@ -5548,10 +5594,10 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:30
 msgid ""
-"For the Ceph Storage size configuration operation: the affected hosts "
-"will need to be 'host-reinstall' and/or disk replacement may be required "
-"to be performed to accomodate the increased filesystem sizes.  The host "
-"firmware should be configured to boot from network (management network)."
+"For the Ceph Storage size configuration operation: the affected hosts will "
+"need to be 'host-reinstall' and/or disk replacement may be required to be "
+"performed to accomodate the increased filesystem sizes.  The host firmware "
+"should be configured to boot from network (management network)."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_sdn_controller_table.html:22
@@ -5727,8 +5773,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:232
 msgid ""
-"Select a version to apply the strategy. Otherwise, it will be updated to "
-"the SystemController active version."
+"Select a version to apply the strategy. Otherwise, it will be updated to the "
+"SystemController active version."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:246
@@ -5761,8 +5807,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:305
 msgid ""
-"Determines whether orchestration failure in a subcloud prevents "
-"application to subsequent subclouds"
+"Determines whether orchestration failure in a subcloud prevents application "
+"to subsequent subclouds"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:310
@@ -5874,7 +5920,8 @@ msgid_plural "Deleted Subcloud Strategy Configuration"
 msgstr[0] ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:290
-msgid "Failed to delete configuration for subcloud %(cloud)"
+#, python-format
+msgid "Failed to delete configuration for subcloud %(cloud)s"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:306
@@ -5904,7 +5951,8 @@ msgid_plural "Deleted SubCloud Groups"
 msgstr[0] ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:362
-msgid "Failed to delete group %(name)"
+#, python-format
+msgid "Failed to delete group %(name)s"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:374
@@ -6015,15 +6063,15 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_create_subcloud_strategy_config.html:17
 msgid ""
-"Create a configuration for a specific subcloud to use the specified "
-"strategy settings instead of the defaults values."
+"Create a configuration for a specific subcloud to use the specified strategy "
+"settings instead of the defaults values."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_create_subcloud_strategy_config.html:20
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_edit_subcloud_strategy_config.html:20
 msgid ""
-"Note: for Simplex systems, the default instance action must be set to "
-"stop-start (since migration is not possible on a single-node system)."
+"Note: for Simplex systems, the default instance action must be set to stop-"
+"start (since migration is not possible on a single-node system)."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_create_subcloud_strategy_config.html:27
@@ -6043,8 +6091,8 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_edit_subcloud_strategy_config.html:17
 msgid ""
-"Edit a configuration for a specific subcloud to use the specified "
-"strategy settings instead of the defaults values."
+"Edit a configuration for a specific subcloud to use the specified strategy "
+"settings instead of the defaults values."
 msgstr ""
 
 #: starlingx_dashboard/enabled/_2400_starlingx_admin_fault_management_panel_group.py:6
@@ -6069,8 +6117,8 @@ msgstr ""
 
 #: starlingx_dashboard/themes/starlingx/templates/500.html:73
 msgid ""
-"An unexpected error has occurred. Try refreshing the page. If that "
-"doesn't help, contact your local administrator."
+"An unexpected error has occurred. Try refreshing the page. If that doesn't "
+"help, contact your local administrator."
 msgstr ""
 
 #: starlingx_dashboard/themes/starlingx/templates/500.html:78

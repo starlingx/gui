@@ -64,10 +64,9 @@
 
   <p>
     <strong><span id="quota_text" style="color:red">
-            <span id="total_quota">{{ configured_quota }}</span> GiB out of
-            <span id="total_tier_size">{{ tier_total }}</span>
-            GiB configured</span>
-    </strong>
+      {% blocktrans trimmed %}<span id="total_quota">{{ configured_quota }}</span> GiB out of
+      <span id="total_tier_size">{{ tier_total }}</span> GiB configured{% endblocktrans %}
+    </span></strong>
  </p>
 </div>
 {% endblock %}
