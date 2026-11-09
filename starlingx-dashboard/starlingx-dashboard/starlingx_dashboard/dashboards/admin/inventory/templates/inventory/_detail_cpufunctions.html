@@ -11,7 +11,7 @@
         <dd>{{ host.physical_cores|get_value:0 }}</dd>
         <dt>{% trans "Hyper-Threading " %}</dt>
         <dd>{{ host.hyperthreading }}</dd>
-        {% if host.personality == 'Worker' %}
+        {% if host.is_worker %}
           <dt>{% trans "Max CPU Frequency " %}</dt>
           <dd>{{ host.max_cpu_mhz_configured }}</dd>
           <dt>{% trans "Max CPU Default " %}</dt>

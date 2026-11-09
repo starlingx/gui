@@ -496,8 +496,7 @@ class AddPhysicalVolume(forms.SelfHandlingForm):
         subfunctions = host.subfunctions
 
         compatible_lvgs = []
-        if host.personality.lower().startswith(
-                stx_api.sysinv.PERSONALITY_CONTROLLER):
+        if host._personality == stx_api.sysinv.PERSONALITY_CONTROLLER:
             compatible_lvgs += [stx_api.sysinv.LVG_CGTS_VG]
 
         if stx_api.sysinv.SUBFUNCTIONS_WORKER in subfunctions:

@@ -643,7 +643,7 @@ class UpdateHost(workflows.Workflow):
                 data.pop('clock_synchronization')
 
             # if not trying to change apparmor choice, skip check
-            if host.apparmor == data['apparmor']:
+            if host._apparmor == data['apparmor']:
                 data.pop('apparmor')
 
             host = stx_api.sysinv.host_update(request, **data)

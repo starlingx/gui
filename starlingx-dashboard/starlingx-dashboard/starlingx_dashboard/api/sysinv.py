@@ -947,6 +947,20 @@ class Host(base.APIResourceWrapper):
                                        self._personality)
 
     @property
+    def is_active_controller(self):
+        # Raw (untranslated) check, safe to use in action logic
+        return (self._personality == PERSONALITY_CONTROLLER and
+                self._capabilities.get('Personality') == 'Controller-Active')
+
+    @property
+    def is_worker(self):
+        return self._personality == PERSONALITY_WORKER
+
+    @property
+    def is_storage(self):
+        return self._personality == PERSONALITY_STORAGE
+
+    @property
     def additional_subfunctions(self):
         return len(self._subfunctions.split(',')) > 1
 
