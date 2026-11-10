@@ -207,7 +207,7 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switchable switched',
                 'data-slug': 'ae_mode',
                 'data-switch-on': 'interface_type',
-                'data-interface_type-ae': 'Aggregated Ethernet - Mode'}))
+                'data-interface_type-ae': _('Aggregated Ethernet - Mode')}))
 
     txhashpolicy = forms.ChoiceField(
         label=_("Aggregated Ethernet - Tx Policy"),
@@ -217,8 +217,8 @@ class AddInterface(forms.SelfHandlingForm):
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'ae_mode',
-                'data-ae_mode-balanced': 'Aggregated Ethernet - Tx Policy',
-                'data-ae_mode-802.3ad': 'Aggregated Ethernet - Tx Policy'}))
+                'data-ae_mode-balanced': _('Aggregated Ethernet - Tx Policy'),
+                'data-ae_mode-802.3ad': _('Aggregated Ethernet - Tx Policy')}))
 
     primary_reselect = forms.ChoiceField(
         label=_("Aggregated Ethernet - Primary Reselect"),
@@ -228,7 +228,7 @@ class AddInterface(forms.SelfHandlingForm):
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'ae_mode',
-                'data-ae_mode-active_standby': 'Primary Reselect'}))
+                'data-ae_mode-active_standby': _('Primary Reselect')}))
 
     vlan_id = forms.IntegerField(
         label=_("Vlan ID"),
@@ -244,7 +244,7 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'interface_type',
                 'data-slug': 'vlanid',
-                'data-interface_type-vlan': 'Vlan ID'}))
+                'data-interface_type-vlan': _('Vlan ID')}))
 
     sriov_numvfs = forms.IntegerField(
         label=_("Virtual Functions"),
@@ -256,7 +256,7 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'ifclass',
                 'data-slug': 'num_vfs',
-                'data-ifclass-pci-sriov': 'Num VFs'}))
+                'data-ifclass-pci-sriov': _('Num VFs')}))
 
     sriov_vf_driver = forms.ChoiceField(
         label=_("Virtual Function Driver"),
@@ -268,7 +268,7 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'ifclass',
                 'data-slug': 'sriov_vf_driver',
-                'data-ifclass-pci-sriov': 'VF Driver'}))
+                'data-ifclass-pci-sriov': _('VF Driver')}))
 
     uses = forms.MultipleChoiceField(
         label=_("Interface(s)"),
@@ -288,7 +288,7 @@ class AddInterface(forms.SelfHandlingForm):
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'ifclass',
-                'data-ifclass-platform': 'Platform Network(s)'}))
+                'data-ifclass-platform': _('Platform Network(s)')}))
 
     datanetworks_data = MultipleChoiceField(
         label=_("Data Network(s)"),
@@ -344,8 +344,8 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switchable switched',
                 'data-slug': 'ipv4_mode',
                 'data-switch-on': 'ifclass',
-                'data-ifclass-data': 'IPv4 Addressing Mode',
-                'data-ifclass-platform': 'IPv4 Addressing Mode'}))
+                'data-ifclass-data': _('IPv4 Addressing Mode'),
+                'data-ifclass-platform': _('IPv4 Addressing Mode')}))
 
     ipv4_pool = forms.ChoiceField(
         label=_("IPv4 Address Pool"),
@@ -355,7 +355,7 @@ class AddInterface(forms.SelfHandlingForm):
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'ipv4_mode',
-                'data-ipv4_mode-pool': 'IPv4 Address Pool'}))
+                'data-ipv4_mode-pool': _('IPv4 Address Pool')}))
 
     ipv6_mode = forms.ChoiceField(
         label=_("IPv6 Addressing Mode"),
@@ -367,9 +367,9 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switchable switched',
                 'data-slug': 'ipv6_mode',
                 'data-switch-on': 'ifclass',
-                'data-ifclass-data': 'IPv6 Addressing Mode',
-                'data-ifclass-platform': 'IPv6 Addressing Mode',
-                'data-ifclass-control': 'IPv6 Addressing Mode'}))
+                'data-ifclass-data': _('IPv6 Addressing Mode'),
+                'data-ifclass-platform': _('IPv6 Addressing Mode'),
+                'data-ifclass-control': _('IPv6 Addressing Mode')}))
 
     ipv6_pool = forms.ChoiceField(
         label=_("IPv6 Address Pool"),
@@ -379,7 +379,7 @@ class AddInterface(forms.SelfHandlingForm):
             attrs={
                 'class': 'switched',
                 'data-switch-on': 'ipv6_mode',
-                'data-ipv6_mode-pool': 'IPv6 Address Pool'}))
+                'data-ipv6_mode-pool': _('IPv6 Address Pool')}))
 
     max_tx_rate = forms.IntegerField(
         label=_("Max Tx Rate"),
@@ -395,10 +395,10 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'interface_type',
                 'data-slug': 'max_tx_rate',
-                'data-interface_type-vf': 'Max Tx Rate',
-                'data-interface_type-vlan': 'Max Tx Rate',
-                'data-interface_type-ethernet': 'Max Tx Rate',
-                'data-interface_type-ae': 'Max Tx Rate'
+                'data-interface_type-vf': _('Max Tx Rate'),
+                'data-interface_type-vlan': _('Max Tx Rate'),
+                'data-interface_type-ethernet': _('Max Tx Rate'),
+                'data-interface_type-ae': _('Max Tx Rate')
             }))
 
     max_rx_rate = forms.IntegerField(
@@ -415,9 +415,9 @@ class AddInterface(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'interface_type',
                 'data-slug': 'max_rx_rate',
-                'data-interface_type-ae': 'Max Rx Rate',
-                'data-interface_type-ethernet': 'Max Rx Rate',
-                'data-interface_type-vlan': 'Max Rx Rate'
+                'data-interface_type-ae': _('Max Rx Rate'),
+                'data-interface_type-ethernet': _('Max Rx Rate'),
+                'data-interface_type-vlan': _('Max Rx Rate')
             }))
 
     failure_url = 'horizon:admin:inventory:detail'
@@ -726,7 +726,7 @@ class UpdateInterface(AddInterface):
                 'class': 'switched',
                 'readonly': 'readonly',
                 'data-switch-on': 'ifclass',
-                'data-ifclass-pci-sriov': 'Max VFs'}))
+                'data-ifclass-pci-sriov': _('Max VFs')}))
 
     iftypedata = forms.ChoiceField(
         label=_("Interface Type"),

@@ -77,7 +77,7 @@ class CreateDataNetwork(forms.SelfHandlingForm):
                                  attrs={
                                      'class': 'switchable switched',
                                      'data-switch-on': 'dn_type',
-                                     'data-dn_type-vxlan': 'Mode',
+                                     'data-dn_type-vxlan': _('Mode'),
                                      'data-slug': 'vxlan_mode'}))
 
     multicast_group_help = (_("Specify the IPv4 or IPv6 multicast address "
@@ -93,7 +93,7 @@ class CreateDataNetwork(forms.SelfHandlingForm):
                 'class': 'switchable switched',
                 'data-slug': 'vxlan_multicast_group',
                 'data-switch-on': 'vxlan_mode',
-                'data-vxlan_mode-dynamic': 'Multicast Group Address'})
+                'data-vxlan_mode-dynamic': _('Multicast Group Address')})
     )
 
     port_num_choices = [('4789', _('IANA Assigned VXLAN UDP port (4789)')),
@@ -106,7 +106,7 @@ class CreateDataNetwork(forms.SelfHandlingForm):
                                      attrs={
                                          'class': 'switchable switched',
                                          'data-switch-on': 'dn_type',
-                                         'data-dn_type-vxlan': 'UDP Port',
+                                         'data-dn_type-vxlan': _('UDP Port'),
                                          'data-slug': 'port_num_slug'}))
 
     ttl = forms.IntegerField(label=_("TTL"),
@@ -118,7 +118,7 @@ class CreateDataNetwork(forms.SelfHandlingForm):
                                  attrs={
                                      'class': 'switchable switched',
                                      'data-switch-on': 'dn_type',
-                                     'data-dn_type-vxlan': 'TTL',
+                                     'data-dn_type-vxlan': _('TTL'),
                                      'data-slug': 'ttl_slug'}),
                              help_text=(
         _("Specify the time-to-live value for these VXLAN instances")))

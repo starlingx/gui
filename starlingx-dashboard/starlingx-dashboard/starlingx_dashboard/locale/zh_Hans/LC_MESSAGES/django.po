@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
-"POT-Creation-Date: 2026-11-10 15:20+0000\n"
+"POT-Creation-Date: 2026-11-11 18:57+0000\n"
 "PO-Revision-Date: 2026-10-15 11:03-0300\n"
 "Last-Translator: \n"
 "Language-Team: zh_Hans <LL@li.org>\n"
@@ -445,6 +445,7 @@ msgid "Static VXLAN"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:72
+#: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:80
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:64
 #: starlingx_dashboard/dashboards/admin/datanets/templates/datanets/datanets/_detail_overview.html:18
 msgid "Mode"
@@ -456,7 +457,9 @@ msgid "Specify the IPv4 or IPv6 multicast address for these VXLAN instances"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:87
+#: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:96
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:75
+#: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:85
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:197
 #: starlingx_dashboard/dashboards/admin/datanets/templates/datanets/datanets/_detail_overview.html:26
 msgid "Multicast Group Address"
@@ -481,12 +484,14 @@ msgid "Legacy VXLAN UDP port (8472)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:102
+#: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:109
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:89
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:204
 msgid "UDP Port"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:112
+#: starlingx_dashboard/dashboards/admin/datanets/datanets/forms.py:121
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:93
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/ranges/forms.py:209
 msgid "TTL"
@@ -1445,6 +1450,7 @@ msgid "CPU Frequency Configuration"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:193
+#: starlingx_dashboard/dashboards/admin/inventory/workflows.py:202
 msgid "Max CPU Frequency (MHz)"
 msgstr ""
 
@@ -2058,10 +2064,13 @@ msgid "Interface Type"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:202
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:210
 msgid "Aggregated Ethernet - Mode"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:213
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:220
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:221
 msgid "Aggregated Ethernet - Tx Policy"
 msgstr ""
 
@@ -2069,7 +2078,12 @@ msgstr ""
 msgid "Aggregated Ethernet - Primary Reselect"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:231
+msgid "Primary Reselect"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:234
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:247
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/tables.py:183
 msgid "Vlan ID"
 msgstr ""
@@ -2090,6 +2104,10 @@ msgstr ""
 msgid "Virtual Functions for pci-sriov."
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:259
+msgid "Num VFs"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:262
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/interfaces/_detail_overview.html:37
 msgid "Virtual Function Driver"
@@ -2097,6 +2115,10 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:265
 msgid "Virtual function driver to explicitly bind to."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:271
+msgid "VF Driver"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:274
@@ -2112,6 +2134,7 @@ msgid "Port(s)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:285
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:291
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/tables.py:200
 msgid "Platform Network(s)"
 msgstr ""
@@ -2138,22 +2161,33 @@ msgid "MTU must be between 576 and 9216 bytes."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:338
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:347
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:348
 msgid "IPv4 Addressing Mode"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:351
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:358
 msgid "IPv4 Address Pool"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:361
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:370
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:371
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:372
 msgid "IPv6 Addressing Mode"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:375
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:382
 msgid "IPv6 Address Pool"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:385
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:398
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:399
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:400
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:401
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/interfaces/_detail_overview.html:39
 msgid "Max Tx Rate"
 msgstr ""
@@ -2169,6 +2203,9 @@ msgid "Max Tx Rate must be an integer value."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:405
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:418
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:419
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:420
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/interfaces/_detail_overview.html:41
 msgid "Max Rx Rate"
 msgstr ""
@@ -2199,6 +2236,10 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:722
 msgid "Maximum Virtual Functions"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:729
+msgid "Max VFs"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/forms.py:1014
@@ -2565,11 +2606,21 @@ msgid "Take Application Hugepages as a Percentage or Integer."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:101
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:108
 msgid "Percentage of Application 2M Hugepages Node 0 (%)"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:110
+msgid "# of Application 2M Hugepages Node 0"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:113
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:122
 msgid "# of Application 1G Hugepages Node 0"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:120
+msgid "Percentage of Application 1G Hugepages Node 0 (%)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:125
@@ -2585,11 +2636,21 @@ msgid "#(MiB) of Platform Memory for Node 1"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:142
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:151
 msgid "# of Application 2M Hugepages Node 1"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:149
+msgid "Percentage of Application 2M Hugepages Node 1 (%)"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:157
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:166
 msgid "# of Application 1G Hugepages Node 1"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:164
+msgid "Percentage of Application 1G Hugepages Node 1 (%)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:169
@@ -2605,11 +2666,21 @@ msgid "#(MiB) of Platform Memory for Node 2"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:186
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:195
 msgid "# of Application 2M Hugepages Node 2"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:193
+msgid "Percentage of Application 2M Hugepages Node 2 (%)"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:198
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:207
 msgid "# of Application 1G Hugepages Node 2"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:205
+msgid "Percentage of Application 1G Hugepages Node 2 (%)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:210
@@ -2625,11 +2696,21 @@ msgid "#(MiB) of Platform Memory for Node 3"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:227
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:236
 msgid "# of Application 2M Hugepages Node 3"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:234
+msgid "Percentage of Application 2M Hugepages Node 3 (%)"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:239
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:248
 msgid "# of Application 1G Hugepages Node 3"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:246
+msgid "Percentage of Application 1G Hugepages Node 3 (%)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:251
@@ -4229,8 +4310,10 @@ msgid "Worker Apply Type"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:194
+#: starlingx_dashboard/dashboards/admin/software_management/forms.py:206
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:21
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:533
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:545
 msgid "Maximum Parallel Worker Hosts"
 msgstr ""
 

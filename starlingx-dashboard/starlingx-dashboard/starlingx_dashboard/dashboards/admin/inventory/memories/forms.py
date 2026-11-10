@@ -105,9 +105,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 2M Hugepages Node 0',
+                    _('Percentage of Application 2M Hugepages Node 0 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 2M Hugepages Node 0'}))
+                    _('# of Application 2M Hugepages Node 0')}))
 
     vm_hugepages_nr_1G = forms.CharField(
         label=_("# of Application 1G Hugepages Node 0"),
@@ -117,9 +117,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 1G Hugepages Node 0',
+                    _('Percentage of Application 1G Hugepages Node 0 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 1G Hugepages Node 0'}))
+                    _('# of Application 1G Hugepages Node 0')}))
 
     vswitch_hugepages_reqd = forms.CharField(
         label=_("# of vSwitch Hugepages Node 0"),
@@ -146,9 +146,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 2M Hugepages Node 1',
+                    _('Percentage of Application 2M Hugepages Node 1 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 2M Hugepages Node 1'
+                    _('# of Application 2M Hugepages Node 1')
             }
         )
     )
@@ -161,9 +161,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 1G Hugepages Node 1',
+                    _('Percentage of Application 1G Hugepages Node 1 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 1G Hugepages Node 1'}))
+                    _('# of Application 1G Hugepages Node 1')}))
 
     vswitch_hugepages_reqd_two = forms.CharField(
         label=_("# of vSwitch Hugepages Node 1"),
@@ -190,9 +190,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 2M Hugepages Node 2',
+                    _('Percentage of Application 2M Hugepages Node 2 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 2M Hugepages Node 2'}))
+                    _('# of Application 2M Hugepages Node 2')}))
 
     vm_hugepages_nr_1G_three = forms.CharField(
         label=_("# of Application 1G Hugepages Node 2"),
@@ -202,9 +202,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 1G Hugepages Node 2',
+                    _('Percentage of Application 1G Hugepages Node 2 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 1G Hugepages Node 2'}))
+                    _('# of Application 1G Hugepages Node 2')}))
 
     vswitch_hugepages_reqd_three = forms.CharField(
         label=_("# of vSwitch Hugepages Node 2"),
@@ -231,9 +231,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 2M Hugepages Node 3',
+                    _('Percentage of Application 2M Hugepages Node 3 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 2M Hugepages Node 3'}))
+                    _('# of Application 2M Hugepages Node 3')}))
 
     vm_hugepages_nr_1G_four = forms.CharField(
         label=_("# of Application 1G Hugepages Node 3"),
@@ -243,9 +243,9 @@ class UpdateMemory(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'vm_hugepages_nr_percentage',
                 'data-vm_hugepages_nr_percentage-percent':
-                    '% of Application 1G Hugepages Node 3',
+                    _('Percentage of Application 1G Hugepages Node 3 (%)'),
                 'data-vm_hugepages_nr_percentage-integer':
-                    '# of Application 1G Hugepages Node 3'}))
+                    _('# of Application 1G Hugepages Node 3')}))
 
     vswitch_hugepages_reqd_four = forms.CharField(
         label=_("# of vSwitch Hugepages Node 3"),

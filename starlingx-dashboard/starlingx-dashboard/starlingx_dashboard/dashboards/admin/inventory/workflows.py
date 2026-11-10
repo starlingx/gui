@@ -199,7 +199,7 @@ class UpdateHostInfoAction(workflows.Action):
                 'class': 'switched',
                 'data-switch-on': 'cpu_freq_config',
                 'data-cpu_freq_config-custom':
-                    'Max CPU Frequency (MHz)'}),
+                    _('Max CPU Frequency (MHz)')}),
         help_text=_('Host CPU Cores maximum frequency.'))
 
     location = forms.CharField(label=_("Location"),

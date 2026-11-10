@@ -82,7 +82,7 @@ class CreateProviderNetworkRange(forms.SelfHandlingForm):
                                     'data-slug': 'vxlan_group',
                                     'data-switch-on': 'vxlan_mode',
                                     'data-vxlan_mode-dynamic':
-                                        'Multicast Group Address'}))
+                                        _('Multicast Group Address')}))
     port_choices = [('4789', _('IANA Assigned VXLAN UDP port (4789)')),
                     ('4790', _('IANA Assigned VXLAN-GPE UDP port (4790)')),
                     ('8472', _('Legacy VXLAN UDP port (8472)'))]

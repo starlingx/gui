@@ -203,7 +203,7 @@ class CreateSoftwareDeployStrategyForm(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'worker_apply_type',
                 'data-worker_apply_type-parallel':
-                    'Maximum Parallel Worker Hosts'}))
+                    _('Maximum Parallel Worker Hosts')}))
 
     default_instance_action = forms.ChoiceField(
         label=_("Default Instance Action"),
