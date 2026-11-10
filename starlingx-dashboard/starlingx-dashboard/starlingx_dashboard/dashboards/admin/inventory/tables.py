@@ -697,7 +697,7 @@ def get_task_or_status(host):
     if patch_current == patch_state:
         patch_state = ""
 
-    return _("%s") % "<br />".join(
+    return "<br />".join(
         [_f for _f in [task_or_status,
                        patch_current,
                        reboot_required,

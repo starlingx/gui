@@ -32,9 +32,10 @@ CINDER_PARAMS_KEY_MAP = (
 
 PARAMS_HELP = {
     sysinv.LVG_CINDER_PARAM_LVM_TYPE:
-    'Cinder configuration setting which determines how the volume group is \
-    provisioned. Thick provisioning will be used if the value is set to: \
-    thick. Thin provisioning will be used in the value is set to: thin',
+    _("Cinder configuration setting which determines how the volume "
+      "group is provisioned. Thick provisioning will be used if the "
+      "value is set to: thick. Thin provisioning will be used if the "
+      "value is set to: thin"),
 }
 
 CINDER_PARAMS_KEY_NAMES = dict(CINDER_PARAMS_KEY_MAP)
@@ -115,9 +116,7 @@ class ParamForm(ParamMixin, forms.SelfHandlingForm):
                 initial=caps.get(sysinv.LVG_CINDER_PARAM_LVM_TYPE),
                 required=True,
                 choices=LVM_TYPE_CHOICES,
-                help_text=(_("%s") %
-                           PARAMS_HELP.get(sysinv.LVG_CINDER_PARAM_LVM_TYPE,
-                                           None)),
+                help_text=PARAMS_HELP.get(sysinv.LVG_CINDER_PARAM_LVM_TYPE),
                 widget=forms.Select(attrs={
                     'class': 'switched',
                     'data-switch-on': 'type',

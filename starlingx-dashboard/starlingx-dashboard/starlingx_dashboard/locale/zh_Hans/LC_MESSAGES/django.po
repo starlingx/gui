@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
-"POT-Creation-Date: 2026-11-10 14:11+0000\n"
+"POT-Creation-Date: 2026-11-10 15:20+0000\n"
 "PO-Revision-Date: 2026-10-15 11:03-0300\n"
 "Last-Translator: \n"
 "Language-Team: zh_Hans <LL@li.org>\n"
@@ -1232,12 +1232,6 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/tables.py:694
 msgid "Not Patch Current"
-msgstr ""
-
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:118
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:700
-#, python-format
-msgid "%s"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/tables.py:739
@@ -3261,7 +3255,7 @@ msgstr ""
 msgid "Unable to retrieve flavor details."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:98
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:99
 #: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/tables.py:51
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tabs.py:40
 msgid "Parameters"
@@ -3298,43 +3292,50 @@ msgid "Unable to retrieve partition details"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:30
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:114
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:115
 msgid "LVM Provisioning Type"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:45
-msgid "Thick Provisioning (thick)"
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:35
+msgid ""
+"Cinder configuration setting which determines how the volume group is "
+"provisioned. Thick provisioning will be used if the value is set to: thick. "
+"Thin provisioning will be used if the value is set to: thin"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:46
+msgid "Thick Provisioning (thick)"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:47
 msgid "Thin Provisioning (thin)"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:63
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:64
 #, python-format
 msgid "Unable to retrieve local volume group data. lvg=%s"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:72
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:73
 #, python-format
 msgid "Unable to retrieve physical volume list. host=%s"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:86
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:87
 #, python-format
 msgid "Unable to retrieve disk %(disk)s for PV %(pv)s."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:146
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:145
 msgid "This field is required."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:186
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:185
 #, python-format
 msgid "Updated parameter \"%s\"."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:201
+#: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/forms.py:200
 #, python-brace-format
 msgid "Unable to edit parameter \"{0}\". Details: {1}"
 msgstr ""
@@ -6107,6 +6108,22 @@ msgstr ""
 
 #: starlingx_dashboard/local/local_settings.d/_30_stx_local_settings.py:201
 msgid "Login with DEX SSO"
+msgstr ""
+
+#: starlingx_dashboard/starlingx_templates/context_selection/_region_list.html:9
+msgid "Central Cloud Regions:"
+msgstr ""
+
+#: starlingx_dashboard/starlingx_templates/context_selection/_region_list.html:26
+msgid "Subcloud Regions:"
+msgstr ""
+
+#: starlingx_dashboard/starlingx_templates/context_selection/_region_list.html:29
+msgid "Switch to Subclouds"
+msgstr ""
+
+#: starlingx_dashboard/starlingx_templates/context_selection/_region_list.html:34
+msgid "Regions:"
 msgstr ""
 
 #: starlingx_dashboard/themes/starlingx/templates/500.html:23
