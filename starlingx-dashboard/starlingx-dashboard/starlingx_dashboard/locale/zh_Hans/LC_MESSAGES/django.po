@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
-"POT-Creation-Date: 2026-11-03 13:30+0000\n"
+"POT-Creation-Date: 2026-11-10 14:11+0000\n"
 "PO-Revision-Date: 2026-10-15 11:03-0300\n"
 "Last-Translator: \n"
 "Language-Team: zh_Hans <LL@li.org>\n"
@@ -750,6 +750,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:42
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/lvg/_edit.html:41
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_apply_cloud_strategy.html:27
+#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_create_software_deploy_strategy.html:33
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_upload_release.html:25
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_create_sdn_controller_table.html:23
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cdns_table.html:23
@@ -2570,7 +2571,7 @@ msgid "Take Application Hugepages as a Percentage or Integer."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:101
-msgid "Application 2M Hugepages Node 0 (%)"
+msgid "Percentage of Application 2M Hugepages Node 0 (%)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:113
@@ -5645,6 +5646,7 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/cloud_overview/panel.py:14
 #: starlingx_dashboard/dashboards/dc_admin/cloud_overview/templates/cloud_overview/index.html:3
+#: starlingx_dashboard/dashboards/dc_admin/cloud_overview/templates/cloud_overview/index.html:6
 #: starlingx_dashboard/dashboards/dc_admin/cloud_overview/views.py:51
 msgid "Cloud Overview"
 msgstr ""
@@ -5653,11 +5655,11 @@ msgstr ""
 msgid "Unable to retrieve subclouds."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/cloud_overview/templates/cloud_overview/index.html:15
+#: starlingx_dashboard/dashboards/dc_admin/cloud_overview/templates/cloud_overview/index.html:16
 msgid "Central Cloud"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/cloud_overview/templates/cloud_overview/index.html:18
+#: starlingx_dashboard/dashboards/dc_admin/cloud_overview/templates/cloud_overview/index.html:19
 msgid "Subclouds"
 msgstr ""
 

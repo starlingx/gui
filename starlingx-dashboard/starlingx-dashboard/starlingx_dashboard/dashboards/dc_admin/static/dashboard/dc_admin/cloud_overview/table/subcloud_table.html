@@ -86,7 +86,7 @@
         <action-list uib-dropdown dropdown="true" class="dropdown btn-group">
           <button type="button" class="split-button btn btn-default"
             ng-click="table.goToAlarmDetails(cloud)">
-            Alarm & Event Details
+            <span translate>Alarm &amp; Event Details</span>
           </button>
 
           <button class="split-caret dropdown-toggle btn btn-default"  uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
@@ -98,7 +98,7 @@
 
             <li>
               <a role="menuitem" href="#" ng-click="table.goToHostDetails(cloud)">
-                Hosts Detail
+                <span translate>Hosts Detail</span>
               </a>
             </li>
           </ul>
@@ -111,12 +111,12 @@
           <button
             type="button" ng-if="cloud.management_state==='unmanaged'"
             class="split-button btn btn-default" ng-click="table.manage(cloud)"  >
-            Manage Subcloud
+            <span translate>Manage Subcloud</span>
           </button>
           <button
             type="button" ng-if="cloud.management_state==='managed'"
             class="split-button btn btn-default" ng-click="table.unmanageSubcloud(cloud)" >
-            Unmanage Subcloud
+            <span translate>Unmanage Subcloud</span>
           </button>
 
           <button class="split-caret dropdown-toggle btn btn-default"  uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">
@@ -127,13 +127,13 @@
           <ul role="menu" class="dropdown-menu dropdown-menu-right">
             <li>
               <a role="menuitem" href="#" ng-click="table.editSubcloud(cloud)">
-               Edit Subcloud
+               <span translate>Edit Subcloud</span>
               </a>
             </li>
 
             <li>
               <a class="text-danger"  role="menuitem" href="#" ng-click="table.deleteSubcloud(cloud)">
-               <span class="fa fa-trash"></span>&nbsp;Delete
+               <span class="fa fa-trash"></span>&nbsp;<span translate>Delete</span>
               </a>
             </li>
 
@@ -251,8 +251,12 @@
   <tfoot update-filtered-count>
     <tr>
       <td colspan="100%">
-        Total {$ table.filteredCount !== table.subClouds.length
-        ? '(filtered)' : '' $} subclouds: {$ table.filteredCount $}
+        <span ng-if="table.filteredCount === table.subClouds.length">
+          <span translate>Total subclouds: {$ table.filteredCount $}</span>
+        </span>
+        <span ng-if="table.filteredCount !== table.subClouds.length">
+          <span translate>Total (filtered) subclouds: {$ table.filteredCount $}</span>
+        </span>
       </td>
     </tr>
     <tr>

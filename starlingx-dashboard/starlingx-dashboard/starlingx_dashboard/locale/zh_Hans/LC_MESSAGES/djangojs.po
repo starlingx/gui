@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
-"POT-Creation-Date: 2026-10-20 16:34+0000\n"
+"POT-Creation-Date: 2026-11-10 14:11+0000\n"
 "PO-Revision-Date: 2026-10-15 11:03-0300\n"
 "Last-Translator: \n"
 "Language: zh_Hans\n"
@@ -68,10 +68,20 @@ msgstr ""
 msgid "Switch to RegionOne"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:36
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:89
+msgid "Alarm &amp; Event Details"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:40
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:94
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:124
 msgid "Toggle Dropdown"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:46
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:101
+msgid "Hosts Detail"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/central_table.html:61
@@ -283,6 +293,7 @@ msgid "This will delete subcloud %s, are you sure you want to continue?"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:279
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:136
 msgid "Delete"
 msgstr ""
 
@@ -319,6 +330,7 @@ msgid "Group Name"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.controller.js:387
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:130
 msgid "Edit Subcloud"
 msgstr ""
 
@@ -372,6 +384,14 @@ msgstr ""
 msgid "Actions"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:114
+msgid "Manage Subcloud"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:119
+msgid "Unmanage Subcloud"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:169
 msgid "Management Network"
 msgstr ""
@@ -398,6 +418,16 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:237
 msgid "Subcloud Errors"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:255
+#, python-brace-format
+msgid "Total subclouds: {$ table.filteredCount $}"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/static/dashboard/dc_admin/cloud_overview/table/subcloud_table.html:258
+#, python-brace-format
+msgid "Total (filtered) subclouds: {$ table.filteredCount $}"
 msgstr ""
 
 #: starlingx_dashboard/static/app/core/fault_management/fm.service.js:44
@@ -629,7 +659,7 @@ msgid "Suppression"
 msgstr ""
 
 #: starlingx_dashboard/static/dashboard/fault_management/events/events.module.js:174
-msgid "_suppression_status"
+msgid "Suppressed"
 msgstr ""
 
 #: starlingx_dashboard/static/dashboard/fault_management/events/events.service.js:127
