@@ -503,7 +503,7 @@ class SwactHost(tables.BatchAction):
     def allowed(self, request, host=None):
         return (host_controller(host) and not host_locked(host) and
                 not stx_api.sysinv.is_system_mode_simplex(request) and
-                host.personality == "Controller-Active")
+                host.is_active_controller)
 
     def action(self, request, host_id):
         stx_api.sysinv.host_swact(request, host_id)
@@ -653,14 +653,18 @@ def get_task_or_status(host):
     reboot_required = ""
     patch_state = ""
 
+    # Compare the raw install state, not the translated display value
+    consts = stx_api.sysinv.constants
+    install_state = (host._install_state or '').lower()
     # '+' maybe appended to the install_state_info to mark audit iterations
-    if host.install_state and host.install_state != "Installed" and \
-            host.install_state != "Completed":
-        if host.availability != "Offline":
+    if host.install_state and install_state not in (
+            consts.INSTALL_STATE_INSTALLED.lower(),
+            consts.INSTALL_STATE_COMPLETED.lower()):
+        if host._availability != 'offline':
             # If the node is not offline then booting or failed install_state
             # does not apply
-            if host.install_state == "Booting" or \
-                    host.install_state == "Install Failed":
+            if install_state in (consts.INSTALL_STATE_BOOTING.lower(),
+                                 consts.INSTALL_STATE_FAILED.lower()):
                 task_or_status = ""
         else:
             task_or_status = str(host.install_state)

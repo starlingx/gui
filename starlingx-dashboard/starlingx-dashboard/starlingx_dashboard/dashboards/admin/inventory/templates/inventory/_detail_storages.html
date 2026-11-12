@@ -14,7 +14,7 @@
           {{ storagevolumes_table.render }}
         </div>
       {% endif %}
-      {% if host.personality != "Storage" %}
+      {% if not host.is_storage %}
         <div id="localvolumegroups">
           {{ localvolumegroups_table.render }}
         </div>

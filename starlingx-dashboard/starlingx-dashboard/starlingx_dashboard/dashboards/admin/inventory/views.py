@@ -75,7 +75,7 @@ class UpdateView(workflows.WorkflowView):
                 'hostname': host.hostname,
                 'personality': host._personality,
                 'subfunctions': host._subfunctions,
-                'apparmor': host.apparmor,
+                'apparmor': host._apparmor,
                 'location': host.location,
                 'bm_type': host.bm_type,
                 'bm_ip': host.bm_ip,

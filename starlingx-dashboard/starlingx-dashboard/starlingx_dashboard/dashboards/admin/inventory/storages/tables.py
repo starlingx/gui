@@ -170,7 +170,7 @@ class EditPartition(tables.LinkAction):
                 pv = sysinv.host_pv_get(
                     request, partition.ipv_uuid)
                 if pv.lvm_vg_name == sysinv.LVG_CINDER_VOLUMES:
-                    if (host.personality == "Controller-Active" and
+                    if (host.is_active_controller and
                             host._administrative == 'unlocked'):
                         return False
                 else:
