@@ -21,6 +21,17 @@ from starlingx_dashboard import api
 
 LOG = logging.getLogger(__name__)
 
+# Key type choice value: (label, algorithm, key size)
+KUBE_ROOTCA_KEY_TYPES = {
+    'ecdsa-384': (_("ECDSA P-384"), 'ECDSA', 384),
+    'ecdsa-521': (_("ECDSA P-521"), 'ECDSA', 521),
+    'rsa-4096': (_("RSA 4096"), 'RSA', 4096),
+}
+
+KEY_TYPE_CHOICES = [('', _("Use default"))] + [
+    (value, entry[0]) for value, entry in KUBE_ROOTCA_KEY_TYPES.items()
+]
+
 
 class ApplyCloudStrategyForm(forms.SelfHandlingForm):
     failure_url = 'horizon:dc_admin:dc_orchestration:index'
@@ -208,6 +219,20 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 'class': 'switched',
                 'data-switch-on': 'strategy_types',
                 'data-strategy_types-kube-rootca-update': _("Expiry Date"),
+            }
+        )
+    )
+
+    key_type = forms.ChoiceField(
+        label=_("Key Type"),
+        required=False,
+        choices=KEY_TYPE_CHOICES,
+        help_text=_("Algorithm and key size of the generated certificate."),
+        widget=forms.Select(
+            attrs={
+                'class': 'switched',
+                'data-switch-on': 'strategy_types',
+                'data-strategy_types-kube-rootca-update': _("Key Type"),
             }
         )
     )
@@ -462,8 +487,14 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
                 if data['expiry-date']:
                     data['expiry-date'] = str(data['expiry-date'])
                 data['force'] = str(data['force-kube-rootca']).lower()
+                if data.get('key-type'):
+                    _label, algorithm, key_size = (
+                        KUBE_ROOTCA_KEY_TYPES[data['key-type']])
+                    data['algorithm'] = algorithm
+                    data['key-size'] = key_size
 
             data.pop('force-kube-rootca', None)
+            data.pop('key-type', None)
 
             if data['type'] == 'prestage':
                 data['sysadmin_password'] = base64.b64encode(
