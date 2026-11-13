@@ -37,3 +37,11 @@
         margin-top: 7px;
     }
 }
+
+// CJK text has no spaces between words and may break between any two
+// ideographs, so short headers (e.g. a two-character "Actions") collapse to
+// one character per line when the table is squeezed. keep-all allows breaks
+// only at spaces and punctuation; non-CJK text wraps as before.
+.table > thead > tr > th {
+  word-break: keep-all;
+}
