@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: starlingx-dashboard 4.0.0.0rc1.dev230\n"
 "Report-Msgid-Bugs-To: https://bugs.launchpad.net/starlingx\n"
-"POT-Creation-Date: 2026-11-11 18:57+0000\n"
+"POT-Creation-Date: 2026-11-18 16:39+0000\n"
 "PO-Revision-Date: 2026-10-15 11:03-0300\n"
 "Last-Translator: \n"
 "Language-Team: zh_Hans <LL@li.org>\n"
@@ -329,7 +329,11 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/ports/forms.py:51
 #: starlingx_dashboard/dashboards/admin/inventory/ports/forms.py:53
 #: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:57
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:221
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:374
 #: starlingx_dashboard/dashboards/admin/inventory/storages/lvg_params/tables.py:43
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:454
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:569
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/devices/_detail_overview.html:7
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/devices/_detail_overview.html:24
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/devices/_detail_overview.html:29
@@ -342,8 +346,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/system_config/tables.py:51
 #: starlingx_dashboard/dashboards/admin/system_config/tables.py:395
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_detail_sdn_controller_table.html:7
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:607
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:668
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:638
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:699
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:380
 msgid "Name"
 msgstr ""
@@ -386,7 +390,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_createphysicalvolume.html:54
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_createstoragevolume.html:54
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editpartition.html:16
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:36
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:39
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_detail_releases.html:34
 #: starlingx_dashboard/dashboards/admin/system_config/forms.py:38
 #: starlingx_dashboard/dashboards/admin/system_config/tables.py:60
@@ -399,8 +403,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_istorage_table.html:26
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_system.html:17
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/address_pools/_create.html:17
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:610
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:671
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:641
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:702
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:381
 #: starlingx_dashboard/dashboards/dc_admin/dc_software_management/templates/dc_software_management/_detail_releases.html:34
 msgid "Description"
@@ -430,6 +434,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/tables.py:127
 #: starlingx_dashboard/dashboards/admin/datanets/templates/datanets/datanets/_detail_overview.html:11
 #: starlingx_dashboard/dashboards/admin/inventory/interfaces/tables.py:180
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:228
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:573
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:18
 msgid "Type"
 msgstr ""
@@ -586,6 +592,10 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/tables.py:139
 msgid "Tenant Networks"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/datanets/datanets/views.py:53
+msgid "Data Network Detail: {{ datanet.name }}"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/datanets/datanets/views.py:61
@@ -752,7 +762,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_createphysicalvolume.html:60
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_createstoragevolume.html:60
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editpartition.html:22
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:42
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:45
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/lvg/_edit.html:41
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_apply_cloud_strategy.html:27
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_create_software_deploy_strategy.html:33
@@ -787,7 +797,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/datanets/templates/datanets/datanets/ranges/_update.html:12
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_disk_info.html:8
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/address_pools/_update.html:12
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:663
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:694
 msgid "ID"
 msgstr ""
 
@@ -974,7 +984,7 @@ msgid "Unable to retrieve datanet details."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/host_topology/templates/host_topology/_svg_element.html:155
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:818
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:822
 msgid "Worker Hosts"
 msgstr ""
 
@@ -1222,24 +1232,24 @@ msgstr ""
 msgid "Rollback Software"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:686
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:690
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:61
 msgid "Reboot Required"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:688
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:692
 msgid "Patch Install Failed"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:690
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:694
 msgid "Checking Patch State..."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:694
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:698
 msgid "Not Patch Current"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:739
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:743
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:7
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:66
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:163
@@ -1247,32 +1257,34 @@ msgstr ""
 msgid "Host Name"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:742
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:746
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:9
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:65
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:147
 msgid "Personality"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:745
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:749
 msgid "Admin State"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:749
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:753
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:47
 msgid "Operational State"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:753
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:757
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:49
 msgid "Availability State"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:757
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:761
 msgid "Uptime"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:763
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:378
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:618
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:767
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor.html:16
 #: starlingx_dashboard/dashboards/admin/software_management/tables.py:792
 #: starlingx_dashboard/dashboards/admin/software_management/tables.py:860
@@ -1280,20 +1292,20 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:778
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:782
 msgid "Controller Hosts"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:794
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:798
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:16
 msgid "Replication Group"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:798
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:802
 msgid "Storage Hosts"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/tables.py:836
+#: starlingx_dashboard/dashboards/admin/inventory/tables.py:840
 msgid "UnProvisioned Hosts"
 msgstr ""
 
@@ -1335,12 +1347,14 @@ msgstr ""
 msgid "Memory"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:85
+#: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:87
 #: starlingx_dashboard/dashboards/admin/inventory/ports/views.py:121
 #: starlingx_dashboard/dashboards/admin/inventory/tabs.py:399
 msgid "Ports"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:227
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:396
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/views.py:130
 #: starlingx_dashboard/dashboards/admin/inventory/tabs.py:491
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensors.html:5
@@ -1370,7 +1384,15 @@ msgstr ""
 msgid "Unable to retrieve host data."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/views.py:189
+#: starlingx_dashboard/dashboards/admin/inventory/views.py:91
+msgid "Host Detail: {{ host.hostname }}"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/views.py:97
+msgid "Unprovisioned Host Detail"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/views.py:190
 #, python-format
 msgid "Unable to retrieve details for host \"%s\"."
 msgstr ""
@@ -1623,7 +1645,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/ports/_update.html:23
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/sensors/_updatesensorgroup.html:23
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editpartition.html:23
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:43
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:46
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/lvg/_edit.html:42
 #: starlingx_dashboard/dashboards/admin/inventory/workflows.py:599
 #: starlingx_dashboard/dashboards/admin/system_config/templates/system_config/_update_cdns_table.html:24
@@ -1681,6 +1703,7 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/cpu_functions/tables.py:53
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:156
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:331
 msgid "Function"
 msgstr ""
 
@@ -1730,7 +1753,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:135
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:329
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:435
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:693
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:692
 msgid "host_id"
 msgstr ""
 
@@ -1921,6 +1944,9 @@ msgid "Update Filesystems"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/filesystems/tables.py:35
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:230
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:460
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:608
 #: starlingx_dashboard/dashboards/admin/system_config/tables.py:275
 msgid "Size (GiB)"
 msgstr ""
@@ -2043,7 +2069,7 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:139
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:333
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:439
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:697
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:696
 msgid "ihost_uuid"
 msgstr ""
 
@@ -2503,6 +2529,9 @@ msgid "Failed to delete host %(hid)s label %(lid)s"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/kubernetes_labels/tables.py:78
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:223
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:327
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:606
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:11
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:14
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor.html:14
@@ -2730,6 +2759,14 @@ msgstr ""
 msgid "This node does not support 1G hugepages"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:387
+msgid "Maximum vSwitch pages"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:392
+msgid "vSwitch hugepage size"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/memories/forms.py:618
 #, python-format
 msgid "Failed to find %s"
@@ -2828,15 +2865,29 @@ msgstr ""
 msgid "PCI Address"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:71
-msgid "Boot Interface"
+#: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:68
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_cpufunctions.html:13
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/ports/_detail_overview.html:18
+#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_apply_cloud_strategy.html:28
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_apply_cloud_strategy.html:28
+msgid "Yes"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:69
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_cpufunctions.html:13
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/ports/_detail_overview.html:18
+msgid "No"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:73
-msgid "Accelerated"
+msgid "Boot Interface"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:75
+msgid "Accelerated"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/ports/tables.py:77
 msgid "Device Type"
 msgstr ""
 
@@ -2858,11 +2909,12 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:151
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:337
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:447
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:705
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:704
 msgid "Hostname"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/forms.py:43
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:386
 msgid "Sensor Group Name"
 msgstr ""
 
@@ -2888,6 +2940,8 @@ msgid "SensorGroup Name"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/forms.py:126
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:223
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:376
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor.html:20
 msgid "SensorType"
 msgstr ""
@@ -2935,6 +2989,7 @@ msgstr ""
 msgid "Failed to update sensorgroup \"%s\"."
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:26
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:37
 msgid "Add Sensor Group"
 msgstr ""
@@ -2951,6 +3006,7 @@ msgid "Sensor Group"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:52
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:246
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/views.py:178
 msgid "Sensor Groups"
 msgstr ""
@@ -3006,12 +3062,39 @@ msgid ""
 "actions and monitor interval in new model."
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:225
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:380
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:333
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:456
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:571
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:13
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:16
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor.html:18
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor_group.html:20
+#: starlingx_dashboard/dashboards/admin/software_management/tables.py:373
+#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:34
+#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_detail_releases.html:14
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:220
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:54
+#: starlingx_dashboard/dashboards/dc_admin/dc_software_management/templates/dc_software_management/_detail_releases.html:14
+msgid "State"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:228
 msgid "Sensors in SensorGroup."
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:230
+msgid "Sensor Handling Actions"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:231
 msgid "Actions performed on Sensor Event."
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:234
+#: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:382
+msgid "Suppression"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/sensors/tables.py:235
@@ -3083,6 +3166,12 @@ msgstr ""
 msgid "Journal's size for the current OSD."
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:64
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:75
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:250
+msgid "Collocated with OSD"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:101
 msgid "Storage volume was successfully updated."
 msgstr ""
@@ -3101,7 +3190,7 @@ msgid "journal"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:143
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:701
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:700
 msgid "idisk_uuid"
 msgstr ""
 
@@ -3112,7 +3201,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:163
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:468
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:473
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:710
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:709
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:247
 msgid "Disks"
 msgstr ""
 
@@ -3187,6 +3277,7 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:476
 #: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:482
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:631
 msgid "Partitions"
 msgstr ""
 
@@ -3194,63 +3285,70 @@ msgstr ""
 msgid "Assign partition to physical volume."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:615
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:614
 msgid "Physical volume was successfully created."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:619
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:618
 msgid "Failed to create physical volume. "
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:634
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:633
 msgid "Failed to create physical volume."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:645
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:717
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:644
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:716
 msgid "Partition Size GiB"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:651
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:650
 msgid "New partition size. Has to be larger than current size."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:668
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:667
 msgid "Partition was successfully updated."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:674
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:683
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:673
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:682
 msgid "Failed to update partition."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:715
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:714
 msgid "Disk to create partition on."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:722
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:721
 msgid "Size in GiB for the new partition."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:725
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:724
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:612
 msgid "Partition Type"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:776
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:725
+msgid "LVM Physical Volume"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:775
 msgid "Partition was successfully created."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:782
-#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:793
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:781
+#: starlingx_dashboard/dashboards/admin/inventory/storages/forms.py:792
 msgid "Failed to create partition."
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:26
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:39
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_createstoragevolume.html:7
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_createstoragevolume.html:61
 msgid "Assign Storage Function"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:61
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:72
 msgid "Create a new partition"
 msgstr ""
@@ -3280,6 +3378,23 @@ msgstr ""
 msgid "Disk info"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:232
+msgid "Available Size (GiB)"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:234
+msgid "RPM"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:237
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:29
+msgid "Serial ID"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:240
+msgid "Model"
+msgstr ""
+
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:294
 msgid "Delete Journal"
 msgid_plural "Delete Journals"
@@ -3290,6 +3405,32 @@ msgid "Deleted Journal"
 msgid_plural "Deleted Journals"
 msgstr[0] ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:329
+msgid "OSD ID"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:335
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:616
+msgid "Disk UUID"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:337
+msgid "Journal Path"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:339
+msgid "Journal GiB"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:341
+msgid "Journal Location"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:348
+msgid "Storage Functions"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:360
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:371
 msgid "Add Local Volume Group"
 msgstr ""
@@ -3313,6 +3454,30 @@ msgstr[0] ""
 msgid "Failed to delete host %(hid)s local volume group %(lvg)s %(e_msg)s"
 msgstr ""
 
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:458
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:15
+msgid "Access"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:462
+msgid "Avail Size (GiB)"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:464
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:29
+msgid "Current Physical Volumes"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:466
+msgid "Current Logical Volumes"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:479
+#: starlingx_dashboard/dashboards/admin/inventory/storages/views.py:238
+msgid "Local Volume Groups"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:491
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:502
 msgid "Add Physical Volume"
 msgstr ""
@@ -3330,6 +3495,33 @@ msgstr[0] ""
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:558
 #, python-format
 msgid "Failed to delete host %(hid)s physical volume %(pv)s. %(e_msg)s"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:575
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:36
+msgid "Disk or Partition UUID"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:577
+msgid "Disk or Partition Device Path"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:580
+msgid "LVM Volume Group Name"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:593
+#: starlingx_dashboard/dashboards/admin/inventory/storages/views.py:190
+msgid "Physical Volumes"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:610
+msgid "Partition Device Path"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/admin/inventory/storages/tables.py:614
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:24
+msgid "Physical Volume UUID"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/storages/tabs.py:33
@@ -3350,17 +3542,9 @@ msgstr ""
 msgid "Unable to retrieve stor details"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/storages/views.py:190
-msgid "Physical Volumes"
-msgstr ""
-
 #: starlingx_dashboard/dashboards/admin/inventory/storages/views.py:215
 #, python-format
 msgid "Unable to retrieve details for physical volume \"%s\"."
-msgstr ""
-
-#: starlingx_dashboard/dashboards/admin/inventory/storages/views.py:238
-msgid "Local Volume Groups"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/storages/views.py:253
@@ -3486,23 +3670,6 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:13
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:16
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor.html:18
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor_group.html:20
-#: starlingx_dashboard/dashboards/admin/software_management/tables.py:373
-#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:34
-#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_detail_releases.html:14
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:220
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:50
-#: starlingx_dashboard/dashboards/dc_admin/dc_software_management/templates/dc_software_management/_detail_releases.html:14
-msgid "State"
-msgstr ""
-
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:15
-msgid "Access"
-msgstr ""
-
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:19
 msgid "Size"
 msgstr ""
@@ -3521,10 +3688,6 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:27
 msgid "Max Physical Volumes"
-msgstr ""
-
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:29
-msgid "Current Physical Volumes"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_local_volume_group_overview.html:31
@@ -3649,10 +3812,6 @@ msgstr ""
 msgid "Management IP"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:29
-msgid "Serial ID"
-msgstr ""
-
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_overview.html:32
 msgid "Not Specified"
 msgstr ""
@@ -3699,10 +3858,6 @@ msgstr ""
 msgid "Volume Group Name"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:24
-msgid "Physical Volume UUID"
-msgstr ""
-
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:26
 msgid "Physical Volume Name"
 msgstr ""
@@ -3717,10 +3872,6 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:32
 msgid "Physical Extents Allocated"
-msgstr ""
-
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:36
-msgid "Disk or Partition UUID"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_physical_volume.html:38
@@ -3784,6 +3935,7 @@ msgid "Datatype"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/_detail_sensor_group.html:28
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:43
 msgid "Algorithm"
 msgstr ""
 
@@ -4166,7 +4318,7 @@ msgstr ""
 msgid "Edit Storage Volume"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:37
+#: starlingx_dashboard/dashboards/admin/inventory/templates/inventory/storages/_editstoragevolume.html:40
 msgid "From here you can edit the configuration of an existing storage volume."
 msgstr ""
 
@@ -4221,57 +4373,57 @@ msgid "Release File(s)"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:120
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:53
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:64
 msgid "Software Deploy"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:121
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:104
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:112
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:115
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:123
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:26
 msgid "Rollback"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:125
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:130
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:49
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:499
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:614
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:675
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:60
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:530
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:645
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:706
 msgid "Serial"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:131
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:48
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:498
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:613
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:674
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:59
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:529
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:644
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:705
 msgid "Parallel"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:136
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:503
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:534
 msgid "Migrate"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:137
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:141
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:504
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:535
 msgid "Stop-Start"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:145
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:509
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:540
 msgid "Strict"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:146
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:508
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:539
 msgid "Relaxed"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:150
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:66
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:77
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:12
 msgid "Strategy Type"
 msgstr ""
@@ -4281,10 +4433,10 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/software_management/tables.py:366
 #: starlingx_dashboard/dashboards/admin/software_management/tables.py:406
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:12
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:78
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:84
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:175
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:181
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:89
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:95
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:186
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:192
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:22
 #: starlingx_dashboard/dashboards/dc_admin/dc_software_management/tables.py:29
 msgid "Release"
@@ -4297,14 +4449,14 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:179
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:16
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:518
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:549
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:302
 msgid "Storage Apply Type"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:185
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:18
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:524
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:555
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:304
 msgid "Worker Apply Type"
 msgstr ""
@@ -4312,8 +4464,8 @@ msgstr ""
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:194
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:206
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:21
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:533
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:545
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:564
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:576
 msgid "Maximum Parallel Worker Hosts"
 msgstr ""
 
@@ -4322,14 +4474,14 @@ msgid "Maximum Parallel Worker Hosts must be between 2 and 10."
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:209
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:548
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:579
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:308
 msgid "Default Instance Action"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:215
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:26
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:554
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:585
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:310
 msgid "Alarm Restrictions"
 msgstr ""
@@ -4341,30 +4493,30 @@ msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:231
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:238
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:90
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:98
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:101
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:109
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:24
 msgid "Snapshot"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:292
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:295
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:484
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:515
 msgid "Strategy creation failed"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:308
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:32
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:43
 msgid "Strategy apply in progress"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:310
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:34
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:45
 msgid "Strategy apply failed"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/forms.py:314
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:38
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:49
 msgid "Strategy apply failed."
 msgstr ""
 
@@ -4686,11 +4838,6 @@ msgstr ""
 msgid "Are you sure you want to apply the strategy?"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_apply_cloud_strategy.html:28
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_apply_cloud_strategy.html:28
-msgid "Yes"
-msgstr ""
-
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_create_software_deploy_strategy.html:6
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_create_software_deploy_strategy.html:34
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/create_software_deploy_strategy.html:3
@@ -4743,7 +4890,7 @@ msgid "Current Phase Completion"
 msgstr ""
 
 #: starlingx_dashboard/dashboards/admin/software_management/templates/software_management/_deploy_orchestration.html:38
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:54
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:58
 msgid "No Strategy has been created"
 msgstr ""
 
@@ -5747,211 +5894,218 @@ msgstr ""
 msgid "Subclouds"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:54
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:65
 msgid "Kubernetes"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:55
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:66
 msgid "Kube Root-CA"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:56
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:67
 msgid "Firmware"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:57
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:68
 msgid "Prestage"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:61
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:275
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:282
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:513
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:72
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:300
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:307
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:544
 msgid "Subcloud"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:62
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:289
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:296
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:73
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:314
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:321
 msgid "Subcloud Group"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:93
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:104
 msgid "Create a snapshot before applying the strategy."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:107
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:118
 msgid "Rollback the current deployment."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:118
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:127
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:129
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:138
 msgid "With Delete"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:121
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:132
 msgid "Delete the deployment at the end of strategy application."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:133
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:144
 msgid "Delete Only"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:136
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:147
 msgid "Run a strategy to just delete the software deployment."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:141
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:152
 msgid "Delete only"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:147
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:156
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:158
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:167
 msgid "With Prestage"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:150
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:161
 msgid "Run a strategy with prestaging before the software application."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:162
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:169
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:356
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:363
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:173
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:180
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:381
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:388
 msgid "Sysadmin Password"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:188
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:195
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:199
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:206
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:39
 msgid "Subject"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:190
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:201
 msgid "A subject for a generated certificate."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:202
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:210
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:213
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:221
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:41
 msgid "Expiry Date"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:203
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:214
 msgid "Expiry date for a generated certificate."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:216
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:224
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:341
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:350
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:241
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:249
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:366
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:375
 msgid "Force"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:219
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:244
 msgid "Allow update even with in-sync endpoint status."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:230
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:239
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:255
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:264
 msgid "To version"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:232
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:257
 msgid ""
 "Select a version to apply the strategy. Otherwise, it will be updated to the "
 "SystemController active version."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:246
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:256
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:44
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:271
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:281
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:48
 msgid "For Software Deploy"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:249
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:274
 msgid ""
 "Prestage for software deploy operations. If not specified, prestaging is "
 "targeted towards full installation."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:262
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:287
 msgid "Apply to"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:277
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:302
 msgid "Select subcloud to apply strategy."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:291
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:316
 msgid "Select subcloud group to apply strategy."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:302
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:327
 msgid "Stop on Failure"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:305
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:330
 msgid ""
 "Determines whether orchestration failure in a subcloud prevents application "
 "to subsequent subclouds"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:310
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:317
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:335
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:342
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:14
 msgid "Subcloud Apply Type"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:323
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:335
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:624
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:685
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:348
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:360
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:655
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:716
 msgid "Maximum Parallel Subclouds"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:328
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:629
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:689
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:353
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:660
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:720
 msgid "Maximum Parallel Subclouds must be between 2 and 2500."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:344
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:369
 msgid "Skip checking the subcloud for management affecting alarms."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:488
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:412
+msgid "All subclouds"
+msgstr ""
+
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:519
 msgid "Strategy creation failed."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:538
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:569
 msgid "Maximum Parallel Worker Hosts must be between 2 and 100."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:585
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:616
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:628
 msgid "Subcloud Strategy Configuration creation failed"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:618
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:679
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:649
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:710
 #: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/tables.py:383
 msgid "Update Apply Type"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:640
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:671
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:687
 msgid "Subcloud Group creation failed"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:643
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:674
 #, python-format
 msgid "Subcloud Group %s was successfully created."
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:702
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:733
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:750
 msgid "Subcloud Group update failed"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:705
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/forms.py:736
 #, python-format
 msgid "Subcloud Group %s was successfully updated."
 msgstr ""
@@ -6103,7 +6257,7 @@ msgstr ""
 msgid "With prestage"
 msgstr ""
 
-#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:46
+#: starlingx_dashboard/dashboards/dc_admin/dc_orchestration/templates/dc_orchestration/_cloud_strategy_orchestration.html:50
 msgid "Prestage Software Version"
 msgstr ""
 

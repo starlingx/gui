@@ -409,7 +409,7 @@ class CreateCloudStrategyForm(forms.SelfHandlingForm):
         }
         self.fields['release'].choices = sorted(release_choices_dict.items())
 
-        subcloud_list = [('default', 'All subclouds')]
+        subcloud_list = [('default', _('All subclouds'))]
         subclouds = api.dc_manager.subcloud_list(self.request)
         subcloud_list.extend([(c.name, c.name) for c in subclouds])
         self.fields['cloud_name'].choices = subcloud_list
@@ -625,8 +625,8 @@ class CreateSubcloudConfigForm(forms.SelfHandlingForm):
         except Exception:
             redirect = reverse(self.failure_url)
             exceptions.handle(request,
-                              "Subcloud Strategy Configuration "
-                              "creation failed",
+                              _("Subcloud Strategy Configuration "
+                                "creation failed"),
                               redirect=redirect)
         return True
 
@@ -684,7 +684,7 @@ class CreateSubcloudGroupForm(forms.SelfHandlingForm):
         except Exception:
             redirect = reverse(self.failure_url)
             exceptions.handle(request,
-                              "Subcloud Group creation failed",
+                              _("Subcloud Group creation failed"),
                               redirect=redirect)
         return True
 
@@ -747,6 +747,6 @@ class UpdateSubcloudGroupForm(forms.SelfHandlingForm):
         except Exception:
             redirect = reverse(self.failure_url)
             exceptions.handle(request,
-                              "Subcloud Group update failed",
+                              _("Subcloud Group update failed"),
                               redirect=redirect)
         return True

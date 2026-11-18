@@ -64,7 +64,9 @@ class PortsTable(tables.DataTable):
     numa_node = tables.Column('numa_node',
                               verbose_name=_('Processor'))
     autoneg = tables.Column('autoneg',
-                            verbose_name=_('Auto Negotiation'))
+                            verbose_name=_('Auto Negotiation'),
+                            display_choices=(('Yes', _('Yes')),
+                                             ('No', _('No'))))
     # speed = tables.Column('speed',
     # verbose_name=_('Speed (Mbps)'))
     bootp = tables.Column(get_bootp,

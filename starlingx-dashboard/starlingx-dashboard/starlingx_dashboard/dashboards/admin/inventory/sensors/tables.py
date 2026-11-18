@@ -23,7 +23,7 @@ LOG = logging.getLogger(__name__)
 
 class AddSensorGroup(tables.LinkAction):
     name = "addsensorgroup"
-    verbose_name = ("Add Sensor Group")
+    verbose_name = _("Add Sensor Group")
     url = "horizon:admin:inventory:addsensorgroup"
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
@@ -218,20 +218,20 @@ class RelearnSensorModel(tables.Action):
 class SensorGroupsTable(tables.DataTable):
     name = tables.Column('sensorgroupname',
                          link="horizon:admin:inventory:sensorgroupdetail",
-                         verbose_name=('Name'))
+                         verbose_name=_('Name'))
     sensor_type = tables.Column('sensortype',
-                                verbose_name=('SensorType'))
+                                verbose_name=_('SensorType'))
     sensor_state = tables.Column('state',
-                                 verbose_name=('State'))
+                                 verbose_name=_('State'))
     sensors = tables.Column(get_sensors,
-                            verbose_name=('Sensors'),
+                            verbose_name=_('Sensors'),
                             help_text=_("Sensors in SensorGroup."))
     actions_group = tables.Column(get_sensorgroup_actions,
-                                  verbose_name=('Sensor Handling Actions'),
+                                  verbose_name=_('Sensor Handling Actions'),
                                   help_text=_("Actions performed on "
                                               "Sensor Event."))
     suppressed = tables.Column(get_sensorgroup_suppress,
-                               verbose_name=('Suppression'),
+                               verbose_name=_('Suppression'),
                                help_text=_("Indicates 'suppressed' if Actions "
                                            "are suppressed."))
 
@@ -243,7 +243,7 @@ class SensorGroupsTable(tables.DataTable):
 
     class Meta(object):
         name = "sensorgroups"
-        verbose_name = ("Sensor Groups")
+        verbose_name = _("Sensor Groups")
         columns = ('name', 'sensor_type', 'sensor_state', 'sensors',
                    'actions_group', 'suppressed')
         multi_select = False
@@ -371,19 +371,19 @@ class SensorsFilterAction(tables.FilterAction):
 class SensorsTable(tables.DataTable):
     name = tables.Column('sensorname',
                          link="horizon:admin:inventory:sensordetail",
-                         verbose_name=('Name'))
+                         verbose_name=_('Name'))
     sensor_type = tables.Column('sensortype',
-                                verbose_name=('SensorType'))
+                                verbose_name=_('SensorType'))
     sensor_status = tables.Column('status',
-                                  verbose_name=('Status'))
+                                  verbose_name=_('Status'))
     sensor_state = tables.Column('state',
-                                 verbose_name=('State'))
+                                 verbose_name=_('State'))
     suppressed = tables.Column(get_suppress,
-                               verbose_name=('Suppression'),
+                               verbose_name=_('Suppression'),
                                help_text=_("Indicates 'suppressed' if Actions "
                                            "are suppressed."))
     sensorgroupname = tables.Column(get_sensorgroups,
-                                    verbose_name=('Sensor Group Name'))
+                                    verbose_name=_('Sensor Group Name'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
@@ -393,7 +393,7 @@ class SensorsTable(tables.DataTable):
 
     class Meta(object):
         name = "sensors"
-        verbose_name = ("Sensors")
+        verbose_name = _("Sensors")
         columns = ('name', 'sensorgroupname', 'sensor_type', 'sensor_state',
                    'sensor_status', 'suppressed')
         multi_select = False

@@ -15,7 +15,7 @@
     <dt>{% trans "Processor:" %}</dt>
     <dd>{{ port.numa_node|default:_("None") }}</dd>
     <dt>{% trans "Auto Negotiation:" %}</dt>
-    <dd>{{ port.autoneg|default:_("None") }}</dd>
+    <dd>{% if port.autoneg == "Yes" %}{% trans "Yes" %}{% elif port.autoneg == "No" %}{% trans "No" %}{% else %}{{ port.autoneg|default:_("None") }}{% endif %}</dd>
     <dt>{% trans "Number of Virtual Functions:" %}</dt>
     <dd>{{ port.sriov_numvfs|default:_("None") }}</dd>
     <dt>{% trans "Virtual Function Driver:" %}</dt>

@@ -61,7 +61,7 @@ class EditStorageVolume(forms.SelfHandlingForm):
         journal_tuple_list = []
 
         if stor.uuid == initial_journal_location:
-            journal_tuple_list.append((stor.uuid, "Collocated with OSD"))
+            journal_tuple_list.append((stor.uuid, _("Collocated with OSD")))
         else:
             journal_tuple_list.append((initial_journal_location,
                                        "%s " % initial_journal_location))
@@ -72,7 +72,7 @@ class EditStorageVolume(forms.SelfHandlingForm):
                     journal_tuple_list.append((j.uuid, "%s " % j.uuid))
 
         if stor.uuid != initial_journal_location:
-            journal_tuple_list.append((stor.uuid, "Collocated with OSD"))
+            journal_tuple_list.append((stor.uuid, _("Collocated with OSD")))
 
         self.fields['journal_locations'].choices = journal_tuple_list
 
@@ -247,7 +247,7 @@ class AddStorageVolume(forms.SelfHandlingForm):
             for j in avail_journal_list:
                 journal_tuple_list.append((j.uuid, "%s " % j.uuid))
         else:
-            journal_tuple_list.append((None, "Collocated with OSD"))
+            journal_tuple_list.append((None, _("Collocated with OSD")))
             self.fields['journal_size_gib'].widget.attrs['disabled'] = \
                 'disabled'
 
@@ -722,7 +722,7 @@ class CreatePartition(forms.SelfHandlingForm):
                                               "partition."))
 
     type_guid = forms.CharField(label=_("Partition Type"),
-                                initial='LVM Physical Volume',
+                                initial=_("LVM Physical Volume"),
                                 widget=forms.TextInput(attrs={
                                     'readonly': 'readonly'}))
 

@@ -50,7 +50,7 @@ class DetailView(tables.MultiTableView):
                      providernet_tables.ProviderNetworkTenantNetworkTable)
     template_name = 'admin/datanets/datanets/detail.html'
     failure_url = reverse_lazy('horizon:admin:datanets:index')
-    page_title = '{{ "Data Network Detail: "|add:datanet.name }}'
+    page_title = _("Data Network Detail: {{ datanet.name }}")
 
     def _get_tenant_list(self):
         if not hasattr(self, "_tenants"):

@@ -384,12 +384,12 @@ class UpdateMemory(forms.SelfHandlingForm):
 
                     vswitch_hp_reqd_field = field_set['vswitch_hugepages_reqd']
                     vswitch_hp_reqd_field.help_text = \
-                        'Maximum vSwitch pages'
+                        _('Maximum vSwitch pages')
 
                     vswitch_hp_size_mib_field = \
                         field_set['vswitch_hugepages_size_mib']
                     vswitch_hp_size_mib_field.help_text = \
-                        'vSwitch hugepage size'
+                        _('vSwitch hugepage size')
 
                     if m.vswitch_hugepages_reqd:
                         vswitch_hp_reqd_field.initial = \

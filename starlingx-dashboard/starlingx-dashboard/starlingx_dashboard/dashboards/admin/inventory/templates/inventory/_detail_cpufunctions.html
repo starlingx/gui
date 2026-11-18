@@ -10,7 +10,7 @@
         <dt>{% trans "Physical Cores Per Processor " %}</dt>
         <dd>{{ host.physical_cores|get_value:0 }}</dd>
         <dt>{% trans "Hyper-Threading " %}</dt>
-        <dd>{{ host.hyperthreading }}</dd>
+        <dd>{% if host.hyperthreading == "Yes" %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}</dd>
         {% if host.is_worker %}
           <dt>{% trans "Max CPU Frequency " %}</dt>
           <dd>{{ host.max_cpu_mhz_configured }}</dd>

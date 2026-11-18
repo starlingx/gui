@@ -23,7 +23,7 @@ LOG = logging.getLogger(__name__)
 
 class CreateStorageVolume(tables.LinkAction):
     name = "createstoragevolume"
-    verbose_name = ("Assign Storage Function")
+    verbose_name = _("Assign Storage Function")
     url = "horizon:admin:inventory:addstoragevolume"
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
@@ -58,7 +58,7 @@ class CreateStorageVolume(tables.LinkAction):
 
 class CreatePartition(tables.LinkAction):
     name = "createpartition"
-    verbose_name = ("Create a new partition")
+    verbose_name = _("Create a new partition")
     url = "horizon:admin:inventory:createpartition"
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
@@ -220,31 +220,31 @@ def get_disk_info(disk):
 
 class DisksTable(tables.DataTable):
     uuid = tables.Column('uuid',
-                         verbose_name=('UUID'))
+                         verbose_name=_('UUID'))
     disk_info = tables.Column(get_disk_info,
                               verbose_name=_("Disk info"),
                               attrs={'data-type': 'disk_info'})
     type = tables.Column('device_type',
-                         verbose_name=('Type'))
+                         verbose_name=_('Type'))
     size = tables.Column('size_gib',
-                         verbose_name=('Size (GiB)'))
+                         verbose_name=_('Size (GiB)'))
     available_size = tables.Column('available_gib',
-                                   verbose_name=('Available Size (GiB)'))
+                                   verbose_name=_('Available Size (GiB)'))
     rpm = tables.Column('rpm',
-                        verbose_name=('RPM'))
+                        verbose_name=_('RPM'))
 
     serial_id = tables.Column('serial_id',
-                              verbose_name=('Serial ID'))
+                              verbose_name=_('Serial ID'))
 
     model_num = tables.Column(get_model_num,
-                              verbose_name=('Model'))
+                              verbose_name=_('Model'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
 
     class Meta(object):
         name = "disks"
-        verbose_name = ("Disks")
+        verbose_name = _("Disks")
         columns = ('uuid', 'disk_info', 'type', 'size', 'available_size',
                    'rpm', 'serial_id', 'model_num')
         multi_select = False
@@ -324,28 +324,28 @@ class DeleteStor(tables.DeleteAction):
 
 class StorageVolumesTable(tables.DataTable):
     uuid = tables.Column('uuid',
-                         verbose_name=('UUID'))
+                         verbose_name=_('UUID'))
     osdid = tables.Column('osdid',
-                          verbose_name=('OSD ID'))
+                          verbose_name=_('OSD ID'))
     function = tables.Column('function',
-                             verbose_name=('Function'))
+                             verbose_name=_('Function'))
     state = tables.Column('state',
-                          verbose_name=('State'))
+                          verbose_name=_('State'))
     idisk_uuid = tables.Column('idisk_uuid',
-                               verbose_name=('Disk UUID'))
+                               verbose_name=_('Disk UUID'))
     journal_path = tables.Column('journal_path',
-                                 verbose_name=('Journal Path'))
+                                 verbose_name=_('Journal Path'))
     journal_size_mib = tables.Column('journal_size_gib',
-                                     verbose_name=('Journal GiB'))
+                                     verbose_name=_('Journal GiB'))
     journal_location = tables.Column('journal_location',
-                                     verbose_name=('Journal Location'))
+                                     verbose_name=_('Journal Location'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
 
     class Meta(object):
         name = "storagevolumes"
-        verbose_name = ("Storage Functions")
+        verbose_name = _("Storage Functions")
         columns = ('uuid', 'function', 'osdid', 'state', 'idisk_uuid',
                    'journal_path', 'journal_size_mib', 'journal_location')
         multi_select = False
@@ -357,7 +357,7 @@ class StorageVolumesTable(tables.DataTable):
 
 class AddLocalVolumeGroup(tables.LinkAction):
     name = "addlocalvolumegroup"
-    verbose_name = ("Add Local Volume Group")
+    verbose_name = _("Add Local Volume Group")
     url = "horizon:admin:inventory:addlocalvolumegroup"
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
@@ -451,19 +451,19 @@ class RemoveLocalVolumeGroup(tables.DeleteAction):
 class LocalVolumeGroupsTable(tables.DataTable):
     name = tables.Column('lvm_vg_name',
                          link="horizon:admin:inventory:localvolumegroupdetail",
-                         verbose_name=('Name'))
+                         verbose_name=_('Name'))
     state = tables.Column('vg_state',
-                          verbose_name=('State'))
+                          verbose_name=_('State'))
     access = tables.Column('lvm_vg_access',
-                           verbose_name=('Access'))
+                           verbose_name=_('Access'))
     size = tables.Column('lvm_vg_size_gib',
-                         verbose_name=('Size (GiB)'))
+                         verbose_name=_('Size (GiB)'))
     avail_size = tables.Column('lvm_vg_avail_size_gib',
-                               verbose_name=('Avail Size (GiB)'))
+                               verbose_name=_('Avail Size (GiB)'))
     pvs = tables.Column('lvm_cur_pv',
-                        verbose_name=('Current Physical Volumes'))
+                        verbose_name=_('Current Physical Volumes'))
     lvs = tables.Column('lvm_cur_lv',
-                        verbose_name=('Current Logical Volumes'))
+                        verbose_name=_('Current Logical Volumes'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
@@ -476,7 +476,7 @@ class LocalVolumeGroupsTable(tables.DataTable):
 
     class Meta(object):
         name = "localvolumegroups"
-        verbose_name = ("Local Volume Groups")
+        verbose_name = _("Local Volume Groups")
         columns = ('name', 'state', 'access', 'size', 'avail_size',
                    'pvs', 'lvs',)
         multi_select = False
@@ -488,7 +488,7 @@ class LocalVolumeGroupsTable(tables.DataTable):
 
 class AddPhysicalVolume(tables.LinkAction):
     name = "addphysicalvolume"
-    verbose_name = ("Add Physical Volume")
+    verbose_name = _("Add Physical Volume")
     url = "horizon:admin:inventory:addphysicalvolume"
     classes = ("ajax-modal", "btn-create")
     icon = "plus"
@@ -566,18 +566,18 @@ class RemovePhysicalVolume(tables.DeleteAction):
 class PhysicalVolumesTable(tables.DataTable):
     name = tables.Column('lvm_pv_name',
                          link="horizon:admin:inventory:physicalvolumedetail",
-                         verbose_name=('Name'))
+                         verbose_name=_('Name'))
     pv_state = tables.Column('pv_state',
-                             verbose_name=('State'))
+                             verbose_name=_('State'))
     pv_type = tables.Column('pv_type',
-                            verbose_name=('Type'))
+                            verbose_name=_('Type'))
     disk_or_part_uuid = tables.Column('disk_or_part_uuid',
-                                      verbose_name=('Disk or Partition UUID'))
+                                      verbose_name=_('Disk or Partition UUID'))
     disk_or_part_device_path = tables.Column('disk_or_part_device_path',
-                                             verbose_name=('Disk or Partition'
-                                                           ' Device Path'))
+                                             verbose_name=_('Disk or Partition'
+                                                            ' Device Path'))
     lvm_vg_name = tables.Column('lvm_vg_name',
-                                verbose_name=('LVM Volume Group Name'))
+                                verbose_name=_('LVM Volume Group Name'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
@@ -590,7 +590,7 @@ class PhysicalVolumesTable(tables.DataTable):
 
     class Meta(object):
         name = "physicalvolumes"
-        verbose_name = ("Physical Volumes")
+        verbose_name = _("Physical Volumes")
         columns = ('name', 'pv_state', 'pv_type', 'disk_or_part_uuid',
                    'disk_or_part_device_node', 'disk_or_part_device_path',
                    'lvm_vg_name')
@@ -603,19 +603,19 @@ class PhysicalVolumesTable(tables.DataTable):
 
 class PartitionsTable(tables.DataTable):
     uuid = tables.Column('uuid',
-                         verbose_name=('UUID'))
+                         verbose_name=_('UUID'))
     size_mib = tables.Column('size_gib',
-                             verbose_name=('Size (GiB)'))
+                             verbose_name=_('Size (GiB)'))
     device_path = tables.Column('device_path',
-                                verbose_name=('Partition Device Path'))
+                                verbose_name=_('Partition Device Path'))
     type_name = tables.Column('type_name',
-                              verbose_name=('Partition Type'))
+                              verbose_name=_('Partition Type'))
     ipv_uuid = tables.Column('ipv_uuid',
-                             verbose_name=('Physical Volume UUID'))
+                             verbose_name=_('Physical Volume UUID'))
     idisk_uuid = tables.Column('disk_uuid',
-                               verbose_name=('Disk UUID'))
+                               verbose_name=_('Disk UUID'))
     status = tables.Column('status',
-                           verbose_name=('Status'))
+                           verbose_name=_('Status'))
 
     def get_object_id(self, datum):
         return str(datum.uuid)
@@ -628,7 +628,7 @@ class PartitionsTable(tables.DataTable):
 
     class Meta(object):
         name = "partitions"
-        verbose_name = ("Partitions")
+        verbose_name = _("Partitions")
         columns = ('uuid', 'device_path', 'size_mib', 'type_name', 'status')
         multi_select = False
         row_actions = (EditPartition, DeletePartition,)

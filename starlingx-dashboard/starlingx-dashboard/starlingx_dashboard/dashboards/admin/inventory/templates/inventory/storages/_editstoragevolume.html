@@ -15,11 +15,14 @@
     /* Obtain the journal elements. */
     var journal_size_box = document.getElementById("id_journal_size_gib");
     var journal_locations_dropdown = document.getElementById("id_journal_locations");
+    /* The collocated choice's value is the OSD's own UUID; its label is
+    translated, so compare the value. */
+    var stor_uuid = document.getElementById("id_id").value;
 
     function select_journal_size() {
         /* If the chosen journal location is collocated, make the journal
         size textbox readonly. */
-        if (journal_locations_dropdown[journal_locations_dropdown.selectedIndex].text === "Collocated with OSD") {
+        if (journal_locations_dropdown.value === stor_uuid) {
             journal_size_box.value = "1"
             journal_size_box.readOnly = true
         }

@@ -88,12 +88,13 @@ class UpdateView(workflows.WorkflowView):
 class DetailView(tabs.TabbedTableView):
     tab_group_class = HostDetailTabs
     template_name = 'admin/inventory/detail.html'
-    page_title = '{{ _("Host Detail: ")|add:host.hostname' \
-                 '|default:_("Unprovisioned Host Detail") }}'
+    page_title = _("Host Detail: {{ host.hostname }}")
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
         context["host"] = self.get_data()
+        if not context["host"].hostname:
+            context["page_title"] = _("Unprovisioned Host Detail")
         return context
 
     # Make the LVG/PV state data clearer to the end user
