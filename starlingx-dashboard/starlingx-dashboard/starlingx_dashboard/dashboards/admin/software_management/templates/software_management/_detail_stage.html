@@ -3,7 +3,9 @@
 {% block title %}{% trans "Stage Details" %}{% endblock %}
 
 {% block main %}
-<h3> Stage {{ stage.stage_id }} of {{ stage.phase.phase_name|title }} Phase </h3>
+<h3> {% blocktrans trimmed with stage_id=stage.stage_id phase_name=stage.phase.phase_name|title %}
+    Stage {{ stage_id }} of {{ phase_name }} Phase
+{% endblocktrans %} </h3>
 
 <div class="row-fluid">
   <div class="col-sm-12">
@@ -12,27 +14,27 @@
 	  <hr class="header_rule">
       <div id="stage-details">
 	   <dl class="dl-horizontal">
-		<dt>Stage ID</dt>
+		<dt>{% trans "Stage ID" %}</dt>
         <dd>{{ stage.stage_id }}</dd>
-		<dt>Stage Name</dt>
+		<dt>{% trans "Stage Name" %}</dt>
         <dd>{{ stage.stage_name }}</dd>
-		<dt>Total Steps</dt>
+		<dt>{% trans "Total Steps" %}</dt>
         <dd>{{ stage.total_steps }}</dd>
-		<dt>Current Step</dt>
+		<dt>{% trans "Current Step" %}</dt>
         <dd>{{ stage.current_step }}</dd>
-		<dt>Timeout</dt>
+		<dt>{% trans "Timeout" %}</dt>
         <dd>{{ stage.timeout_display }}</dd>
-		<dt>Start Date/Time</dt>
+		<dt>{% trans "Start Date/Time" %}</dt>
         <dd>{{ stage.start_date_time }}</dd>
-		<dt>End Date/Time</dt>
+		<dt>{% trans "End Date/Time" %}</dt>
         <dd>{{ stage.end_date_time }}</dd>
-		<dt>Status</dt>
+		<dt>{% trans "Status" %}</dt>
         {% if stage.inprogress %}
         <dd>{% trans "In Progress" %}</dd>
         {% else %}
         <dd>{{ stage.result }}</dd>
         {% endif %}
-		<dt>Reason</dt>
+		<dt>{% trans "Reason" %}</dt>
         <dd>{{ stage.reason }}</dd>
 	   </dl>
       </div>

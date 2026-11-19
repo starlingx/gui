@@ -15,6 +15,12 @@
 <div class="right">
   <h3>{% trans "Description" %}:</h3>
   <p>{% trans "From here you can update the platform reserved memory and the number of application hugepages per numa node." %}</p>
+  {% trans "Application 2M Hugepages" as label_app_2m %}
+  {% trans "Application 1G Hugepages" as label_app_1g %}
+  {% trans "vSwitch Hugepages" as label_vswitch %}
+  {% trans "Remaining Space" as label_remaining %}
+  {% trans "Space left to be allocated" as label_remaining_desc %}
+  {% trans "Node" as label_node %}
   <div id="pie_container"></div>
   <div id="pie_container_two"></div>
   <div id="pie_container_three"></div>
@@ -63,11 +69,11 @@
           node.max = $("input[name='memtotal_mib" + node.call + "']").attr("value");
 
         if($("input[name='vm_hugepages_nr_2M" + node.call + "']").attr("type") != "hidden"){
-          node.data.push({"name": "Application 2M Hugepages", "desc": "vm_hugepages_nr_2M" + node.call, "value": $("input[name='vm_hugepages_nr_2M" + node.call + "']").attr("value") * (percent ? 1 : $("input[name='size_mib_2M']").attr("value")), "unit": percent ? "%": "MB"});
+          node.data.push({"name": "{{ label_app_2m|escapejs }}", "desc": "vm_hugepages_nr_2M" + node.call, "value": $("input[name='vm_hugepages_nr_2M" + node.call + "']").attr("value") * (percent ? 1 : $("input[name='size_mib_2M']").attr("value")), "unit": percent ? "%": "MB"});
           if(!$("input[name='vm_hugepages_nr_1G" + node.call + "']").attr("disabled"))
-            node.data.push({"name": "Application 1G Hugepages", "desc": "vm_hugepages_nr_1G" + node.call, "value": $("input[name='vm_hugepages_nr_1G" + node.call + "']").attr("value") * (percent ? 1 : $("input[name='size_mib_1G']").attr("value")), "unit": percent ? "%": "MB"});
+            node.data.push({"name": "{{ label_app_1g|escapejs }}", "desc": "vm_hugepages_nr_1G" + node.call, "value": $("input[name='vm_hugepages_nr_1G" + node.call + "']").attr("value") * (percent ? 1 : $("input[name='size_mib_1G']").attr("value")), "unit": percent ? "%": "MB"});
           if($("input[name='vswitch_hugepages_reqd" + node.call + "']").attr("type") != "hidden")
-            node.data.push({"name": "vSwitch Hugepages", "desc": "vswitch_hugepages_reqd" + node.call, "value": Math.round($("input[name='vswitch_hugepages_reqd" + node.call + "']").attr("value") * vswitch_size * (percent ? 100/ $('input[name="memtotal_mib' + node.call + '"]').attr("value") : 1) * 100)/100, "unit": percent ? "%": "MB"});
+            node.data.push({"name": "{{ label_vswitch|escapejs }}", "desc": "vswitch_hugepages_reqd" + node.call, "value": Math.round($("input[name='vswitch_hugepages_reqd" + node.call + "']").attr("value") * vswitch_size * (percent ? 100/ $('input[name="memtotal_mib' + node.call + '"]').attr("value") : 1) * 100)/100, "unit": percent ? "%": "MB"});
         }
       });
     }
@@ -88,7 +94,7 @@
           total += d.value;
         });
         if(node.max - total > 0)
-          data.push({"value": Math.round((node.max-total)*100)/100, "color": colorGray, "name": "Remaining Space", "desc": "Space left to be allocated", "unit": percent ? "%" : "MB"});
+          data.push({"value": Math.round((node.max-total)*100)/100, "color": colorGray, "name": "{{ label_remaining|escapejs }}", "desc": "{{ label_remaining_desc|escapejs }}", "unit": percent ? "%" : "MB"});
 
         var arc = d3.svg.arc().innerRadius(0).outerRadius(radius);
 
@@ -167,7 +173,7 @@
           .attr("dy", "-12")
           .attr("alignment-baseline", "middle")
           .attr("text-anchor", "middle")
-          .html("Node");
+          .html("{{ label_node|escapejs }}");
 
         text.append("tspan")
           .attr("dy", "24")

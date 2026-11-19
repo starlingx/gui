@@ -17,7 +17,9 @@
         {% trans "Create a strategy to specify how the release should be deployed in the system." %}
     </p>
     <p>
-        {% trans "There are " %}{{ alarms }}{% trans " active alarms on the system, " %}{{ affecting }}{% trans " of which are management affecting." %}
+        {% blocktrans trimmed %}
+            There are {{ alarms }} active alarms on the system, {{ affecting }} of which are management affecting.
+        {% endblocktrans %}
         <br/>
 		{% if affecting > 0 %}
             {% trans "These management affecting alarms must be addressed before orchestration will be successful" %}

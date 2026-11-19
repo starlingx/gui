@@ -1,2 +1,3 @@
-<strong>{{ "Total: " }}</strong> {{ memory.memtotal_mib }} {{ " MiB" }} {{ "<br>" }}
-<strong>{{ "Available: " }}</strong> {{ memory.memavail_mib }} {{ " MiB" }} {{ "<br>" }}
+{% load i18n %}
+<strong>{% trans "Total:" %} </strong> {{ memory.memtotal_mib }} {{ " MiB" }} {{ "<br>" }}
+<strong>{% trans "Available:" %} </strong> {{ memory.memavail_mib }} {{ " MiB" }} {{ "<br>" }}

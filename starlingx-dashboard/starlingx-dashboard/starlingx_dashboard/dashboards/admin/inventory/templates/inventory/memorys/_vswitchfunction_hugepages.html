@@ -1,9 +1,10 @@
+{% load i18n %}
 {% if memory.hugepages_configured == True %}    
-    <strong>{{ "Size: " }}</strong> {{ memory.vswitch_hugepages_size_mib }} {{ " MiB" }} {{ "<br>" }}
+    <strong>{% trans "Size:" %} </strong> {{ memory.vswitch_hugepages_size_mib }} {{ " MiB" }} {{ "<br>" }}
     {% if memory.vswitch_hugepages_reqd or memory.vswitch_hugepages_reqd == 0 %}
-        <strong>{{ "&nbsp;&nbsp;&nbsp;&nbsp;Total: " }}</strong> {{ memory.vswitch_hugepages_nr }}
-        <strong>{{ "&nbsp;&nbsp;Pending: "}}</strong> {{ memory.vswitch_hugepages_reqd }} {{ "<br>" }}
+        <strong>&nbsp;&nbsp;&nbsp;&nbsp;{% trans "Total:" %} </strong> {{ memory.vswitch_hugepages_nr }}
+        <strong>&nbsp;&nbsp;{% trans "Pending:" %} </strong> {{ memory.vswitch_hugepages_reqd }} {{ "<br>" }}
     {% else %}
-        <strong>{{ "&nbsp;&nbsp;&nbsp;&nbsp;Total: " }}</strong> {{ memory.vswitch_hugepages_nr }} {{ "<br>" }}
+        <strong>&nbsp;&nbsp;&nbsp;&nbsp;{% trans "Total:" %} </strong> {{ memory.vswitch_hugepages_nr }} {{ "<br>" }}
     {% endif %}
 {% endif%}

@@ -19,15 +19,17 @@
                 <div id="storage" class="info detail">
                     <dl class="dl-horizontal-wide">
                         <dt>{% trans "Storage Usage" %}</dt>
-                        <dd>{{ storage.used }} {{" MiB used, "}} 
-                            {{ storage.available }} {{" GiB available, "}} 
-                            {{ storage.total }} {{" GiB total"}}</dd>
+                        <dd>{% blocktrans trimmed with used=storage.used available=storage.available total=storage.total %}
+                            {{ used }} MiB used, {{ available }} GiB available, {{ total }} GiB total
+                        {% endblocktrans %}</dd>
                         <dt>{% trans "Storage I/O" %}</dt>
-                        <dd>{{ storage.writes_per_sec }} {{" kiB/s write, "}}
-                            {{ storage.write_operations_per_sec }} {{" operations/second write"}}</dd>
+                        <dd>{% blocktrans trimmed with writes=storage.writes_per_sec operations=storage.write_operations_per_sec %}
+                            {{ writes }} kiB/s write, {{ operations }} operations/second write
+                        {% endblocktrans %}</dd>
                         {% if storage.reads_per_sec %}
-                          <dd>{{ storage.reads_per_sec }} {{" kiB/s read, "}}
-                              {{ storage.read_operations_per_sec }} {{" operations/second read"}}</dd>
+                          <dd>{% blocktrans trimmed with reads=storage.reads_per_sec operations=storage.read_operations_per_sec %}
+                              {{ reads }} kiB/s read, {{ operations }} operations/second read
+                          {% endblocktrans %}</dd>
                         {% endif %}
                     </dl>
                 </div>

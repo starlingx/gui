@@ -14,15 +14,15 @@
 <div class="quota-dynamic">
   <div class="quota_title clearfix">
     <strong>{% trans "Instances logical volume allocation" %}
-    {% blocktrans with a=used_gib|intcomma b=total_gib|intcomma %}<p>{{ a }} GiB of {{ b }} GiB Used</p>{% endblocktrans %}</strong>
+    <p>{% blocktrans with a=used_gib|intcomma b=total_gib|intcomma %}{{ a }} GiB of {{ b }} GiB Used{% endblocktrans %}</p></strong>
   </div>
   <div class="quota_title clearfix">
     <strong>{% trans "Volume group space available for instance disks" %}
-    {% blocktrans with a=free_gib|intcomma b=total_gib|intcomma %}<p>{{ a }} GiB of {{ b }} GiB Free</p>{% endblocktrans %}</strong>
+    <p>{% blocktrans with a=free_gib|intcomma b=total_gib|intcomma %}{{ a }} GiB of {{ b }} GiB Free{% endblocktrans %}</p></strong>
   </div>
   <div class="quota_title clearfix">
     <strong>{% trans "Acceptable instances logical volume size" %}
-    {% blocktrans with a=allowed_min_gib|intcomma b=allowed_max_gib|intcomma %}<p>{{ a }} GiB to {{ b }} GiB</p>{% endblocktrans %}</strong>
+    <p>{% blocktrans with a=allowed_min_gib|intcomma b=allowed_max_gib|intcomma %}{{ a }} GiB to {{ b }} GiB{% endblocktrans %}</p></strong>
   </div>
 <hr>
 {% endif %}

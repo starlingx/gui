@@ -8,13 +8,11 @@
 {% block modal-body %}
 {% if out_of_date == True %}
 <p>
-    {% trans "<b>WARNING:</b> The strategy was created " %}
-    {{hours}}
-    {% trans " hours and " %}
-    {{minutes}}
-    {% trans " minutes ago." %}
-    {% trans "Please, verify that this strategy is still valid" %}
-    {% trans "for your environment" %}
+    <b>{% trans "WARNING:" %}</b>
+    {% blocktrans trimmed %}
+        The strategy was created {{ hours }} hours and {{ minutes }} minutes ago.
+    {% endblocktrans %}
+    {% trans "Please, verify that this strategy is still valid for your environment" %}
 </p>
 {% endif %}
 <p>
